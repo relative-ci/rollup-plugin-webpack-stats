@@ -9,7 +9,7 @@
     "src"
   ],
   "engines": {
-    "node": ">=10"
+    "node": ">=14"
   },
   "scripts": {
     "start": "tsdx watch",
@@ -19,7 +19,6 @@
     "prepare": "tsdx build",
     "analyze": "size-limit --why"
   },
-  "peerDependencies": {},
   "husky": {
     "hooks": {
       "pre-commit": "tsdx lint"
@@ -35,9 +34,13 @@
   "module": "dist/rollup-plugin-webpack-stats.esm.js",
   "devDependencies": {
     "husky": "^8.0.3",
+    "rollup": "^1.32.1",
     "size-limit": "^8.1.0",
     "tsdx": "^0.14.1",
     "tslib": "^2.4.1",
     "typescript": "^4.9.4"
+  },
+  "peerDependencies": {
+    "rollup": "^1.0.0"
   }
 }
