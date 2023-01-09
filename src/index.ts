@@ -4,7 +4,13 @@ import { BundleTransformOptions, bundleToWebpackStats } from './transform';
 
 const NAME = 'webpackStats';
 
-interface WebpackStatsOptions extends BundleTransformOptions {}
+interface WebpackStatsOptions extends BundleTransformOptions {
+  /**
+   * JSON file output fileName
+   * default: webpack-stats.json
+   */
+  fileName?: string;
+}
 
 export const webpackStats = (options: WebpackStatsOptions): Plugin => ({
   name: NAME,
@@ -13,7 +19,7 @@ export const webpackStats = (options: WebpackStatsOptions): Plugin => ({
 
     this.emitFile({
       type: 'asset',
-      fileName: 'webpack-stats.json',
+      fileName: options?.fileName || 'webpack-stats.json',
       source: JSON.stringify(output),
     });
   },
