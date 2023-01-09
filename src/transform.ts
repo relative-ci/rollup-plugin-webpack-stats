@@ -66,7 +66,7 @@ export const bundleToWebpackStats = (bundle: OutputBundle): WebpackStatsFiltered
       chunks.push({
         id: chunkId,
         entry: item.isEntry,
-        initial: false,
+        initial: item.isEntry,
         files: [item.fileName],
         names: [item.name]
       });
