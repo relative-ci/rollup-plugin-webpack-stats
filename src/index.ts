@@ -1,13 +1,15 @@
 import { Plugin } from 'rollup';
 
-import { bundleToWebpackStats } from './transform';
+import { BundleTransformOptions, bundleToWebpackStats } from './transform';
 
 const NAME = 'webpackStats';
 
-export const webpackStats = (): Plugin => ({
+interface WebpackStatsOptions extends BundleTransformOptions {}
+
+export const webpackStats = (options: WebpackStatsOptions): Plugin => ({
   name: NAME,
   generateBundle(_, bundle) {
-    const output = bundleToWebpackStats(bundle);
+    const output = bundleToWebpackStats(bundle, options);
 
     this.emitFile({
       type: 'asset',

@@ -46,7 +46,20 @@ const getByteSize = (content: string | Buffer): number => {
   return content?.length || 0;
 };
 
-export const bundleToWebpackStats = (bundle: OutputBundle): WebpackStatsFiltered => {
+export type BundleTransformOptions = {
+  /**
+   * Extract module original size or rendered size
+   * default: false
+   */
+  moduleOriginalSize?: boolean;
+};
+
+export const bundleToWebpackStats = (bundle: OutputBundle, customOptions?: BundleTransformOptions): WebpackStatsFiltered => {
+  const options = {
+    moduleOriginalSize: false,
+    ...customOptions,
+  };
+
   const items = Object.values(bundle);
 
   const assets: Array<WebpackStatsFilteredAsset> = [];
@@ -81,7 +94,7 @@ export const bundleToWebpackStats = (bundle: OutputBundle): WebpackStatsFiltered
         } else {
           moduleByFileName[relativeModulePath] = {
             name: relativeModulePath,
-            size: moduleInfo.originalLength,
+            size: options.moduleOriginalSize ? moduleInfo.originalLength : moduleInfo.renderedLength,
             chunks: [chunkId],
           };
         }
