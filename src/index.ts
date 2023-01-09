@@ -12,7 +12,7 @@ interface WebpackStatsOptions extends BundleTransformOptions {
   fileName?: string;
 }
 
-export const webpackStats = (options: WebpackStatsOptions): Plugin => ({
+export const webpackStats = (options: WebpackStatsOptions = {}): Plugin => ({
   name: NAME,
   generateBundle(_, bundle) {
     const output = bundleToWebpackStats(bundle, options);
