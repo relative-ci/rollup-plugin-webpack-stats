@@ -38,6 +38,14 @@ export interface WebpackStatsFiltered {
   modules?: Array<WebpackStatsFilteredRootModule>;
 }
 
+const getByteSize = (content: string | Buffer): number => {
+  if (typeof content === 'string') {
+    return Buffer.from(content).length;
+  }
+
+  return content?.length || 0;
+};
+
 export const bundleToWebpackStats = (bundle: OutputBundle): WebpackStatsFiltered => {
   const items = Object.values(bundle);
 
@@ -50,7 +58,7 @@ export const bundleToWebpackStats = (bundle: OutputBundle): WebpackStatsFiltered
     if (item.type === 'chunk') {
       assets.push({
         name: item.fileName,
-        size: item.code?.length,
+        size: getByteSize(item.code),
       });
 
       const chunkId = item.name;
@@ -78,11 +86,13 @@ export const bundleToWebpackStats = (bundle: OutputBundle): WebpackStatsFiltered
           };
         }
       });
-    } else {
+    } else if (item.type === 'asset') {
       assets.push({
         name: item.fileName,
-        size: item.source?.length,
+        size: getByteSize(item.source),
       });
+    } else {
+      // noop for unknown types
     }
   });
 
