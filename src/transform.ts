@@ -1,4 +1,4 @@
-import path from 'node:path';
+import path from 'path';
 import { OutputBundle } from 'rollup';
 
 // https://github.com/relative-ci/bundle-stats/blob/master/packages/plugin-webpack-filter/src/index.ts

@@ -1,4 +1,0 @@
-describe('blah', () => {
-  it('works', () => {
-  });
-});
