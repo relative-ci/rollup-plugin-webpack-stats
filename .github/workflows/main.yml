@@ -16,13 +16,13 @@ jobs:
       - name: Resolve caching
         id: cache
         if: ${{ github.ref_name != 'update-dependencies' && !startsWith(github.ref_name, 'dependabot/') }}
-        run: echo "::set-output name=PACKAGE::yarn"
+        run: echo "npm_cache=yarn" >> $GITHUB_STATE
 
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
-          cache: ${{ steps.cache.outputs.PACKAGE }}
+          cache: ${{ env.npm_cache }}
 
       - name: Install dependencies
         run: yarn
