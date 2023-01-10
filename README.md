@@ -1,14 +1,14 @@
 # rollup-plugin-webpack-stats
 
 > **Warning**
-Under active development
- 
+> Under active development
+
 [![](https://img.shields.io/npm/v/rollup-plugin-webpack-stats.svg)](https://www.npmjs.com/package/rollup-plugin-webpack-stats)
 ![](https://img.shields.io/node/v/rollup-plugin-webpack-stats.svg)
 
 Generate rollup stats JSON file with a [bundle-stats](https://github.com/relative-ci/bundle-stats/tree/master/packages/cli) webpack [supported sructure](https://github.com/relative-ci/bundle-stats/blob/master/packages/plugin-webpack-filter/src/index.ts).
 
-## Install 
+## Install
 
 ```shell
 npm install --dev rollup-plugin-webpack-stats
@@ -21,7 +21,6 @@ yarn add --dev rollup-plugin-webpack-stats
 ```
 
 ## Configure
-
 
 ```js
 // rollup.config.js

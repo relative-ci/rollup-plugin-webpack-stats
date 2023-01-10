@@ -5,7 +5,7 @@ import { OutputBundle } from 'rollup';
 export type WebpackStatsFilteredAsset = {
   name: string;
   size?: number;
-}
+};
 
 export interface WebpackStatsFilteredChunk {
   id: number | string;
@@ -26,7 +26,8 @@ export interface WebpackStatsFilteredConcatenatedModule {
   size?: number;
 }
 
-export interface WebpackStatsFilteredRootModule extends WebpackStatsFilteredModule {
+export interface WebpackStatsFilteredRootModule
+  extends WebpackStatsFilteredModule {
   modules?: Array<WebpackStatsFilteredConcatenatedModule>;
 }
 
@@ -54,7 +55,10 @@ export type BundleTransformOptions = {
   moduleOriginalSize?: boolean;
 };
 
-export const bundleToWebpackStats = (bundle: OutputBundle, customOptions?: BundleTransformOptions): WebpackStatsFiltered => {
+export const bundleToWebpackStats = (
+  bundle: OutputBundle,
+  customOptions?: BundleTransformOptions
+): WebpackStatsFiltered => {
   const options = {
     moduleOriginalSize: false,
     ...customOptions,
@@ -67,7 +71,7 @@ export const bundleToWebpackStats = (bundle: OutputBundle, customOptions?: Bundl
 
   const moduleByFileName: Record<string, WebpackStatsFilteredModule> = {};
 
-  items.forEach((item) => {
+  items.forEach(item => {
     if (item.type === 'chunk') {
       assets.push({
         name: item.fileName,
@@ -85,7 +89,10 @@ export const bundleToWebpackStats = (bundle: OutputBundle, customOptions?: Bundl
       });
 
       Object.entries(item.modules).forEach(([modulePath, moduleInfo]) => {
-        const relativeModulePath = path.relative(process.cwd(), modulePath.replace('\u0000', ''));
+        const relativeModulePath = path.relative(
+          process.cwd(),
+          modulePath.replace('\u0000', '')
+        );
 
         const moduleEntry = moduleByFileName[relativeModulePath];
 
@@ -94,7 +101,9 @@ export const bundleToWebpackStats = (bundle: OutputBundle, customOptions?: Bundl
         } else {
           moduleByFileName[relativeModulePath] = {
             name: relativeModulePath,
-            size: options.moduleOriginalSize ? moduleInfo.originalLength : moduleInfo.renderedLength,
+            size: options.moduleOriginalSize
+              ? moduleInfo.originalLength
+              : moduleInfo.renderedLength,
             chunks: [chunkId],
           };
         }
