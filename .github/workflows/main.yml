@@ -11,14 +11,18 @@ jobs:
         os: [ubuntu-latest, windows-latest, macOS-latest]
 
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
       - name: Resolve caching
         id: cache
         if: ${{ github.ref_name != 'update-dependencies' && !startsWith(github.ref_name, 'dependabot/') }}
         run: echo "::set-output name=PACKAGE::yarn"
+
       - name: Use Node.js
-        uses: actions/setup-node@v3.6.0
+        uses: actions/setup-node@v3
         with:
-          version: [matrix.node]
+           node-version: ${{ matrix.node }}
           cache: ${{ steps.cache.outputs.PACKAGE }}
 
       - name: Install dependencies
