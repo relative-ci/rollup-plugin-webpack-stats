@@ -79,9 +79,9 @@ export const bundleToWebpackStats = (bundle: OutputBundle, customOptions?: Bundl
       chunks.push({
         id: chunkId,
         entry: item.isEntry,
-        initial: item.isEntry,
+        initial: !item.isDynamicEntry,
         files: [item.fileName],
-        names: [item.name]
+        names: [item.name],
       });
 
       Object.entries(item.modules).forEach(([modulePath, moduleInfo]) => {
