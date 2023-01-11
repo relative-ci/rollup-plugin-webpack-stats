@@ -34,3 +34,8 @@ module.exports = {
   ],
 };
 ```
+
+## Examples
+
+- [example-vite-github-action](https://github.com/relative-ci/example-vite-github-action)
+- [example-vite-cli-github-action](https://github.com/relative-ci/example-vite-cli-github-action)
