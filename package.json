@@ -44,7 +44,6 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "author": "Vio",
   "module": "dist/rollup-plugin-webpack-stats.esm.js",
   "devDependencies": {
     "husky": "^8.0.3",
