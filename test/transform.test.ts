@@ -7,10 +7,10 @@ describe('bundleToWebpackStats', () => {
     expect(
       bundleToWebpackStats({
         'assets/logo-abcd1234.svg': {
+          name: undefined,
           fileName: 'assets/logo-abcd1234.svg',
           type: 'asset',
           source: '<svg></svg>',
-          isAsset: true,
         },
         'assets/main-abcd1234.js': {
           name: 'main',
@@ -20,6 +20,12 @@ describe('bundleToWebpackStats', () => {
           isEntry: true,
           isDynamicEntry: false,
           facadeModuleId: null,
+          map: null,
+          moduleIds: [],
+          isImplicitEntry: false,
+          implicitlyLoadedBefore: [],
+          importedBindings: {},
+          referencedFiles: [],
           modules: {
             [path.join(
               __dirname,
@@ -28,6 +34,7 @@ describe('bundleToWebpackStats', () => {
               'package-a',
               'index.js'
             )]: {
+              code: 'export default A = 1;',
               originalLength: 10,
               renderedLength: 8,
               removedExports: [],
@@ -41,6 +48,7 @@ describe('bundleToWebpackStats', () => {
               'package-b',
               'index.js'
             )]: {
+              code: 'export default B = 2;',
               originalLength: 10,
               renderedLength: 8,
               removedExports: [],
