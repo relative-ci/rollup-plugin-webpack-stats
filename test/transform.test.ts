@@ -3,7 +3,7 @@ import path from 'path';
 import { bundleToWebpackStats } from '../src/transform';
 
 describe('bundleToWebpackStats', () => {
-  it('converts rollup bundle to webpack stats', () => {
+  test('converts rollup bundle to webpack stats', () => {
     expect(
       bundleToWebpackStats({
         'assets/logo-abcd1234.svg': {
@@ -52,7 +52,7 @@ describe('bundleToWebpackStats', () => {
           dynamicImports: [],
         },
       })
-    ).toEqual({
+    ).toMatchObject({
       assets: [
         {
           name: 'assets/logo-abcd1234.svg',

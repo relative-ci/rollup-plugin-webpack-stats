@@ -126,11 +126,10 @@ export const bundleToWebpackStats = (
     }
   });
 
-  const output = {
+  return {
+    builtAt: Date.now(),
     assets,
     chunks,
     modules: Object.values(moduleByFileName),
   };
-
-  return output;
 };
