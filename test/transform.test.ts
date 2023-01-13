@@ -1,3 +1,5 @@
+import path from 'path';
+
 import { bundleToWebpackStats } from '../src/transform';
 
 describe('bundleToWebpackStats', () => {
@@ -18,7 +20,33 @@ describe('bundleToWebpackStats', () => {
           isEntry: true,
           isDynamicEntry: false,
           facadeModuleId: null,
-          modules: {},
+          modules: {
+            [path.join(
+              __dirname,
+              '..',
+              'node_modules',
+              'package-a',
+              'index.js'
+            )]: {
+              originalLength: 10,
+              renderedLength: 8,
+              removedExports: [],
+              renderedExports: [],
+            },
+            [path.join(
+              __dirname,
+              '..',
+              '..',
+              'node_modules',
+              'package-b',
+              'index.js'
+            )]: {
+              originalLength: 10,
+              renderedLength: 8,
+              removedExports: [],
+              renderedExports: [],
+            },
+          },
           imports: [],
           exports: [],
           dynamicImports: [],
@@ -44,7 +72,26 @@ describe('bundleToWebpackStats', () => {
           files: ['assets/main-abcd1234.js'],
         },
       ],
-      modules: [],
+      modules: [
+        {
+          chunks: ['main'],
+          name: `.${path.sep}${path.join(
+            'node_modules',
+            'package-a',
+            'index.js'
+          )}`,
+          size: 8,
+        },
+        {
+          chunks: ['main'],
+          name: `..${path.sep}${path.join(
+            'node_modules',
+            'package-b',
+            'index.js'
+          )}`,
+          size: 8,
+        },
+      ],
     });
   });
 });
