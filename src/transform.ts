@@ -89,18 +89,26 @@ export const bundleToWebpackStats = (
       });
 
       Object.entries(item.modules).forEach(([modulePath, moduleInfo]) => {
+        // Remove unexpected rollup null prefix
+        const normalizedModulePath = modulePath.replace('\u0000', '');
+
         const relativeModulePath = path.relative(
           process.cwd(),
-          modulePath.replace('\u0000', '')
+          normalizedModulePath
         );
 
-        const moduleEntry = moduleByFileName[relativeModulePath];
+        // Match webpack output - add current directory prefix for child modules
+        const relativeModulePathWithPrefix = relativeModulePath.match(/^\.\./)
+          ? relativeModulePath
+          : `.${path.sep}${relativeModulePath}`;
+
+        const moduleEntry = moduleByFileName[relativeModulePathWithPrefix];
 
         if (moduleEntry) {
           moduleEntry.chunks.push(chunkId);
         } else {
-          moduleByFileName[relativeModulePath] = {
-            name: relativeModulePath,
+          moduleByFileName[relativeModulePathWithPrefix] = {
+            name: relativeModulePathWithPrefix,
             size: options.moduleOriginalSize
               ? moduleInfo.originalLength
               : moduleInfo.renderedLength,
