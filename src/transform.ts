@@ -119,7 +119,7 @@ export const bundleToWebpackStats = (
     } else if (item.type === 'asset') {
       assets.push({
         name: item.fileName,
-        size: getByteSize(item.source),
+        size: getByteSize(item.source.toString()),
       });
     } else {
       // noop for unknown types
