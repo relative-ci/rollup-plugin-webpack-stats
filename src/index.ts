@@ -2,6 +2,8 @@ import { Plugin } from 'rollup';
 
 import { BundleTransformOptions, bundleToWebpackStats } from './transform';
 
+export { bundleToWebpackStats } from './transform';
+
 const NAME = 'webpackStats';
 
 interface WebpackStatsOptions extends BundleTransformOptions {
