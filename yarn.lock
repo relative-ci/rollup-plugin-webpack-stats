@@ -4718,10 +4718,10 @@ rollup@^1.32.1:
     "@types/node" "*"
     acorn "^7.1.0"
 
-rollup@^3.10.1:
-  version "3.10.1"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-3.10.1.tgz#56278901ed11fc2898421e8e3e2c8155bc7b40b4"
-  integrity sha512-3Er+yel3bZbZX1g2kjVM+FW+RUWDxbG87fcqFM5/9HbPCTpbVp6JOLn7jlxnNlbu7s/N/uDA4EV/91E2gWnxzw==
+rollup@^3.19.0:
+  version "3.19.0"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-3.19.0.tgz#cc580f8e0c1dc89f3888f5943f9542cb136fa40f"
+  integrity sha512-xZzJZlH9Ca6cosfdNGPwl2z7Pby8dTi9TrYLPeg6/j7aUoDOhBd706tCUFvbiBj45h/cS7z/a4gS8xd5Yg0jBw==
   optionalDependencies:
     fsevents "~2.3.2"
 
