@@ -11,10 +11,12 @@ describe('bundleToWebpackStats', () => {
           fileName: 'assets/logo-abcd1234.svg',
           type: 'asset',
           source: '<svg></svg>',
+          needsCodeReference: true,
         },
         'assets/main-abcd1234.js': {
           name: 'main',
           fileName: 'assets/main-abcd1234.js',
+          preliminaryFileName: 'assets/main-abcd1234.js',
           type: 'chunk',
           code: 'export default function () {}',
           isEntry: true,
