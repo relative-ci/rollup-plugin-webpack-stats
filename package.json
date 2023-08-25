@@ -30,8 +30,7 @@
     "build": "tsdx build",
     "test": "tsdx test",
     "lint": "tsdx lint",
-    "prepare": "tsdx build",
-    "analyze": "size-limit --why"
+    "prepare": "tsdx build"
   },
   "husky": {
     "hooks": {
@@ -48,7 +47,6 @@
   "devDependencies": {
     "husky": "^8.0.3",
     "rollup": "^3.10.0",
-    "size-limit": "^8.1.1",
     "tsdx": "^0.14.1",
     "tslib": "^2.4.1",
     "typescript": "^4.9.4"
