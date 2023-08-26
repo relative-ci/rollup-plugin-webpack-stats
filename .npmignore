@@ -1,0 +1,5 @@
+rollup.config.mjs
+verdaccio.yml
+tsconfig.json
+scripts/**/*
+test/**/*

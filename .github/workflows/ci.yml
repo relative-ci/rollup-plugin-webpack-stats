@@ -1,0 +1,132 @@
+name: ci
+on: [push]
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Resolve caching
+        id: cache
+        if: ${{ github.ref_name != 'update-dependencies' && !startsWith(github.ref_name, 'dependabot/') }}
+        run: echo "npm_cache=npm" >> $GITHUB_STATE
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: ".nvmrc"
+          cache: ${{ env.npm_cache }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+  test-unit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Resolve caching
+        id: cache
+        if: ${{ github.ref_name != 'update-dependencies' && !startsWith(github.ref_name, 'dependabot/') }}
+        run: echo "npm_cache=npm" >> $GITHUB_STATE
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: ".nvmrc"
+          cache: ${{ env.npm_cache }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Test
+        run: npm run test:unit
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Resolve caching
+        id: cache
+        if: ${{ github.ref_name != 'update-dependencies' && !startsWith(github.ref_name, 'dependabot/') }}
+        run: echo "npm_cache=npm" >> $GITHUB_STATE
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: ".nvmrc"
+          cache: ${{ env.npm_cache }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: yarn run build
+
+      - name: Upload build files
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts
+          retention-days: 1
+          path: 
+            dist*/
+
+  test-package:
+    name: Test package on node ${{ matrix.node }} / ${{ matrix.os }}
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ['20', '18', '16', '14']
+        os: [ubuntu-latest, windows-latest]
+        exclude:
+          - os: windows-latest
+            node: 20
+          - os: windows-latest
+            node: 18
+          - os: windows-latest
+            node: 16
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Install vitest
+        run: npm install vitest
+
+      - name: Download build files
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts
+
+      - name: Setup local npm registry
+        run: ./scripts/setup-registry.sh
+
+      - name: Install test package dependencies
+        run: npm install
+        working-directory: test/package
+
+      - name: Test package
+        run: npm run test:package
+
+  tests:
+    needs:
+      - lint
+      - test-unit
+      - test-package
+    runs-on: ubuntu-latest
+    steps:
+      - run: exit 0

@@ -1,0 +1,16 @@
+{
+  "name": "rollup-plugin-bundle-stats-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "rollup -c",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "devDependencies": {
+    "rollup": "^3.28.1",
+    "rollup-plugin-bundle-stats": "*"
+  }
+}

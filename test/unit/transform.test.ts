@@ -1,6 +1,9 @@
+import { describe, test, expect } from 'vitest';
 import path from 'path';
 
-import { bundleToWebpackStats } from '../src/transform';
+const ROOT_DIR = path.join(__dirname, '../..');
+
+import { bundleToWebpackStats } from '../../src/transform';
 
 describe('bundleToWebpackStats', () => {
   test('converts rollup bundle to webpack stats', () => {
@@ -30,8 +33,7 @@ describe('bundleToWebpackStats', () => {
           referencedFiles: [],
           modules: {
             [path.join(
-              __dirname,
-              '..',
+              ROOT_DIR,
               'node_modules',
               'package-a',
               'index.js'
@@ -43,9 +45,7 @@ describe('bundleToWebpackStats', () => {
               renderedExports: [],
             },
             [path.join(
-              __dirname,
-              '..',
-              '..',
+              ROOT_DIR,
               'node_modules',
               'package-b',
               'index.js'
@@ -94,7 +94,7 @@ describe('bundleToWebpackStats', () => {
         },
         {
           chunks: ['main'],
-          name: `..${path.sep}${path.join(
+          name: `.${path.sep}${path.join(
             'node_modules',
             'package-b',
             'index.js'
