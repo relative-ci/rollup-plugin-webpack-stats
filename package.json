@@ -1,6 +1,6 @@
 {
   "name": "rollup-plugin-webpack-stats",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": false,
   "license": "MIT",
   "main": "dist/index.js",
@@ -18,7 +18,9 @@
     "url": "https://github.com/relative-ci/rollup-plugin-webpack-stats/issues"
   },
   "homepage": "https://github.com/relative-ci/rollup-plugin-webpack-stats/blob/master/#readme",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "engines": {
     "node": ">=14"
   },
