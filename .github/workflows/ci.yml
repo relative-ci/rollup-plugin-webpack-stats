@@ -113,7 +113,7 @@ jobs:
           name: build-artifacts
 
       - name: Setup local npm registry
-        run: ./scripts/setup-registry.sh
+        run: ./scripts/setup-registry.sh &
 
       - name: Install test package dependencies
         run: npm install
@@ -130,3 +130,41 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: exit 0
+
+  publish:
+    # Run only for version tags
+    if: contains(github.ref, 'refs/tags/v')
+    needs:
+      - tests
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/checkout@v3
+
+      # Cache packages when the branch is not update-dependencies or dependabot/*
+      - name: Resolve caching
+        id: cache
+        if: ${{ github.ref_name != 'update-dependencies' && !startsWith(github.ref_name, 'dependabot/') }}
+        run: echo "PACKAGE=npm" >> $GITHUB_OUTPUT
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3.8.1
+        with:
+          node-version-file: ".nvmrc"
+          cache: ${{ steps.cache.outputs.PACKAGE }}
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download build
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts
+
+      - run: npm run release
+        env:
+          NPM_CONFIG_PROVENANCE: true
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
