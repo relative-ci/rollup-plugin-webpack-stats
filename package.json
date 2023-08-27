@@ -7,21 +7,18 @@
   "typings": "dist/index.d.ts",
   "author": {
     "name": "Viorel Cojocaru",
-    "email": "vio@beanon.com",
-    "url": "https://beanon.com"
+    "email": "vio@relative-ci.com",
+    "url": "https://relative-ci.com"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vio/rollup-plugin-webpack-stats.git"
+    "url": "git+https://github.com/relative-ci/rollup-plugin-webpack-stats.git"
   },
   "bugs": {
-    "url": "https://github.com/vio/rollup-plugin-webpack-stats/issues"
+    "url": "https://github.com/relative-ci/rollup-plugin-webpack-stats/issues"
   },
-  "homepage": "https://github.com/vio/rollup-plugin-webpack-stats/blob/master/#readme",
-  "files": [
-    "dist",
-    "src"
-  ],
+  "homepage": "https://github.com/relative-ci/rollup-plugin-webpack-stats/blob/master/#readme",
+  "files": ["dist"],
   "engines": {
     "node": ">=14"
   },
