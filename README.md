@@ -5,7 +5,7 @@
 
 [![](https://img.shields.io/npm/v/rollup-plugin-webpack-stats.svg)](https://www.npmjs.com/package/rollup-plugin-webpack-stats)
 ![](https://img.shields.io/node/v/rollup-plugin-webpack-stats.svg)
-[![CI](https://github.com/vio/rollup-plugin-webpack-stats/actions/workflows/main.yml/badge.svg)](https://github.com/vio/rollup-plugin-webpack-stats/actions/workflows/main.yml)
+[![ci](https://github.com/vio/rollup-plugin-webpack-stats/actions/workflows/ci.yml/badge.svg)](https://github.com/vio/rollup-plugin-webpack-stats/actions/workflows/ci.yml)
 
 Generate rollup stats JSON file with a [bundle-stats](https://github.com/relative-ci/bundle-stats/tree/master/packages/cli) webpack [supported structure](https://github.com/relative-ci/bundle-stats/blob/master/packages/plugin-webpack-filter/src/index.ts).
 
