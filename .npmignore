@@ -1,5 +1,7 @@
+.env
 rollup.config.mjs
 verdaccio.yml
 tsconfig.json
+config/**/*
 scripts/**/*
 test/**/*
