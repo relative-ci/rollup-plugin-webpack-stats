@@ -113,7 +113,7 @@ jobs:
           name: build-artifacts
 
       - name: Setup local npm registry
-        run: ./scripts/setup-registry.sh
+        run: ./scripts/setup-registry.sh &
 
       - name: Install test package dependencies
         run: npm install
