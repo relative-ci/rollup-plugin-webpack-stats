@@ -1,5 +1,5 @@
 {
-  "name": "rollup-plugin-bundle-stats-test",
+  "name": "rollup-plugin-webpack-stats-test",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -11,6 +11,6 @@
   "license": "ISC",
   "devDependencies": {
     "rollup": "^3.28.1",
-    "rollup-plugin-bundle-stats": "*"
+    "rollup-plugin-webpack-stats": "*"
   }
 }
