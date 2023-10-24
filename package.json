@@ -47,7 +47,7 @@
     "@release-it/conventional-changelog": "7.0.2",
     "@rollup/plugin-typescript": "11.1.5",
     "@tsconfig/node14": "14.1.0",
-    "@types/node": "20.8.7",
+    "@types/node": "20.8.8",
     "dotenv": "16.3.1",
     "husky": "8.0.3",
     "release-it": "16.1.5",
