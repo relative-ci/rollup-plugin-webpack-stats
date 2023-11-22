@@ -9,4 +9,5 @@ export default defineConfig({
     sourcemap: true,
   },
   plugins: [typescript({ tsconfig: './tsconfig.json' })],
+  external: ['crypto', 'path'],
 });
