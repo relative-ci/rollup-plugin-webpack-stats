@@ -1,5 +1,8 @@
+import crypto from 'crypto';
 import path from 'path';
-import { OutputBundle } from 'rollup';
+import { OutputBundle, OutputChunk } from 'rollup';
+
+const HASH_LENGTH = 7;
 
 // https://github.com/relative-ci/bundle-stats/blob/master/packages/plugin-webpack-filter/src/index.ts
 export type WebpackStatsFilteredAsset = {
@@ -47,6 +50,24 @@ const getByteSize = (content: string | Buffer): number => {
   return content?.length || 0;
 };
 
+
+const getHash = (text: string): string => {
+  const digest = crypto.createHash('sha256');
+  return digest.update(Buffer.from(text)).digest('hex').substr(0, HASH_LENGTH); 
+};
+
+const getChunkId = (chunk: OutputChunk): string => {
+  let value = chunk.name;
+
+  // Use entry module relative path
+  if (chunk.moduleIds?.length > 0) {
+    const absoluteModulePath = chunk.moduleIds[chunk.moduleIds.length - 1];
+    value = path.relative(process.cwd(), absoluteModulePath);
+  }
+
+  return getHash([chunk, value].join('-'));
+}
+
 export type BundleTransformOptions = {
   /**
    * Extract module original size or rendered size
@@ -78,7 +99,7 @@ export const bundleToWebpackStats = (
         size: getByteSize(item.code),
       });
 
-      const chunkId = item.name;
+      const chunkId = getChunkId(item);
 
       chunks.push({
         id: chunkId,
