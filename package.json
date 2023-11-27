@@ -51,7 +51,7 @@
     "dotenv": "16.3.1",
     "husky": "8.0.3",
     "release-it": "16.2.1",
-    "rollup": "3.28.1",
+    "rollup": "4.6.0",
     "tslib": "2.6.2",
     "typescript": "5.3.2",
     "vitest": "0.34.6"
