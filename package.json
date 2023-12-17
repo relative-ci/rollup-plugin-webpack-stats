@@ -57,6 +57,6 @@
     "vitest": "0.34.6"
   },
   "peerDependencies": {
-    "rollup": "^3.0.0"
+    "rollup": "^3.0.0 || ^4.0.0"
   }
 }
