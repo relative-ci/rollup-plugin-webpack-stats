@@ -79,22 +79,34 @@ jobs:
             dist*/
 
   test-package:
-    name: Test package on node ${{ matrix.node }} / ${{ matrix.os }}
+    name: Test package rollup v${{ matrix.rollup}} / node ${{ matrix.node }} / ${{ matrix.os }}
     needs:
       - build
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
+        rollup: ['3', '4']
         node: ['20', '18', '16', '14']
         os: [ubuntu-latest, windows-latest]
         exclude:
           - os: windows-latest
             node: 20
           - os: windows-latest
-            node: 18
-          - os: windows-latest
             node: 16
+
+          - node: 16
+            rollup: 4
+          - node: 14
+            rollup: 4
+
+          - node: 20
+            rollup: 3
+          - node: 18
+            rollup: 3
+          - node: 16
+            rollup: 3
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -113,10 +125,13 @@ jobs:
           name: build-artifacts
 
       - name: Setup local npm registry
-        run: ./scripts/setup-registry.sh &
+        run: ./scripts/setup-registry.sh
 
       - name: Install test package dependencies
-        run: npm install
+        run: |
+          npm install 
+          npm install rollup@${{ matrix.rollup }} --force
+          npx rollup -v
         working-directory: test/package
 
       - name: Test package
