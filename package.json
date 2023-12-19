@@ -44,16 +44,16 @@
     "trailingComma": "es5"
   },
   "devDependencies": {
-    "@release-it/conventional-changelog": "7.0.2",
+    "@release-it/conventional-changelog": "8.0.1",
     "@rollup/plugin-typescript": "11.1.5",
     "@tsconfig/node14": "14.1.0",
-    "@types/node": "20.9.4",
+    "@types/node": "20.10.5",
     "dotenv": "16.3.1",
     "husky": "8.0.3",
-    "release-it": "16.2.1",
-    "rollup": "3.28.1",
+    "release-it": "17.0.1",
+    "rollup": "4.9.1",
     "tslib": "2.6.2",
-    "typescript": "5.3.2",
+    "typescript": "5.3.3",
     "vitest": "0.34.6"
   },
   "peerDependencies": {
