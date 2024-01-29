@@ -36,7 +36,30 @@ module.exports = {
 };
 ```
 
-## Example setup with [@relative-ci/agent](https://github.com/relative-ci/agent)
+```js
+// vite.config.js
+import { defineConfig } from 'vite';
+import { webpackStats } from 'rollup-plugin-webpack-stats';
+
+export default defineConfig((env) => ({
+  plugins: [
+    // Output webpack-stats.json file
+    webpackStats(),
+  ],
+}));
+```
+
+### Options
+
+- `fileName` - JSON stats file inside rollup/vite output directory
+
+## Resources
+
+- [Vite - Using plugins](https://vitejs.dev/guide/using-plugins)
+- [Rollup - Using plugins](https://rollupjs.org/tutorial/#using-plugins)
+- [RelativeCI - Vite configuration for better bundle monitoring](https://relative-ci.com/documentation/guides/vite-config)
+
+## [@relative-ci/agent](https://github.com/relative-ci/agent) examples
 
 - [example-vite-github-action](https://github.com/relative-ci/example-vite-github-action)
 - [example-vite-cli-github-action](https://github.com/relative-ci/example-vite-cli-github-action)
