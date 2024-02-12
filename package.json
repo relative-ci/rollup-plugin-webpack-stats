@@ -48,7 +48,7 @@
     "@rollup/plugin-typescript": "11.1.6",
     "@tsconfig/node14": "14.1.0",
     "@types/node": "20.11.17",
-    "dotenv": "16.4.1",
+    "dotenv": "16.4.2",
     "husky": "9.0.10",
     "release-it": "17.0.3",
     "rollup": "4.9.6",
