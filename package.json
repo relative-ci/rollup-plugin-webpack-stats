@@ -46,7 +46,7 @@
   "devDependencies": {
     "@release-it/conventional-changelog": "8.0.1",
     "@rollup/plugin-typescript": "11.1.6",
-    "@tsconfig/node14": "14.1.0",
+    "@tsconfig/node14": "14.1.1",
     "@types/node": "20.11.30",
     "dotenv": "16.4.5",
     "husky": "9.0.11",
