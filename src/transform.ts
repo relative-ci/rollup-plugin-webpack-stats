@@ -1,8 +1,8 @@
-import crypto from 'crypto';
 import path from 'path';
-import { OutputBundle, OutputChunk } from 'rollup';
+import { OutputBundle } from 'rollup';
 
-const HASH_LENGTH = 7;
+import type { ExcludeFilepathConfig } from "./types";
+import { getByteSize, getChunkId } from "./utils";
 
 // https://github.com/relative-ci/bundle-stats/blob/master/packages/plugin-webpack-filter/src/index.ts
 export type WebpackStatsFilteredAsset = {
@@ -42,38 +42,20 @@ export interface WebpackStatsFiltered {
   modules?: Array<WebpackStatsFilteredRootModule>;
 }
 
-const getByteSize = (content: string | Buffer): number => {
-  if (typeof content === 'string') {
-    return Buffer.from(content).length;
-  }
-
-  return content?.length || 0;
-};
-
-
-const getHash = (text: string): string => {
-  const digest = crypto.createHash('sha256');
-  return digest.update(Buffer.from(text)).digest('hex').substr(0, HASH_LENGTH); 
-};
-
-const getChunkId = (chunk: OutputChunk): string => {
-  let value = chunk.name;
-
-  // Use entry module relative path
-  if (chunk.moduleIds?.length > 0) {
-    const absoluteModulePath = chunk.moduleIds[chunk.moduleIds.length - 1];
-    value = path.relative(process.cwd(), absoluteModulePath);
-  }
-
-  return getHash([chunk, value].join('-'));
-}
-
 export type BundleTransformOptions = {
   /**
    * Extract module original size or rendered size
    * default: false
    */
   moduleOriginalSize?: boolean;
+  /**
+   * Exclude asset
+   */
+  excludeAssets?: ExcludeFilepathConfig | Array<ExcludeFilepathConfig>;
+  /**
+   * Exclude module
+   */
+  excludeModules?: ExcludeFilepathConfig | Array<ExcludeFilepathConfig>;
 };
 
 export const bundleToWebpackStats = (
