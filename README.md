@@ -49,6 +49,40 @@ export default defineConfig((env) => ({
 }));
 ```
 
+```js
+// vite.config.js - using plugin-legacy, and generating a stats file
+// for the the modern and legacy outputs
+import { defineConfig } from 'vite';
+import legacy from '@vitejs/plugin-legacy';
+import { webpackStats } from 'rollup-plugin-webpack-stats';
+
+export default defineConfig((env) => ({
+  build: {
+    rollupOptions: {
+      output: {
+        plugins: [
+          // Output webpack-stats-modern.json file for the modern build
+          // Output webpack-stats-legacy.json file for the legacy build
+          // Stats are an output plugin, as plugin-legacy works by injecting
+          // an addtional output, which duplicates the plugins configured here
+          statsPlugin((options) => {
+            const isLegacy = options.format === 'system';
+            return {
+              fileName: `webpack-stats${isLegacy ? '-legacy' : '-modern'}.json`,
+            };
+          }),
+        ],
+      },
+    },
+  },
+  plugins: [
+    legacy({
+      /* Your legacy config here */
+    }),
+  ],
+}));
+```
+
 ### Options
 
 - `fileName` - JSON stats file inside rollup/vite output directory
