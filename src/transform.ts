@@ -19,6 +19,7 @@ export interface WebpackStatsFilteredChunk {
 }
 
 export interface WebpackStatsFilteredModule {
+  identifier: string;
   name: string;
   size?: number;
   chunks: Array<string | number>;
@@ -129,6 +130,7 @@ export const bundleToWebpackStats = (
           moduleEntry.chunks.push(chunkId);
         } else {
           moduleByFileName[relativeModulePathWithPrefix] = {
+            identifier: relativeModulePathWithPrefix,
             name: relativeModulePathWithPrefix,
             size: options.moduleOriginalSize
               ? moduleInfo.originalLength
