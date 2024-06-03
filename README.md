@@ -64,8 +64,8 @@ export default defineConfig((env) => ({
           // Output webpack-stats-modern.json file for the modern build
           // Output webpack-stats-legacy.json file for the legacy build
           // Stats are an output plugin, as plugin-legacy works by injecting
-          // an addtional output, which duplicates the plugins configured here
-          statsPlugin((options) => {
+          // an additional output, that duplicates the plugins configured here
+          webpackStats((options) => {
             const isLegacy = options.format === 'system';
             return {
               fileName: `webpack-stats${isLegacy ? '-legacy' : '-modern'}.json`,
