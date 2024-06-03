@@ -1,4 +1,4 @@
-import { Plugin } from 'rollup';
+import { Plugin, OutputOptions } from 'rollup';
 
 import { BundleTransformOptions, bundleToWebpackStats } from './transform';
 
@@ -14,14 +14,22 @@ interface WebpackStatsOptions extends BundleTransformOptions {
   fileName?: string;
 }
 
-export const webpackStats = (options: WebpackStatsOptions = {}): Plugin => ({
+type WebpackStatsOptionsOrBuilder =
+  | WebpackStatsOptions
+  | ((outputOptions: OutputOptions) => WebpackStatsOptions);
+
+export const webpackStats = (
+  options: WebpackStatsOptionsOrBuilder = {}
+): Plugin => ({
   name: NAME,
-  generateBundle(_, bundle) {
-    const output = bundleToWebpackStats(bundle, options);
+  generateBundle(outputOptions, bundle) {
+    const resolvedOptions =
+      typeof options === 'function' ? options(outputOptions) : options;
+    const output = bundleToWebpackStats(bundle, resolvedOptions);
 
     this.emitFile({
       type: 'asset',
-      fileName: options?.fileName || 'webpack-stats.json',
+      fileName: resolvedOptions.fileName || 'webpack-stats.json',
       source: JSON.stringify(output),
     });
   },
