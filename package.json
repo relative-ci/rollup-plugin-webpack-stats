@@ -52,7 +52,7 @@
     "husky": "9.0.11",
     "release-it": "17.3.0",
     "rollup": "4.18.0",
-    "tslib": "2.6.2",
+    "tslib": "2.6.3",
     "typescript": "5.4.5",
     "vitest": "0.34.6"
   },
