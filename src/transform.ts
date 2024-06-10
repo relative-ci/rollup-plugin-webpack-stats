@@ -1,7 +1,7 @@
 import path from 'path';
 import type { OutputBundle } from 'rollup';
 
-import type { ExcludeFilepathOption } from "./types";
+import type { ExcludeFilepathOption } from './utils';
 import { checkExcludeFilepath, getByteSize, getChunkId } from "./utils";
 
 // https://github.com/relative-ci/bundle-stats/blob/master/packages/plugin-webpack-filter/src/index.ts
