@@ -2,8 +2,6 @@ import path from 'path';
 import crypto from 'crypto';
 import type { OutputChunk } from 'rollup';
 
-import type { ExcludeFilepathOption } from './types';
-
 const HASH_LENGTH = 7;
 
 /**
@@ -36,6 +34,10 @@ export function getChunkId(chunk: OutputChunk): string {
 
   return getHash([chunk, value].join('-'));
 }
+
+type ExcludeFilepathParam = string | RegExp | ((filepath: string) => boolean);
+
+export type ExcludeFilepathOption = ExcludeFilepathParam | Array<ExcludeFilepathParam>;
 
 /**
  * Check if filepath should be excluded based on a config
