@@ -86,7 +86,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: ['20', '18']
+        node: ['22', '20', '18']
         os: [ubuntu-latest, windows-latest]
         rollup: ['3', '4']
         exclude:
@@ -94,20 +94,10 @@ jobs:
             node: 20
           - os: windows-latest
             node: 18
-          - os: windows-latest
-            node: 16
-
-          - node: 16
-            rollup: 4
-          - node: 14
-            rollup: 4
-
-          - node: 20
-            rollup: 3
-          - node: 18
-            rollup: 3
-          - node: 16
-            rollup: 3
+          - rollup: 3
+            node: 20
+          - rollup: 3
+            node: 18
 
     steps:
       - name: Checkout repo
