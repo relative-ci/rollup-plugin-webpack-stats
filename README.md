@@ -49,8 +49,23 @@ export default defineConfig((env) => ({
 }));
 ```
 
+### Exclude `.map` files
 ```js
-// vite.config.js - using plugin-legacy, and generating a stats file
+// rollup.config.js
+const { webpackStats } = require('rollup-plugin-webpack-stats');
+
+module.exports = {
+  plugins: [
+    // add it as the last plugin
+    webpackStats({
+      excludeAssets: /\.map$/,
+    }),
+  ],
+};
+```
+
+### Vite.js generating multiple stats files when using plugin-legacy
+```js
 // for the the modern and legacy outputs
 import { defineConfig } from 'vite';
 import legacy from '@vitejs/plugin-legacy';
