@@ -1,8 +1,8 @@
-import crypto from 'crypto';
 import path from 'path';
-import { OutputBundle, OutputChunk } from 'rollup';
+import type { OutputBundle } from 'rollup';
 
-const HASH_LENGTH = 7;
+import type { ExcludeFilepathOption } from "./types";
+import { checkExcludeFilepath, getByteSize, getChunkId } from "./utils";
 
 // https://github.com/relative-ci/bundle-stats/blob/master/packages/plugin-webpack-filter/src/index.ts
 export type WebpackStatsFilteredAsset = {
@@ -42,47 +42,29 @@ export interface WebpackStatsFiltered {
   modules?: Array<WebpackStatsFilteredRootModule>;
 }
 
-const getByteSize = (content: string | Buffer): number => {
-  if (typeof content === 'string') {
-    return Buffer.from(content).length;
-  }
-
-  return content?.length || 0;
-};
-
-
-const getHash = (text: string): string => {
-  const digest = crypto.createHash('sha256');
-  return digest.update(Buffer.from(text)).digest('hex').substr(0, HASH_LENGTH); 
-};
-
-const getChunkId = (chunk: OutputChunk): string => {
-  let value = chunk.name;
-
-  // Use entry module relative path
-  if (chunk.moduleIds?.length > 0) {
-    const absoluteModulePath = chunk.moduleIds[chunk.moduleIds.length - 1];
-    value = path.relative(process.cwd(), absoluteModulePath);
-  }
-
-  return getHash([chunk, value].join('-'));
-}
-
 export type BundleTransformOptions = {
   /**
    * Extract module original size or rendered size
    * default: false
    */
   moduleOriginalSize?: boolean;
+  /**
+   * Exclude asset
+   */
+  excludeAssets?: ExcludeFilepathOption;
+  /**
+   * Exclude module
+   */
+  excludeModules?: ExcludeFilepathOption;
 };
 
 export const bundleToWebpackStats = (
   bundle: OutputBundle,
-  customOptions?: BundleTransformOptions
+  pluginOptions?: BundleTransformOptions
 ): WebpackStatsFiltered => {
   const options = {
     moduleOriginalSize: false,
-    ...customOptions,
+    ...pluginOptions,
   };
 
   const items = Object.values(bundle);
@@ -94,6 +76,10 @@ export const bundleToWebpackStats = (
 
   items.forEach(item => {
     if (item.type === 'chunk') {
+      if (checkExcludeFilepath(item.fileName, options.excludeAssets)) {
+        return;
+      }
+
       assets.push({
         name: item.fileName,
         size: getByteSize(item.code),
@@ -110,6 +96,10 @@ export const bundleToWebpackStats = (
       });
 
       Object.entries(item.modules).forEach(([modulePath, moduleInfo]) => {
+        if (checkExcludeFilepath(modulePath, options.excludeModules)) {
+          return;
+        }
+
         // Remove unexpected rollup null prefix
         const normalizedModulePath = modulePath.replace('\u0000', '');
 
@@ -138,6 +128,10 @@ export const bundleToWebpackStats = (
         }
       });
     } else if (item.type === 'asset') {
+      if (checkExcludeFilepath(item.fileName, options.excludeAssets)) {
+        return;
+      }
+
       assets.push({
         name: item.fileName,
         size: getByteSize(item.source.toString()),

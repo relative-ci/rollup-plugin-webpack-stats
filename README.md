@@ -86,6 +86,9 @@ export default defineConfig((env) => ({
 ### Options
 
 - `fileName` - JSON stats file inside rollup/vite output directory
+- `excludeAssets` - exclude matching assets: `string | RegExp | ((filepath: string) => boolean) | Array<string | RegExp | ((filepath: string) => boolean)>`
+- `excludeModules` - exclude matching modules: `string | RegExp | ((filepath: string) => boolean) | Array<string | RegExp | ((filepath: string) => boolean)>`
+
 
 ## Resources
 

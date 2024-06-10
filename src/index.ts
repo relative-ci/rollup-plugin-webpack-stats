@@ -1,5 +1,6 @@
 import { Plugin, OutputOptions } from 'rollup';
 
+import type { ExcludeFilepathOption } from './types';
 import { BundleTransformOptions, bundleToWebpackStats } from './transform';
 
 export { bundleToWebpackStats } from './transform';
@@ -12,6 +13,14 @@ interface WebpackStatsOptions extends BundleTransformOptions {
    * default: webpack-stats.json
    */
   fileName?: string;
+  /**
+   * Exclude matching assets
+   */
+  excludeAssets?: ExcludeFilepathOption;
+  /**
+   * Exclude matching modules
+   */
+  excludeModules?: ExcludeFilepathOption;
 }
 
 type WebpackStatsOptionsOrBuilder =
