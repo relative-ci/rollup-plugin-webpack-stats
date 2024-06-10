@@ -49,7 +49,30 @@ export default defineConfig((env) => ({
 }));
 ```
 
-### Exclude `.map` files
+### Options
+
+- `fileName` - JSON stats file inside rollup/vite output directory
+- `excludeAssets` - exclude matching assets: `string | RegExp | ((filepath: string) => boolean) | Array<string | RegExp | ((filepath: string) => boolean)>`
+- `excludeModules` - exclude matching modules: `string | RegExp | ((filepath: string) => boolean) | Array<string | RegExp | ((filepath: string) => boolean)>`
+
+### Examples
+
+#### Output to a custom filename
+```js
+// rollup.config.js
+const { webpackStats } = require('rollup-plugin-webpack-stats');
+
+module.exports = {
+  plugins: [
+    // add it as the last plugin
+    webpackStats({
+      filename: 'artifacts/stats.json,
+    }),
+  ],
+};
+```
+
+#### Exclude `.map` files
 ```js
 // rollup.config.js
 const { webpackStats } = require('rollup-plugin-webpack-stats');
@@ -64,7 +87,7 @@ module.exports = {
 };
 ```
 
-### Vite.js generating multiple stats files when using plugin-legacy
+#### Vite.js - multiple stats files when using plugin-legacy
 ```js
 // for the the modern and legacy outputs
 import { defineConfig } from 'vite';
@@ -97,13 +120,6 @@ export default defineConfig((env) => ({
   ],
 }));
 ```
-
-### Options
-
-- `fileName` - JSON stats file inside rollup/vite output directory
-- `excludeAssets` - exclude matching assets: `string | RegExp | ((filepath: string) => boolean) | Array<string | RegExp | ((filepath: string) => boolean)>`
-- `excludeModules` - exclude matching modules: `string | RegExp | ((filepath: string) => boolean) | Array<string | RegExp | ((filepath: string) => boolean)>`
-
 
 ## Resources
 
