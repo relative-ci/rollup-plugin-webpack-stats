@@ -2,7 +2,7 @@ import path from 'path';
 import crypto from 'crypto';
 import type { OutputChunk } from 'rollup';
 
-import type { ExcludeFilepathConfig } from './types';
+import type { ExcludeFilepathOption } from './types';
 
 const HASH_LENGTH = 7;
 
@@ -42,32 +42,32 @@ export function getChunkId(chunk: OutputChunk): string {
  */
 export function checkExcludeFilepath(
   filepath: string,
-  config?: ExcludeFilepathConfig | Array<ExcludeFilepathConfig>
+  option?: ExcludeFilepathOption,
 ): boolean {
-  if (!config) {
+  if (!option) {
     return false;
   }
 
-  if (Array.isArray(config)) {
+  if (Array.isArray(option)) {
     let res = false;
 
-    for (let i = 0; i <= config.length - 1 && res === false; i++) {
-      res = checkExcludeFilepath(filepath, config[i]);
+    for (let i = 0; i <= option.length - 1 && res === false; i++) {
+      res = checkExcludeFilepath(filepath, option[i]);
     }
 
     return res;
   }
 
-  if (typeof config === 'function') {
-    return config(filepath);
+  if (typeof option === 'function') {
+    return option(filepath);
   }
 
-  if (typeof config === 'string') {
-    return Boolean(filepath.match(config));
+  if (typeof option === 'string') {
+    return Boolean(filepath.match(option));
   }
 
-  if ('test' in config) {
-    return config.test(filepath);
+  if ('test' in option) {
+    return option.test(filepath);
   }
 
   return false;

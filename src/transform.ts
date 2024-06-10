@@ -1,8 +1,8 @@
 import path from 'path';
-import { OutputBundle } from 'rollup';
+import type { OutputBundle } from 'rollup';
 
-import type { ExcludeFilepathConfig } from "./types";
-import { getByteSize, getChunkId } from "./utils";
+import type { ExcludeFilepathOption } from "./types";
+import { checkExcludeFilepath, getByteSize, getChunkId } from "./utils";
 
 // https://github.com/relative-ci/bundle-stats/blob/master/packages/plugin-webpack-filter/src/index.ts
 export type WebpackStatsFilteredAsset = {
@@ -51,20 +51,20 @@ export type BundleTransformOptions = {
   /**
    * Exclude asset
    */
-  excludeAssets?: ExcludeFilepathConfig | Array<ExcludeFilepathConfig>;
+  excludeAssets?: ExcludeFilepathOption;
   /**
    * Exclude module
    */
-  excludeModules?: ExcludeFilepathConfig | Array<ExcludeFilepathConfig>;
+  excludeModules?: ExcludeFilepathOption;
 };
 
 export const bundleToWebpackStats = (
   bundle: OutputBundle,
-  customOptions?: BundleTransformOptions
+  pluginOptions?: BundleTransformOptions
 ): WebpackStatsFiltered => {
   const options = {
     moduleOriginalSize: false,
-    ...customOptions,
+    ...pluginOptions,
   };
 
   const items = Object.values(bundle);
@@ -76,6 +76,10 @@ export const bundleToWebpackStats = (
 
   items.forEach(item => {
     if (item.type === 'chunk') {
+      if (checkExcludeFilepath(item.fileName, options.excludeAssets)) {
+        return;
+      }
+
       assets.push({
         name: item.fileName,
         size: getByteSize(item.code),
@@ -92,6 +96,10 @@ export const bundleToWebpackStats = (
       });
 
       Object.entries(item.modules).forEach(([modulePath, moduleInfo]) => {
+        if (checkExcludeFilepath(modulePath, options.excludeModules)) {
+          return;
+        }
+
         // Remove unexpected rollup null prefix
         const normalizedModulePath = modulePath.replace('\u0000', '');
 
@@ -120,6 +128,10 @@ export const bundleToWebpackStats = (
         }
       });
     } else if (item.type === 'asset') {
+      if (checkExcludeFilepath(item.fileName, options.excludeAssets)) {
+        return;
+      }
+
       assets.push({
         name: item.fileName,
         size: getByteSize(item.source.toString()),
