@@ -26,12 +26,12 @@ yarn add --dev rollup-plugin-webpack-stats
 
 ```js
 // rollup.config.js
-const { webpackStats } = require('rollup-plugin-webpack-stats');
+import webpackStatsPlugin from 'rollup-plugin-webpack-stats';
 
-module.exports = {
+export default {
   plugins: [
     // add it as the last plugin
-    webpackStats(),
+    webpackStatsPlugin(),
   ],
 };
 ```
@@ -39,12 +39,12 @@ module.exports = {
 ```js
 // vite.config.js
 import { defineConfig } from 'vite';
-import { webpackStats } from 'rollup-plugin-webpack-stats';
+import webpackStatsPlugin from 'rollup-plugin-webpack-stats';
 
 export default defineConfig((env) => ({
   plugins: [
     // Output webpack-stats.json file
-    webpackStats(),
+    webpackStatsPlugin(),
   ],
 }));
 ```
@@ -60,12 +60,12 @@ export default defineConfig((env) => ({
 #### Output to a custom filename
 ```js
 // rollup.config.js
-const { webpackStats } = require('rollup-plugin-webpack-stats');
+import webpackStatsPlugin from 'rollup-plugin-webpack-stats';
 
 module.exports = {
   plugins: [
     // add it as the last plugin
-    webpackStats({
+    webpackStatsPlugin({
       filename: 'artifacts/stats.json,
     }),
   ],
@@ -75,12 +75,12 @@ module.exports = {
 #### Exclude `.map` files
 ```js
 // rollup.config.js
-const { webpackStats } = require('rollup-plugin-webpack-stats');
+import webpackStatsPlugin from 'rollup-plugin-webpack-stats';
 
-module.exports = {
+export default {
   plugins: [
     // add it as the last plugin
-    webpackStats({
+    webpackStatsPlugin({
       excludeAssets: /\.map$/,
     }),
   ],
@@ -92,7 +92,7 @@ module.exports = {
 // for the the modern and legacy outputs
 import { defineConfig } from 'vite';
 import legacy from '@vitejs/plugin-legacy';
-import { webpackStats } from 'rollup-plugin-webpack-stats';
+import webpackStatsPlugin from 'rollup-plugin-webpack-stats';
 
 export default defineConfig((env) => ({
   build: {
@@ -103,7 +103,7 @@ export default defineConfig((env) => ({
           // Output webpack-stats-legacy.json file for the legacy build
           // Stats are an output plugin, as plugin-legacy works by injecting
           // an additional output, that duplicates the plugins configured here
-          webpackStats((options) => {
+          webpackStatsPlugin((options) => {
             const isLegacy = options.format === 'system';
             return {
               fileName: `webpack-stats${isLegacy ? '-legacy' : '-modern'}.json`,

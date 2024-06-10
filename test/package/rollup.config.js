@@ -1,7 +1,8 @@
-const path = require('path');
-const { webpackStats } = require('rollup-plugin-webpack-stats');
+import path from 'path';
+import { defineConfig } from 'rollup';
+import webpackStats from 'rollup-plugin-webpack-stats';
 
-module.exports = [
+export default defineConfig([
   {
     input: path.join(__dirname, 'src/index.js'),
     output: {
@@ -23,4 +24,4 @@ module.exports = [
       }),
     ],
   },
-];
+]);
