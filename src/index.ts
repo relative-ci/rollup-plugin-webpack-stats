@@ -1,7 +1,7 @@
 import { Plugin, OutputOptions } from 'rollup';
 
-import type { ExcludeFilepathOption } from './types';
-import { BundleTransformOptions, bundleToWebpackStats } from './transform';
+import type { BundleTransformOptions } from './transform';
+import { bundleToWebpackStats } from './transform';
 
 export { bundleToWebpackStats } from './transform';
 
@@ -16,11 +16,11 @@ interface WebpackStatsOptions extends BundleTransformOptions {
   /**
    * Exclude matching assets
    */
-  excludeAssets?: ExcludeFilepathOption;
+  excludeAssets?: BundleTransformOptions['excludeAssets'];
   /**
    * Exclude matching modules
    */
-  excludeModules?: ExcludeFilepathOption;
+  excludeModules?: BundleTransformOptions['excludeModules'];
 }
 
 type WebpackStatsOptionsOrBuilder =
