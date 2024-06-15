@@ -1,16 +1,34 @@
 import { defineConfig } from 'rollup';
 import typescript from '@rollup/plugin-typescript';
 
-export default defineConfig({
-  input: {
-    'index': './src/index.ts',
-    'transform': './src/transform.ts',
+const INPUT = {
+  'index': './src/index.ts',
+  'transform': './src/transform.ts',
+};
+
+const OUTPUT_DIR = 'dist';
+
+export default defineConfig([
+  {
+    input: INPUT,
+    output: {
+      dir: OUTPUT_DIR,
+      format: 'esm',
+      entryFileNames: '[name].esm.js',
+      sourcemap: true,
+    },
+    plugins: [typescript({ tsconfig: './tsconfig.json' })],
+    external: ['crypto', 'path'],
   },
-  output: {
-    dir: 'dist',
-    format: 'commonjs',
-    sourcemap: true,
+  {
+    input: INPUT,
+    output: {
+      dir: OUTPUT_DIR,
+      format: 'commonjs',
+      entryFileNames: '[name].cjs.js',
+      sourcemap: true,
+    },
+    plugins: [typescript({ tsconfig: './tsconfig.json' })],
+    external: ['crypto', 'path'],
   },
-  plugins: [typescript({ tsconfig: './tsconfig.json' })],
-  external: ['crypto', 'path'],
-});
+]);

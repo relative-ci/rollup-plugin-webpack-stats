@@ -3,15 +3,18 @@
   "version": "1.0.0-beta.2",
   "private": false,
   "license": "MIT",
-  "main": "dist/index.js",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
   "typings": "dist/index.d.ts",
   "exports": {
     ".": {
-      "require": "./dist/index.js",
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.cjs.js",
       "types": "./dist/index.d.ts"
     },
     "./transform": {
-      "require": "./dist/index.js",
+      "import": "./dist/transform.esm.js",
+      "require": "./dist/transform.cjs.js",
       "types": "./build/transform.d.ts"
     }
   },
