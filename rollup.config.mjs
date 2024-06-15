@@ -2,7 +2,10 @@ import { defineConfig } from 'rollup';
 import typescript from '@rollup/plugin-typescript';
 
 export default defineConfig({
-  input: './src/index.ts',
+  input: {
+    'index.js': './src/index.ts',
+    'transform.js': './src/transform.ts',
+  },
   output: {
     dir: 'dist',
     format: 'commonjs',

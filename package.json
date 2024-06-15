@@ -5,6 +5,16 @@
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./transform": {
+      "import": "./dist/transform.js",
+      "types": "./build/transform.d.ts"
+    }
+  },
   "author": {
     "name": "Viorel Cojocaru",
     "email": "vio@relative-ci.com",
