@@ -1,11 +1,9 @@
 # rollup-plugin-webpack-stats
 
-> **Warning**
-> Under active development
-
 [![](https://img.shields.io/npm/v/rollup-plugin-webpack-stats.svg)](https://www.npmjs.com/package/rollup-plugin-webpack-stats)
+[![](https://img.shields.io/npm/dm/rollup-plugin-webpack-stats.svg)](https://www.npmjs.com/package/rollup-plugin-webpack-stats)
 ![](https://img.shields.io/node/v/rollup-plugin-webpack-stats.svg)
-[![ci](https://github.com/vio/rollup-plugin-webpack-stats/actions/workflows/ci.yml/badge.svg)](https://github.com/vio/rollup-plugin-webpack-stats/actions/workflows/ci.yml)
+[![ci](https://github.com/relative-ci/rollup-plugin-webpack-stats/actions/workflows/ci.yml/badge.svg)](https://github.com/relative-ci/rollup-plugin-webpack-stats/actions/workflows/ci.yml)
 [![Socket Badge](https://socket.dev/api/badge/npm/package/rollup-plugin-webpack-stats)](https://socket.dev/npm/package/rollup-plugin-webpack-stats)
 
 Generate rollup stats JSON file with a [bundle-stats](https://github.com/relative-ci/bundle-stats/tree/master/packages/cli) webpack [supported structure](https://github.com/relative-ci/bundle-stats/blob/master/packages/plugin-webpack-filter/src/index.ts).
@@ -22,16 +20,22 @@ or
 yarn add --dev rollup-plugin-webpack-stats
 ```
 
+or
+
+```shell
+pnpm add -D rollup-plugin-webpack-stats
+```
+
 ## Configure
 
 ```js
 // rollup.config.js
-const { webpackStats } = require('rollup-plugin-webpack-stats');
+import webpackStatsPlugin from 'rollup-plugin-webpack-stats';
 
-module.exports = {
+export default {
   plugins: [
     // add it as the last plugin
-    webpackStats(),
+    webpackStatsPlugin(),
   ],
 };
 ```
@@ -39,12 +43,12 @@ module.exports = {
 ```js
 // vite.config.js
 import { defineConfig } from 'vite';
-import { webpackStats } from 'rollup-plugin-webpack-stats';
+import webpackStatsPlugin from 'rollup-plugin-webpack-stats';
 
 export default defineConfig((env) => ({
   plugins: [
     // Output webpack-stats.json file
-    webpackStats(),
+    webpackStatsPlugin(),
   ],
 }));
 ```
@@ -60,13 +64,13 @@ export default defineConfig((env) => ({
 #### Output to a custom filename
 ```js
 // rollup.config.js
-const { webpackStats } = require('rollup-plugin-webpack-stats');
+import webpackStatsPlugin from 'rollup-plugin-webpack-stats';
 
 module.exports = {
   plugins: [
     // add it as the last plugin
-    webpackStats({
-      filename: 'artifacts/stats.json,
+    webpackStatsPlugin({
+      filename: 'artifacts/stats.json',
     }),
   ],
 };
@@ -75,12 +79,12 @@ module.exports = {
 #### Exclude `.map` files
 ```js
 // rollup.config.js
-const { webpackStats } = require('rollup-plugin-webpack-stats');
+import webpackStatsPlugin from 'rollup-plugin-webpack-stats';
 
-module.exports = {
+export default {
   plugins: [
     // add it as the last plugin
-    webpackStats({
+    webpackStatsPlugin({
       excludeAssets: /\.map$/,
     }),
   ],
@@ -92,7 +96,7 @@ module.exports = {
 // for the the modern and legacy outputs
 import { defineConfig } from 'vite';
 import legacy from '@vitejs/plugin-legacy';
-import { webpackStats } from 'rollup-plugin-webpack-stats';
+import webpackStatsPlugin from 'rollup-plugin-webpack-stats';
 
 export default defineConfig((env) => ({
   build: {
@@ -103,7 +107,7 @@ export default defineConfig((env) => ({
           // Output webpack-stats-legacy.json file for the legacy build
           // Stats are an output plugin, as plugin-legacy works by injecting
           // an additional output, that duplicates the plugins configured here
-          webpackStats((options) => {
+          webpackStatsPlugin((options) => {
             const isLegacy = options.format === 'system';
             return {
               fileName: `webpack-stats${isLegacy ? '-legacy' : '-modern'}.json`,
