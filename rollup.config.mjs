@@ -3,8 +3,8 @@ import typescript from '@rollup/plugin-typescript';
 
 export default defineConfig({
   input: {
-    'index.js': './src/index.ts',
-    'transform.js': './src/transform.ts',
+    'index': './src/index.ts',
+    'transform': './src/transform.ts',
   },
   output: {
     dir: 'dist',
