@@ -63,7 +63,7 @@
     "@types/node": "20.14.8",
     "dotenv": "16.4.5",
     "husky": "9.0.11",
-    "release-it": "17.3.0",
+    "release-it": "17.4.0",
     "rollup": "4.18.0",
     "tslib": "2.6.3",
     "typescript": "5.4.5",
