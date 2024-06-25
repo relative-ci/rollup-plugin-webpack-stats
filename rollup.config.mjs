@@ -14,7 +14,7 @@ export default defineConfig([
     output: {
       dir: OUTPUT_DIR,
       format: 'esm',
-      entryFileNames: '[name].esm.js',
+      entryFileNames: '[name].mjs',
       sourcemap: true,
     },
     plugins: [typescript({ tsconfig: './tsconfig.json' })],
@@ -25,7 +25,7 @@ export default defineConfig([
     output: {
       dir: OUTPUT_DIR,
       format: 'commonjs',
-      entryFileNames: '[name].cjs.js',
+      entryFileNames: '[name].cjs',
       sourcemap: true,
     },
     plugins: [typescript({ tsconfig: './tsconfig.json' })],
