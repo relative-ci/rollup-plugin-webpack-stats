@@ -1,4 +1,4 @@
-const config = require('./common');
+const config = require('./common.cjs');
 
 module.exports = {
   ...config,
