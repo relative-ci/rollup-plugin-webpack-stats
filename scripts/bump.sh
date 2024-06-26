@@ -6,9 +6,9 @@ PRERELEASE_ARG=""
 # IF diff than master, release beta
 if [ "$BRANCH" != "master" ]
 then
-	PRERELEASE_ARG="--config ./config/release-it/branch.cjs --preRelease=beta"
+	PRERELEASE_ARG="--config ./config/release-it/branch.js --preRelease=beta"
 else
-  PRERELEASE_ARG="--config ./config/release-it/master.cjs"
+  PRERELEASE_ARG="--config ./config/release-it/master.js"
 fi
 
 RELEASE_ARGS="${PRERELEASE_ARG} ${@}"
