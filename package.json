@@ -60,13 +60,13 @@
     "@release-it/conventional-changelog": "8.0.1",
     "@rollup/plugin-typescript": "11.1.6",
     "@tsconfig/node18": "18.2.4",
-    "@types/node": "20.14.2",
+    "@types/node": "20.14.9",
     "dotenv": "16.4.5",
     "husky": "9.0.11",
-    "release-it": "17.3.0",
+    "release-it": "17.4.0",
     "rollup": "4.18.0",
     "tslib": "2.6.3",
-    "typescript": "5.4.5",
+    "typescript": "5.5.2",
     "vitest": "1.6.0"
   },
   "peerDependencies": {
