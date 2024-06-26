@@ -1,6 +1,6 @@
 {
   "name": "rollup-plugin-webpack-stats",
-  "version": "1.0.1-beta.1",
+  "version": "1.0.1-beta.2",
   "private": false,
   "license": "MIT",
   "main": "dist/index.cjs",
