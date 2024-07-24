@@ -62,7 +62,7 @@
     "@tsconfig/node18": "18.2.4",
     "@types/node": "20.14.12",
     "dotenv": "16.4.5",
-    "husky": "9.0.11",
+    "husky": "9.1.1",
     "release-it": "17.6.0",
     "rollup": "4.19.0",
     "tslib": "2.6.3",
