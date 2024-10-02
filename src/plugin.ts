@@ -11,14 +11,6 @@ interface WebpackStatsOptions extends BundleTransformOptions {
    * default: webpack-stats.json
    */
   fileName?: string;
-  /**
-   * Exclude matching assets
-   */
-  excludeAssets?: BundleTransformOptions['excludeAssets'];
-  /**
-   * Exclude matching modules
-   */
-  excludeModules?: BundleTransformOptions['excludeModules'];
 }
 
 type WebpackStatsOptionsOrBuilder =
