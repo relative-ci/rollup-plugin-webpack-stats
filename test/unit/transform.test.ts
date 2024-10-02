@@ -2,7 +2,7 @@ import { describe, test, expect } from 'vitest';
 import path from 'path';
 
 import { bundleToWebpackStats } from '../../src/transform';
-import fixtures from './fixtures/rollup-bundle-stats';
+import fixtures, { statsWithDynamicEntry } from './fixtures/rollup-bundle-stats';
 
 
 describe('bundleToWebpackStats', () => {
@@ -305,6 +305,39 @@ describe('bundleToWebpackStats', () => {
           size: 8,
         },
       ],
+    });
+  });
+
+  test('transforms rollup bundle stats to webpack stats using custom transformer', () => {
+    expect(bundleToWebpackStats(statsWithDynamicEntry, { 
+      transform: (stats) => {
+        const mainChunkIndex = stats.chunks?.findIndex((chunk) => chunk.names?.includes("main"));
+
+        if (typeof mainChunkIndex !== 'undefined' && stats?.chunks?.[mainChunkIndex]) {
+          stats.chunks[mainChunkIndex] = {
+            ...stats.chunks[mainChunkIndex],
+            initial: true,
+          };
+        }
+
+        return stats;
+      },
+    })).toMatchObject({
+      assets: [
+        {
+          name: 'assets/main-abcd1234.js',
+          size: 29,
+        },
+      ],
+      chunks: [
+        {
+          id: 'e1c35b4',
+          initial: true,
+          entry: true,
+          names: ['main'],
+          files: ['assets/main-abcd1234.js'],
+        },
+      ]
     });
   });
 });

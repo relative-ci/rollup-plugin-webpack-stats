@@ -24,12 +24,13 @@ export const webpackStats = (
   generateBundle(outputOptions, bundle) {
     const resolvedOptions =
       typeof options === 'function' ? options(outputOptions) : options;
-    const output = bundleToWebpackStats(bundle, resolvedOptions);
+
+    const result = bundleToWebpackStats(bundle, resolvedOptions);
 
     this.emitFile({
       type: 'asset',
       fileName: resolvedOptions.fileName || 'webpack-stats.json',
-      source: JSON.stringify(output),
+      source: JSON.stringify(result),
     });
   },
 });

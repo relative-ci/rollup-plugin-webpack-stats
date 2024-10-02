@@ -174,3 +174,45 @@ export default {
     dynamicImports: [],
   },
 } satisfies OutputBundle;
+
+export const statsWithDynamicEntry = {
+  'assets/main-abcd1234.js': {
+    name: 'main',
+    fileName: 'assets/main-abcd1234.js',
+    preliminaryFileName: 'assets/main-abcd1234.js',
+    sourcemapFileName: 'assets/main-abcd1234.js.map',
+    type: 'chunk',
+    code: 'export default function () {}',
+    isEntry: true,
+    isDynamicEntry: true,
+    facadeModuleId: null,
+    map: null,
+    isImplicitEntry: false,
+    implicitlyLoadedBefore: [],
+    importedBindings: {},
+    referencedFiles: [],
+    moduleIds: [
+      path.join(ROOT_DIR, 'src/component-a.js'),
+      path.join(ROOT_DIR, 'src/index.js'),
+    ],
+    modules: {
+      [path.join(ROOT_DIR, 'src/component-a.js')]: {
+        code: 'export default A = 1;',
+          originalLength: 10,
+        renderedLength: 8,
+        removedExports: [],
+        renderedExports: [],
+      },
+      [path.join(ROOT_DIR, 'src/index.js')]: {
+        code: '',
+        originalLength: 100,
+        renderedLength: 80,
+        removedExports: [],
+        renderedExports: [],
+      },
+    },
+    imports: [],
+    exports: [],
+    dynamicImports: [],
+  },
+} satisfies OutputBundle;

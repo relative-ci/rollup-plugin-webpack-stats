@@ -56,13 +56,17 @@ export type BundleTransformOptions = {
    * Exclude matching modules
    */
   excludeModules?: ExcludeFilepathOption;
+  /**
+   * Transform function to access and mutate the resulting stats after the convertion
+   */
+  transform?: (stats: WebpackStatsFiltered) => WebpackStatsFiltered;
 };
 
 export const bundleToWebpackStats = (
   bundle: OutputBundle,
   pluginOptions?: BundleTransformOptions
 ): WebpackStatsFiltered => {
-  const options = {
+  const options: BundleTransformOptions = {
     moduleOriginalSize: false,
     ...pluginOptions,
   };
@@ -141,10 +145,25 @@ export const bundleToWebpackStats = (
     }
   });
 
-  return {
+  const stats: WebpackStatsFiltered = {
     builtAt: Date.now(),
     assets,
     chunks,
     modules: Object.values(moduleByFileName),
   };
+
+  if (!options.transform) {
+    return stats;
+  }
+
+  let result: WebpackStatsFiltered;
+
+  try {
+    result = options.transform(stats);
+  } catch (error) {
+    console.error('Custom transform failed! Returning stats without any transforms.', error);
+    result = stats;
+  }
+
+  return result;
 };
