@@ -63,6 +63,10 @@ describe('bundleToWebpackStats', () => {
       modules: [
         {
           chunks: ['e1c35b4'],
+          identifier: `.${path.sep}${path.join(
+            'src',
+            'component-a.js',
+          )}`,
           name: `.${path.sep}${path.join(
             'src',
             'component-a.js',
@@ -71,6 +75,10 @@ describe('bundleToWebpackStats', () => {
         },
         {
           chunks: ['e1c35b4'],
+          identifier: `.${path.sep}${path.join(
+            'src',
+            'index.js'
+          )}`,
           name: `.${path.sep}${path.join(
             'src',
             'index.js'
@@ -79,6 +87,11 @@ describe('bundleToWebpackStats', () => {
         },
         {
           chunks: ['95848fd'],
+          identifier: `.${path.sep}${path.join(
+            'node_modules',
+            'package-a',
+            'index.js'
+          )}`,
           name: `.${path.sep}${path.join(
             'node_modules',
             'package-a',
@@ -88,6 +101,11 @@ describe('bundleToWebpackStats', () => {
         },
         {
           chunks: ['95848fd'],
+          identifier: `.${path.sep}${path.join(
+            'node_modules',
+            'package-b',
+            'index.js'
+          )}`,
           name: `.${path.sep}${path.join(
             'node_modules',
             'package-b',
@@ -97,6 +115,12 @@ describe('bundleToWebpackStats', () => {
         },
         {
           chunks: ['e7b195f'],
+          identifier: `.${path.sep}${path.join(
+            'src',
+            'components',
+            'component-b',
+            'index.js',
+          )}`,
           name: `.${path.sep}${path.join(
             'src',
             'components',
@@ -107,6 +131,12 @@ describe('bundleToWebpackStats', () => {
         },
         {
           chunks: ['7cd4868'],
+          identifier: `.${path.sep}${path.join(
+            'src',
+            'components',
+            'component-c',
+            'index.js',
+          )}`,
           name: `.${path.sep}${path.join(
             'src',
             'components',
