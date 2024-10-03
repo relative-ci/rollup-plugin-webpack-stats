@@ -49,11 +49,11 @@ export type BundleTransformOptions = {
    */
   moduleOriginalSize?: boolean;
   /**
-   * Exclude asset
+   * Exclude matching assets
    */
   excludeAssets?: ExcludeFilepathOption;
   /**
-   * Exclude module
+   * Exclude matching modules
    */
   excludeModules?: ExcludeFilepathOption;
 };
