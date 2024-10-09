@@ -58,6 +58,7 @@ export default defineConfig((env) => ({
 - `fileName` - JSON stats file inside rollup/vite output directory
 - `excludeAssets` - exclude matching assets: `string | RegExp | ((filepath: string) => boolean) | Array<string | RegExp | ((filepath: string) => boolean)>`
 - `excludeModules` - exclude matching modules: `string | RegExp | ((filepath: string) => boolean) | Array<string | RegExp | ((filepath: string) => boolean)>`
+- `transform` - access and mutate the resulting stats after the conversion: `(stats: WebpackStatsFilterd) => WebpackStatsFilterd`
 
 ### Examples
 
@@ -122,6 +123,40 @@ export default defineConfig((env) => ({
       /* Your legacy config here */
     }),
   ],
+}));
+```
+
+#### Vite.js - update initial flag for chunks where the inital flag is incorrectly set to false
+```js
+import { defineConfig } from 'vite';
+import webpackStatsPlugin from 'rollup-plugin-webpack-stats';
+
+export default defineConfig((env) => ({
+  build: {
+    rollupOptions: {
+      output: {
+        plugins: [
+          webpackStatsPlugin({
+            transform: (stats) => {
+              // Find the target chunk entry
+              const mainChunkIndex = stats.chunks?.findIndex((chunk) => chunk.names?.includes("main"));
+
+              // When the tartget chunk is found, set the initial flag to true
+              if (typeof mainChunkIndex !== 'undefined' && stats?.chunks?.[mainChunkIndex]) {
+                stats.chunks[mainChunkIndex] = {
+                  ...stats.chunks[mainChunkIndex],
+                  initial: true,
+                };
+              }
+
+              // return the modified stats object
+              return stats;
+            },
+          }),
+        ],
+      },
+    },
+  },
 }));
 ```
 
