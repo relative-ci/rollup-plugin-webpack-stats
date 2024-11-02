@@ -82,7 +82,7 @@ class TransformSources {
   }
 }
 
-export type TransformCallback = (stats: WebpackStatsFiltered, sources: TransformSources) => WebpackStatsFiltered; 
+export type TransformCallback = (stats: WebpackStatsFiltered, sources: TransformSources, bundle: OutputBundle) => WebpackStatsFiltered; 
 
 const defaultTransform: TransformCallback = (stats) => stats;
 
@@ -201,7 +201,7 @@ export const bundleToWebpackStats = (
   let result: WebpackStatsFiltered;
 
   try {
-    result = transform(stats, sources);
+    result = transform(stats, sources, bundle);
   } catch (error) {
     console.error('Custom transform failed! Returning stats without any transforms.', error);
     result = stats;
