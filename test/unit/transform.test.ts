@@ -310,7 +310,7 @@ describe('bundleToWebpackStats', () => {
 
   test('transforms rollup bundle stats to webpack stats using custom transformer', () => {
     expect(bundleToWebpackStats(statsWithDynamicEntry, { 
-      transform: (stats) => {
+      transform: (stats, bundle) => {
         const mainChunkIndex = stats.chunks?.findIndex((chunk) => chunk.names?.includes("main"));
 
         if (typeof mainChunkIndex !== 'undefined' && stats?.chunks?.[mainChunkIndex]) {
@@ -319,6 +319,9 @@ describe('bundleToWebpackStats', () => {
             initial: true,
           };
         }
+
+        // Adding arbitary info to the stats object to prove that we have access to bundle
+        (stats as typeof stats & {moduleCount: number}).moduleCount = Object.keys(bundle).length;
 
         return stats;
       },
@@ -337,7 +340,8 @@ describe('bundleToWebpackStats', () => {
           names: ['main'],
           files: ['assets/main-abcd1234.js'],
         },
-      ]
+      ],
+      moduleCount: 1
     });
   });
 });

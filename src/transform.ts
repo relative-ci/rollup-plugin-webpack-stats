@@ -59,7 +59,7 @@ export type BundleTransformOptions = {
   /**
    * Transform function to access and mutate the resulting stats after the convertion
    */
-  transform?: (stats: WebpackStatsFiltered) => WebpackStatsFiltered;
+  transform?: (stats: WebpackStatsFiltered, bundle: OutputBundle) => WebpackStatsFiltered;
 };
 
 export const bundleToWebpackStats = (
@@ -159,7 +159,7 @@ export const bundleToWebpackStats = (
   let result: WebpackStatsFiltered;
 
   try {
-    result = options.transform(stats);
+    result = options.transform(stats, bundle);
   } catch (error) {
     console.error('Custom transform failed! Returning stats without any transforms.', error);
     result = stats;
