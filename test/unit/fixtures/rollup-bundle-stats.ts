@@ -3,7 +3,7 @@ import type { OutputBundle } from 'rollup';
 
 const ROOT_DIR = path.join(__dirname, '../../../');
 
-export default {
+export const stats = {
   'assets/logo-abcd1234.svg': {
     name: undefined,
     fileName: 'assets/logo-abcd1234.svg',

@@ -2,12 +2,11 @@ import { describe, test, expect } from 'vitest';
 import path from 'path';
 
 import { bundleToWebpackStats } from '../../src/transform';
-import fixtures, { statsWithDynamicEntry } from './fixtures/rollup-bundle-stats';
-
+import { stats, statsWithDynamicEntry } from './fixtures/rollup-bundle-stats';
 
 describe('bundleToWebpackStats', () => {
   test('transforms rollup bundle stats to webpack stats', () => {
-    expect(bundleToWebpackStats(fixtures)).toMatchObject({
+    expect(bundleToWebpackStats(stats)).toMatchObject({
       assets: [
         {
           name: 'assets/logo-abcd1234.svg',
@@ -120,7 +119,7 @@ describe('bundleToWebpackStats', () => {
   });
 
   test('transforms rollup bundle stats to webpack stats with excludeAssets option', () => {
-    expect(bundleToWebpackStats(fixtures, { excludeAssets: 'assets/vendors' })).toMatchObject({
+    expect(bundleToWebpackStats(stats, { excludeAssets: 'assets/vendors' })).toMatchObject({
       assets: [
         {
           name: 'assets/logo-abcd1234.svg',
@@ -204,7 +203,7 @@ describe('bundleToWebpackStats', () => {
   });
 
   test('transforms rollup bundle stats to webpack stats with excludeModules option', () => {
-    expect(bundleToWebpackStats(fixtures, { excludeModules: '/node_modules/package-b/' })).toMatchObject({
+    expect(bundleToWebpackStats(stats, { excludeModules: '/node_modules/package-b/' })).toMatchObject({
       assets: [
         {
           name: 'assets/logo-abcd1234.svg',
