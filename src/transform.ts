@@ -1,5 +1,5 @@
 import path from 'path';
-import type { OutputBundle } from 'rollup';
+import type { OutputAsset, OutputBundle, OutputChunk, RenderedModule } from 'rollup';
 
 import type { ExcludeFilepathOption } from './utils';
 import { checkExcludeFilepath, getByteSize, getChunkId } from "./utils";
@@ -35,18 +35,56 @@ export interface WebpackStatsFilteredRootModule
 }
 
 export interface WebpackStatsFiltered {
-  builtAt?: number;
+  builtAt: number;
   hash?: string;
-  assets?: Array<WebpackStatsFilteredAsset>;
-  chunks?: Array<WebpackStatsFilteredChunk>;
-  modules?: Array<WebpackStatsFilteredRootModule>;
+  assets: Array<WebpackStatsFilteredAsset>;
+  chunks: Array<WebpackStatsFilteredChunk>;
+  modules: Array<WebpackStatsFilteredRootModule>;
 }
 
-export type TransformCallback = (data: WebpackStatsFiltered) => WebpackStatsFiltered; 
+type AssetSource = OutputChunk | OutputAsset;
+type ChunkSource = OutputChunk;
+type ModuleSource = { fileName: string } & RenderedModule;
 
-const defaultTransform: TransformCallback = (data) => {
-  return data;
-};
+/**
+ * Store transformed sources
+ */ 
+class TransformSources {
+  constructor() {
+    this.entries = {};
+  }
+
+  entries: Record<string, unknown> = {};
+
+  push(id: string, source: AssetSource | ChunkSource | ModuleSource) {
+    this.entries[id] = source;
+  }
+
+  /**
+   * Get asset source
+   */
+  getByAsset = (asset: WebpackStatsFilteredAsset): AssetSource => {
+    return this.entries[asset.name] as AssetSource;
+  }
+
+  /**
+   * Get chunk source
+   */
+  getByChunk = (chunk: WebpackStatsFilteredChunk): ChunkSource => {
+    return this.entries[chunk.id] as ChunkSource;
+  }
+
+  /**
+   * Get module source
+   */
+  getByModule = (module: WebpackStatsFilteredModule): ModuleSource => {
+    return this.entries[module.name] as ModuleSource;
+  }
+}
+
+export type TransformCallback = (stats: WebpackStatsFiltered, sources: TransformSources) => WebpackStatsFiltered; 
+
+const defaultTransform: TransformCallback = (stats) => stats;
 
 export type BundleTransformOptions = {
   /**
@@ -73,18 +111,14 @@ export const bundleToWebpackStats = (
   pluginOptions?: BundleTransformOptions
 ): WebpackStatsFiltered => {
   const options = { moduleOriginalSize: false, ...pluginOptions } satisfies BundleTransformOptions;
-  const { 
-    excludeAssets,
-    excludeModules,
-    moduleOriginalSize,
-    transform = defaultTransform,
-  } = options;
-
-  const entries = Object.values(bundle);
+  const { excludeAssets, excludeModules, moduleOriginalSize, transform = defaultTransform } = options;
 
   const assets: Array<WebpackStatsFilteredAsset> = [];
   const chunks: Array<WebpackStatsFilteredChunk> = [];
   const moduleByFileName: Record<string, WebpackStatsFilteredModule> = {};
+  const sources = new TransformSources();
+
+  const entries = Object.values(bundle);
 
   entries.forEach((entry) => {
     if (entry.type === 'chunk') {
@@ -96,6 +130,7 @@ export const bundleToWebpackStats = (
         name: entry.fileName,
         size: getByteSize(entry.code),
       });
+      sources.push(entry.fileName, entry);
 
       const chunkId = getChunkId(entry);
 
@@ -106,6 +141,7 @@ export const bundleToWebpackStats = (
         files: [entry.fileName],
         names: [entry.name],
       });
+      sources.push(chunkId, entry);
 
       Object.entries(entry.modules).forEach(([modulePath, moduleInfo]) => {
         if (checkExcludeFilepath(modulePath, excludeModules)) {
@@ -137,6 +173,7 @@ export const bundleToWebpackStats = (
               : moduleInfo.renderedLength,
             chunks: [chunkId],
           };
+          sources.push(relativeModulePathWithPrefix, { fileName: modulePath, ...moduleInfo });
         }
       });
     } else if (entry.type === 'asset') {
@@ -148,6 +185,7 @@ export const bundleToWebpackStats = (
         name: entry.fileName,
         size: getByteSize(entry.source.toString()),
       });
+      sources.push(entry.fileName, entry);
     } else {
       // noop for unknown types
     }
@@ -163,7 +201,7 @@ export const bundleToWebpackStats = (
   let result: WebpackStatsFiltered;
 
   try {
-    result = transform(stats);
+    result = transform(stats, sources);
   } catch (error) {
     console.error('Custom transform failed! Returning stats without any transforms.', error);
     result = stats;

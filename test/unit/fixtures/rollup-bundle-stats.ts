@@ -1,7 +1,7 @@
 import path from 'path';
 import type { OutputBundle } from 'rollup';
 
-const ROOT_DIR = path.join(__dirname, '../../../');
+export const ROOT_DIR = path.join(__dirname, '../../../');
 
 export const stats = {
   'assets/logo-abcd1234.svg': {
