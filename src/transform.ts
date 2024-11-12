@@ -42,6 +42,12 @@ export interface WebpackStatsFiltered {
   modules?: Array<WebpackStatsFilteredRootModule>;
 }
 
+export type TransformCallback = (data: WebpackStatsFiltered) => WebpackStatsFiltered; 
+
+const defaultTransform: TransformCallback = (data) => {
+  return data;
+};
+
 export type BundleTransformOptions = {
   /**
    * Extract module original size or rendered size
@@ -57,50 +63,52 @@ export type BundleTransformOptions = {
    */
   excludeModules?: ExcludeFilepathOption;
   /**
-   * Transform function to access and mutate the resulting stats after the convertion
+   * Callback function to access and mutate the resulting stats after the transformation
    */
-  transform?: (stats: WebpackStatsFiltered) => WebpackStatsFiltered;
+  transform?: TransformCallback;
 };
 
 export const bundleToWebpackStats = (
   bundle: OutputBundle,
   pluginOptions?: BundleTransformOptions
 ): WebpackStatsFiltered => {
-  const options: BundleTransformOptions = {
-    moduleOriginalSize: false,
-    ...pluginOptions,
-  };
+  const options = { moduleOriginalSize: false, ...pluginOptions } satisfies BundleTransformOptions;
+  const { 
+    excludeAssets,
+    excludeModules,
+    moduleOriginalSize,
+    transform = defaultTransform,
+  } = options;
 
-  const items = Object.values(bundle);
+  const entries = Object.values(bundle);
 
   const assets: Array<WebpackStatsFilteredAsset> = [];
   const chunks: Array<WebpackStatsFilteredChunk> = [];
-
   const moduleByFileName: Record<string, WebpackStatsFilteredModule> = {};
 
-  items.forEach(item => {
-    if (item.type === 'chunk') {
-      if (checkExcludeFilepath(item.fileName, options.excludeAssets)) {
+  entries.forEach((entry) => {
+    if (entry.type === 'chunk') {
+      if (checkExcludeFilepath(entry.fileName, excludeAssets)) {
         return;
       }
 
       assets.push({
-        name: item.fileName,
-        size: getByteSize(item.code),
+        name: entry.fileName,
+        size: getByteSize(entry.code),
       });
 
-      const chunkId = getChunkId(item);
+      const chunkId = getChunkId(entry);
 
       chunks.push({
         id: chunkId,
-        entry: item.isEntry,
-        initial: !item.isDynamicEntry,
-        files: [item.fileName],
-        names: [item.name],
+        entry: entry.isEntry,
+        initial: !entry.isDynamicEntry,
+        files: [entry.fileName],
+        names: [entry.name],
       });
 
-      Object.entries(item.modules).forEach(([modulePath, moduleInfo]) => {
-        if (checkExcludeFilepath(modulePath, options.excludeModules)) {
+      Object.entries(entry.modules).forEach(([modulePath, moduleInfo]) => {
+        if (checkExcludeFilepath(modulePath, excludeModules)) {
           return;
         }
 
@@ -124,21 +132,21 @@ export const bundleToWebpackStats = (
         } else {
           moduleByFileName[relativeModulePathWithPrefix] = {
             name: relativeModulePathWithPrefix,
-            size: options.moduleOriginalSize
+            size: moduleOriginalSize
               ? moduleInfo.originalLength
               : moduleInfo.renderedLength,
             chunks: [chunkId],
           };
         }
       });
-    } else if (item.type === 'asset') {
-      if (checkExcludeFilepath(item.fileName, options.excludeAssets)) {
+    } else if (entry.type === 'asset') {
+      if (checkExcludeFilepath(entry.fileName, excludeAssets)) {
         return;
       }
 
       assets.push({
-        name: item.fileName,
-        size: getByteSize(item.source.toString()),
+        name: entry.fileName,
+        size: getByteSize(entry.source.toString()),
       });
     } else {
       // noop for unknown types
@@ -152,14 +160,10 @@ export const bundleToWebpackStats = (
     modules: Object.values(moduleByFileName),
   };
 
-  if (!options.transform) {
-    return stats;
-  }
-
   let result: WebpackStatsFiltered;
 
   try {
-    result = options.transform(stats);
+    result = transform(stats);
   } catch (error) {
     console.error('Custom transform failed! Returning stats without any transforms.', error);
     result = stats;
