@@ -1,5 +1,5 @@
 import path from 'path';
-import type { OutputBundle } from 'rollup';
+import type { OutputAsset, OutputBundle, OutputChunk, RenderedModule } from 'rollup';
 
 import type { ExcludeFilepathOption } from './utils';
 import { checkExcludeFilepath, getByteSize, getChunkId } from "./utils";
@@ -35,12 +35,56 @@ export interface WebpackStatsFilteredRootModule
 }
 
 export interface WebpackStatsFiltered {
-  builtAt?: number;
+  builtAt: number;
   hash?: string;
-  assets?: Array<WebpackStatsFilteredAsset>;
-  chunks?: Array<WebpackStatsFilteredChunk>;
-  modules?: Array<WebpackStatsFilteredRootModule>;
+  assets: Array<WebpackStatsFilteredAsset>;
+  chunks: Array<WebpackStatsFilteredChunk>;
+  modules: Array<WebpackStatsFilteredRootModule>;
 }
+
+type AssetSource = OutputChunk | OutputAsset;
+type ChunkSource = OutputChunk;
+type ModuleSource = { fileName: string } & RenderedModule;
+
+/**
+ * Store transformed sources
+ */ 
+class TransformSources {
+  constructor() {
+    this.entries = {};
+  }
+
+  entries: Record<string, unknown> = {};
+
+  push(id: string, source: AssetSource | ChunkSource | ModuleSource) {
+    this.entries[id] = source;
+  }
+
+  /**
+   * Get asset source
+   */
+  getByAsset = (asset: WebpackStatsFilteredAsset): AssetSource => {
+    return this.entries[asset.name] as AssetSource;
+  }
+
+  /**
+   * Get chunk source
+   */
+  getByChunk = (chunk: WebpackStatsFilteredChunk): ChunkSource => {
+    return this.entries[chunk.id] as ChunkSource;
+  }
+
+  /**
+   * Get module source
+   */
+  getByModule = (module: WebpackStatsFilteredModule): ModuleSource => {
+    return this.entries[module.name] as ModuleSource;
+  }
+}
+
+export type TransformCallback = (stats: WebpackStatsFiltered, sources: TransformSources, bundle: OutputBundle) => WebpackStatsFiltered; 
+
+const defaultTransform: TransformCallback = (stats) => stats;
 
 export type BundleTransformOptions = {
   /**
@@ -57,50 +101,50 @@ export type BundleTransformOptions = {
    */
   excludeModules?: ExcludeFilepathOption;
   /**
-   * Transform function to access and mutate the resulting stats after the convertion
+   * Callback function to access and mutate the resulting stats after the transformation
    */
-  transform?: (stats: WebpackStatsFiltered) => WebpackStatsFiltered;
+  transform?: TransformCallback;
 };
 
 export const bundleToWebpackStats = (
   bundle: OutputBundle,
   pluginOptions?: BundleTransformOptions
 ): WebpackStatsFiltered => {
-  const options: BundleTransformOptions = {
-    moduleOriginalSize: false,
-    ...pluginOptions,
-  };
-
-  const items = Object.values(bundle);
+  const options = { moduleOriginalSize: false, ...pluginOptions } satisfies BundleTransformOptions;
+  const { excludeAssets, excludeModules, moduleOriginalSize, transform = defaultTransform } = options;
 
   const assets: Array<WebpackStatsFilteredAsset> = [];
   const chunks: Array<WebpackStatsFilteredChunk> = [];
-
   const moduleByFileName: Record<string, WebpackStatsFilteredModule> = {};
+  const sources = new TransformSources();
 
-  items.forEach(item => {
-    if (item.type === 'chunk') {
-      if (checkExcludeFilepath(item.fileName, options.excludeAssets)) {
+  const entries = Object.values(bundle);
+
+  entries.forEach((entry) => {
+    if (entry.type === 'chunk') {
+      if (checkExcludeFilepath(entry.fileName, excludeAssets)) {
         return;
       }
 
       assets.push({
-        name: item.fileName,
-        size: getByteSize(item.code),
+        name: entry.fileName,
+        size: getByteSize(entry.code),
       });
+      sources.push(entry.fileName, entry);
 
-      const chunkId = getChunkId(item);
+      const chunkId = getChunkId(entry);
 
       chunks.push({
         id: chunkId,
-        entry: item.isEntry,
-        initial: !item.isDynamicEntry,
-        files: [item.fileName],
-        names: [item.name],
+        entry: entry.isEntry,
+        initial: !entry.isDynamicEntry,
+        files: [entry.fileName],
+        names: [entry.name],
       });
+      sources.push(chunkId, entry);
 
-      Object.entries(item.modules).forEach(([modulePath, moduleInfo]) => {
-        if (checkExcludeFilepath(modulePath, options.excludeModules)) {
+      Object.entries(entry.modules).forEach(([modulePath, moduleInfo]) => {
+        if (checkExcludeFilepath(modulePath, excludeModules)) {
           return;
         }
 
@@ -124,22 +168,24 @@ export const bundleToWebpackStats = (
         } else {
           moduleByFileName[relativeModulePathWithPrefix] = {
             name: relativeModulePathWithPrefix,
-            size: options.moduleOriginalSize
+            size: moduleOriginalSize
               ? moduleInfo.originalLength
               : moduleInfo.renderedLength,
             chunks: [chunkId],
           };
+          sources.push(relativeModulePathWithPrefix, { fileName: modulePath, ...moduleInfo });
         }
       });
-    } else if (item.type === 'asset') {
-      if (checkExcludeFilepath(item.fileName, options.excludeAssets)) {
+    } else if (entry.type === 'asset') {
+      if (checkExcludeFilepath(entry.fileName, excludeAssets)) {
         return;
       }
 
       assets.push({
-        name: item.fileName,
-        size: getByteSize(item.source.toString()),
+        name: entry.fileName,
+        size: getByteSize(entry.source.toString()),
       });
+      sources.push(entry.fileName, entry);
     } else {
       // noop for unknown types
     }
@@ -152,14 +198,10 @@ export const bundleToWebpackStats = (
     modules: Object.values(moduleByFileName),
   };
 
-  if (!options.transform) {
-    return stats;
-  }
-
   let result: WebpackStatsFiltered;
 
   try {
-    result = options.transform(stats);
+    result = transform(stats, sources, bundle);
   } catch (error) {
     console.error('Custom transform failed! Returning stats without any transforms.', error);
     result = stats;
