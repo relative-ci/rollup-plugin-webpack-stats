@@ -646,4 +646,125 @@ describe('bundleToWebpackStats', () => {
       ],
     });
   });
+
+  test('transforms rollup bundle stats to webpack stats using custom transformer with bundle', () => {
+    expect(bundleToWebpackStats(statsFixtures, {
+      transform: (stats, sources, bundle) => {
+        // count all rollup entries
+        stats.rollupBundleEntries = Object.values(bundle).length;
+
+        return stats;
+      },
+    })).toMatchObject({
+      rollupBundleEntries: 5,
+      assets: [
+        {
+          name: 'assets/logo-abcd1234.svg',
+          size: 11,
+        },
+        {
+          name: 'assets/main-abcd1234.js',
+          size: 29,
+        },
+        {
+          name: 'assets/vendors-abcd1234.js',
+          size: 29,
+        },
+        {
+          name: 'assets/index-abcd1234.js',
+          size: 29,
+        },
+        {
+          name: 'assets/index-efab5678.js',
+          size: 29,
+        },
+      ],
+      chunks: [
+        {
+          id: 'e1c35b4',
+          initial: true,
+          entry: true,
+          names: ['main'],
+          files: ['assets/main-abcd1234.js'],
+        },
+        {
+          id: '95848fd',
+          initial: true,
+          entry: true,
+          names: ['vendors'],
+          files: ['assets/vendors-abcd1234.js'],
+        },
+        {
+          id: 'e7b195f',
+          initial: false,
+          entry: false,
+          names: ['index'],
+          files: ['assets/index-abcd1234.js'],
+        },
+        {
+          id: '7cd4868',
+          initial: false,
+          entry: false,
+          names: ['index'],
+          files: ['assets/index-efab5678.js'],
+        },
+      ],
+      modules: [
+        {
+          chunks: ['e1c35b4'],
+          name: `.${path.sep}${path.join(
+            'src',
+            'component-a.js',
+          )}`,
+          size: 8,
+        },
+        {
+          chunks: ['e1c35b4'],
+          name: `.${path.sep}${path.join(
+            'src',
+            'index.js'
+          )}`,
+          size: 80,
+        },
+        {
+          chunks: ['95848fd'],
+          name: `.${path.sep}${path.join(
+            'node_modules',
+            'package-a',
+            'index.js'
+          )}`,
+          size: 8,
+        },
+        {
+          chunks: ['95848fd'],
+          name: `.${path.sep}${path.join(
+            'node_modules',
+            'package-b',
+            'index.js'
+          )}`,
+          size: 80,
+        },
+        {
+          chunks: ['e7b195f'],
+          name: `.${path.sep}${path.join(
+            'src',
+            'components',
+            'component-b',
+            'index.js',
+          )}`,
+          size: 8,
+        },
+        {
+          chunks: ['7cd4868'],
+          name: `.${path.sep}${path.join(
+            'src',
+            'components',
+            'component-c',
+            'index.js',
+          )}`,
+          size: 8,
+        },
+      ],
+    });
+  });
 });
