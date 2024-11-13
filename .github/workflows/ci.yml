@@ -4,8 +4,8 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
 
       - name: Resolve caching
         id: cache
@@ -13,7 +13,7 @@ jobs:
         run: echo "npm_cache=npm" >> $GITHUB_STATE
 
       - name: Use Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v4.1.0
         with:
           node-version-file: ".nvmrc"
           cache: ${{ env.npm_cache }}
@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
 
       - name: Resolve caching
         id: cache
@@ -36,7 +36,7 @@ jobs:
         run: echo "npm_cache=npm" >> $GITHUB_STATE
 
       - name: Use Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v4.1.0
         with:
           node-version-file: ".nvmrc"
           cache: ${{ env.npm_cache }}
@@ -51,7 +51,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
 
       - name: Resolve caching
         id: cache
@@ -59,7 +59,7 @@ jobs:
         run: echo "npm_cache=npm" >> $GITHUB_STATE
 
       - name: Use Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v4.1.0
         with:
           node-version-file: ".nvmrc"
           cache: ${{ env.npm_cache }}
@@ -71,7 +71,7 @@ jobs:
         run: yarn run build
 
       - name: Upload build files
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.4.3
         with:
           name: build-artifacts
           retention-days: 1
@@ -101,10 +101,10 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
 
       - name: Use Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v4.1.0
         with:
           node-version: ${{ matrix.node }}
 
@@ -112,7 +112,7 @@ jobs:
         run: npm install vitest
 
       - name: Download build files
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v4.1.8
         with:
           name: build-artifacts
 
@@ -147,7 +147,7 @@ jobs:
     permissions:
       id-token: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.2
 
       # Cache packages when the branch is not update-dependencies or dependabot/*
       - name: Resolve caching
@@ -156,7 +156,7 @@ jobs:
         run: echo "PACKAGE=npm" >> $GITHUB_OUTPUT
 
       - name: Use Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v4.1.0
         with:
           node-version-file: ".nvmrc"
           cache: ${{ steps.cache.outputs.PACKAGE }}
