@@ -15,7 +15,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4.1.0
         with:
-          node-version-file: ".nvmrc"
+          node-version-file: '.nvmrc'
           cache: ${{ env.npm_cache }}
 
       - name: Install dependencies
@@ -38,7 +38,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4.1.0
         with:
-          node-version-file: ".nvmrc"
+          node-version-file: '.nvmrc'
           cache: ${{ env.npm_cache }}
 
       - name: Install dependencies
@@ -61,7 +61,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4.1.0
         with:
-          node-version-file: ".nvmrc"
+          node-version-file: '.nvmrc'
           cache: ${{ env.npm_cache }}
 
       - name: Install dependencies
@@ -75,8 +75,7 @@ jobs:
         with:
           name: build-artifacts
           retention-days: 1
-          path: 
-            dist*/
+          path: dist*/
 
   test-package:
     name: Test package on node ${{ matrix.node }} / ${{ matrix.os }} / rollup v${{ matrix.rollup }}
@@ -158,7 +157,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4.1.0
         with:
-          node-version-file: ".nvmrc"
+          node-version-file: '.nvmrc'
           cache: ${{ steps.cache.outputs.PACKAGE }}
           registry-url: 'https://registry.npmjs.org'
 
@@ -173,5 +172,5 @@ jobs:
       - run: npm run release
         env:
           NPM_CONFIG_PROVENANCE: true
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
