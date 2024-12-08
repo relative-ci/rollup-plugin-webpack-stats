@@ -126,6 +126,7 @@ export default defineConfig((env) => ({
 }));
 ```
 
+
 #### Vite.js - update initial flag for chunks where the inital flag is incorrectly set to false
 ```js
 import { defineConfig } from 'vite';
