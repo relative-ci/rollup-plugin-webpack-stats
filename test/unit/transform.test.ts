@@ -2,7 +2,7 @@ import { describe, test, expect } from 'vitest';
 import path from 'path';
 
 import { bundleToWebpackStats } from '../../src/transform';
-import { ROOT_DIR, stats as statsFixtures, statsWithDynamicEntry as statsWithDynamicEntryFixtures } from './fixtures/rollup-bundle-stats';
+import { ROOT_DIR, statsFixtures } from './fixtures/rollup-bundle-stats';
 
 describe('bundleToWebpackStats', () => {
   test('transforms rollup bundle stats to webpack stats', () => {
@@ -62,18 +62,12 @@ describe('bundleToWebpackStats', () => {
       modules: [
         {
           chunks: ['e1c35b4'],
-          name: `.${path.sep}${path.join(
-            'src',
-            'component-a.js',
-          )}`,
+          name: `.${path.sep}${path.join('src', 'component-a.js')}`,
           size: 8,
         },
         {
           chunks: ['e1c35b4'],
-          name: `.${path.sep}${path.join(
-            'src',
-            'index.js'
-          )}`,
+          name: `.${path.sep}${path.join('src', 'index.js')}`,
           size: 80,
         },
         {
@@ -100,7 +94,7 @@ describe('bundleToWebpackStats', () => {
             'src',
             'components',
             'component-b',
-            'index.js',
+            'index.js'
           )}`,
           size: 8,
         },
@@ -110,7 +104,7 @@ describe('bundleToWebpackStats', () => {
             'src',
             'components',
             'component-c',
-            'index.js',
+            'index.js'
           )}`,
           size: 8,
         },
@@ -119,7 +113,9 @@ describe('bundleToWebpackStats', () => {
   });
 
   test('transforms rollup bundle stats to webpack stats with excludeAssets option', () => {
-    expect(bundleToWebpackStats(statsFixtures, { excludeAssets: 'assets/vendors' })).toMatchObject({
+    expect(
+      bundleToWebpackStats(statsFixtures, { excludeAssets: 'assets/vendors' })
+    ).toMatchObject({
       assets: [
         {
           name: 'assets/logo-abcd1234.svg',
@@ -164,18 +160,12 @@ describe('bundleToWebpackStats', () => {
       modules: [
         {
           chunks: ['e1c35b4'],
-          name: `.${path.sep}${path.join(
-            'src',
-            'component-a.js',
-          )}`,
+          name: `.${path.sep}${path.join('src', 'component-a.js')}`,
           size: 8,
         },
         {
           chunks: ['e1c35b4'],
-          name: `.${path.sep}${path.join(
-            'src',
-            'index.js'
-          )}`,
+          name: `.${path.sep}${path.join('src', 'index.js')}`,
           size: 80,
         },
         {
@@ -184,7 +174,7 @@ describe('bundleToWebpackStats', () => {
             'src',
             'components',
             'component-b',
-            'index.js',
+            'index.js'
           )}`,
           size: 8,
         },
@@ -194,7 +184,7 @@ describe('bundleToWebpackStats', () => {
             'src',
             'components',
             'component-c',
-            'index.js',
+            'index.js'
           )}`,
           size: 8,
         },
@@ -203,7 +193,11 @@ describe('bundleToWebpackStats', () => {
   });
 
   test('transforms rollup bundle stats to webpack stats with excludeModules option', () => {
-    expect(bundleToWebpackStats(statsFixtures, { excludeModules: '/node_modules/package-b/' })).toMatchObject({
+    expect(
+      bundleToWebpackStats(statsFixtures, {
+        excludeModules: '/node_modules/package-b/',
+      })
+    ).toMatchObject({
       assets: [
         {
           name: 'assets/logo-abcd1234.svg',
@@ -235,7 +229,6 @@ describe('bundleToWebpackStats', () => {
           files: ['assets/main-abcd1234.js'],
         },
         {
-
           id: '95848fd',
           initial: true,
           entry: true,
@@ -260,18 +253,12 @@ describe('bundleToWebpackStats', () => {
       modules: [
         {
           chunks: ['e1c35b4'],
-          name: `.${path.sep}${path.join(
-            'src',
-            'component-a.js',
-          )}`,
+          name: `.${path.sep}${path.join('src', 'component-a.js')}`,
           size: 8,
         },
         {
           chunks: ['e1c35b4'],
-          name: `.${path.sep}${path.join(
-            'src',
-            'index.js'
-          )}`,
+          name: `.${path.sep}${path.join('src', 'index.js')}`,
           size: 80,
         },
         {
@@ -289,7 +276,7 @@ describe('bundleToWebpackStats', () => {
             'src',
             'components',
             'component-b',
-            'index.js',
+            'index.js'
           )}`,
           size: 8,
         },
@@ -299,7 +286,7 @@ describe('bundleToWebpackStats', () => {
             'src',
             'components',
             'component-c',
-            'index.js',
+            'index.js'
           )}`,
           size: 8,
         },
@@ -308,62 +295,66 @@ describe('bundleToWebpackStats', () => {
   });
 
   test('transforms rollup bundle stats to webpack stats using custom transformer', () => {
-    expect(bundleToWebpackStats(statsWithDynamicEntryFixtures, { 
-      transform: (stats) => {
-        const mainChunkIndex = stats.chunks?.findIndex((chunk) => chunk.names?.includes("main"));
+    expect(
+      bundleToWebpackStats(statsFixtures, {
+        transform: (stats) => {
+          const mainChunkIndex = stats.chunks?.findIndex((chunk) =>
+            chunk.names?.includes('main')
+          );
 
-        if (typeof mainChunkIndex !== 'undefined' && stats?.chunks?.[mainChunkIndex]) {
-          stats.chunks[mainChunkIndex] = {
-            ...stats.chunks[mainChunkIndex],
-            initial: true,
-          };
-        }
+          if (
+            typeof mainChunkIndex !== 'undefined' &&
+            stats?.chunks?.[mainChunkIndex]
+          ) {
+            stats.chunks[mainChunkIndex] = {
+              ...stats.chunks[mainChunkIndex],
+              initial: !stats.chunks[mainChunkIndex].initial,
+            };
+          }
 
-        return stats;
-      },
-    })).toMatchObject({
-      assets: [
-        {
-          name: 'assets/main-abcd1234.js',
-          size: 29,
+          return stats;
         },
-      ],
-      chunks: [
+      }).chunks
+    ).toEqual(
+      expect.arrayContaining([
         {
           id: 'e1c35b4',
-          initial: true,
-          entry: true,
           names: ['main'],
           files: ['assets/main-abcd1234.js'],
+          entry: true,
+          initial: false,
         },
-      ],
-    });
+      ])
+    );
   });
 
   test('transforms rollup bundle stats to webpack stats using custom transformer with sources', () => {
-    expect(bundleToWebpackStats(statsFixtures, {
-      transform: (stats, sources) => {
-        // Collect asset type
-        stats.assets = stats.assets?.map((asset) => ({
-          ...asset,
-          type: sources.getByAsset(asset).type,
-        }));
+    expect(
+      bundleToWebpackStats(statsFixtures, {
+        transform: (stats, sources) => {
+          // Collect asset type
+          stats.assets = stats.assets?.map((asset) => ({
+            ...asset,
+            type: sources.getByAsset(asset).type,
+          }));
 
-        // Collect chunk type
-        stats.chunks = stats.chunks?.map((chunk) => ({
-          ...chunk,
-          type: sources.getByChunk(chunk).type,
-        }));
+          // Collect chunk type
+          stats.chunks = stats.chunks?.map((chunk) => ({
+            ...chunk,
+            type: sources.getByChunk(chunk).type,
+          }));
 
-        // Collect module data
-        stats.modules = stats.modules.map((moduleSource) => ({
-          ...moduleSource,
-          removedExportsLength: sources.getByModule(moduleSource).renderedExports.length,
-        }));
+          // Collect module data
+          stats.modules = stats.modules.map((moduleSource) => ({
+            ...moduleSource,
+            removedExportsLength:
+              sources.getByModule(moduleSource).renderedExports.length,
+          }));
 
-        return stats;
-      },
-    })).toMatchObject({
+          return stats;
+        },
+      })
+    ).toMatchObject({
       assets: [
         {
           name: 'assets/logo-abcd1234.svg',
@@ -428,19 +419,13 @@ describe('bundleToWebpackStats', () => {
       modules: [
         {
           chunks: ['e1c35b4'],
-          name: `.${path.sep}${path.join(
-            'src',
-            'component-a.js',
-          )}`,
+          name: `.${path.sep}${path.join('src', 'component-a.js')}`,
           size: 8,
           removedExportsLength: 0,
         },
         {
           chunks: ['e1c35b4'],
-          name: `.${path.sep}${path.join(
-            'src',
-            'index.js'
-          )}`,
+          name: `.${path.sep}${path.join('src', 'index.js')}`,
           size: 80,
           removedExportsLength: 0,
         },
@@ -470,7 +455,7 @@ describe('bundleToWebpackStats', () => {
             'src',
             'components',
             'component-b',
-            'index.js',
+            'index.js'
           )}`,
           size: 8,
           removedExportsLength: 0,
@@ -481,7 +466,7 @@ describe('bundleToWebpackStats', () => {
             'src',
             'components',
             'component-c',
-            'index.js',
+            'index.js'
           )}`,
           size: 8,
           removedExportsLength: 0,
@@ -489,17 +474,19 @@ describe('bundleToWebpackStats', () => {
       ],
     });
 
-    expect(bundleToWebpackStats(statsFixtures, {
-      transform: (stats, sources) => {
-        // Collect module identifier
-        stats.modules = stats.modules.map((moduleSource) => ({
-          ...moduleSource,
-          identifier: sources.getByModule(moduleSource).fileName,
-        }));
+    expect(
+      bundleToWebpackStats(statsFixtures, {
+        transform: (stats, sources) => {
+          // Collect module identifier
+          stats.modules = stats.modules.map((moduleSource) => ({
+            ...moduleSource,
+            identifier: sources.getByModule(moduleSource).fileName,
+          }));
 
-        return stats;
-      },
-    })).toMatchObject({
+          return stats;
+        },
+      })
+    ).toMatchObject({
       assets: [
         {
           name: 'assets/logo-abcd1234.svg',
@@ -555,28 +542,14 @@ describe('bundleToWebpackStats', () => {
       modules: [
         {
           chunks: ['e1c35b4'],
-          name: `.${path.sep}${path.join(
-            'src',
-            'component-a.js',
-          )}`,
-          identifier: path.join(
-            ROOT_DIR,
-            'src',
-            'component-a.js',
-          ),
+          name: `.${path.sep}${path.join('src', 'component-a.js')}`,
+          identifier: path.join(ROOT_DIR, 'src', 'component-a.js'),
           size: 8,
         },
         {
           chunks: ['e1c35b4'],
-          name: `.${path.sep}${path.join(
-            'src',
-            'index.js'
-          )}`,
-          identifier: path.join(
-            ROOT_DIR,
-            'src',
-            'index.js'
-          ),
+          name: `.${path.sep}${path.join('src', 'index.js')}`,
+          identifier: path.join(ROOT_DIR, 'src', 'index.js'),
           size: 80,
         },
         {
@@ -615,14 +588,14 @@ describe('bundleToWebpackStats', () => {
             'src',
             'components',
             'component-b',
-            'index.js',
+            'index.js'
           )}`,
           identifier: path.join(
             ROOT_DIR,
             'src',
             'components',
             'component-b',
-            'index.js',
+            'index.js'
           ),
           size: 8,
         },
@@ -632,14 +605,14 @@ describe('bundleToWebpackStats', () => {
             'src',
             'components',
             'component-c',
-            'index.js',
+            'index.js'
           )}`,
           identifier: path.join(
             ROOT_DIR,
             'src',
             'components',
             'component-c',
-            'index.js',
+            'index.js'
           ),
           size: 8,
         },
@@ -648,14 +621,17 @@ describe('bundleToWebpackStats', () => {
   });
 
   test('transforms rollup bundle stats to webpack stats using custom transformer with bundle', () => {
-    expect(bundleToWebpackStats(statsFixtures, {
-      transform: (stats, sources, bundle) => {
-        // Adding arbitary info to the stats object to prove that we have access to bundle
-        stats.entryCount = Object.keys(bundle).length;
+    expect(
+      bundleToWebpackStats(statsFixtures, {
+        transform: (stats, _, bundle) => {
+          // Adding arbitary info to the stats object to prove that we have access to bundle
+          // @ts-expect-error
+          stats.entryCount = Object.keys(bundle).length;
 
-        return stats;
-      },
-    })).toMatchObject({
+          return stats;
+        },
+      })
+    ).toMatchObject({
       assets: [
         {
           name: 'assets/logo-abcd1234.svg',
@@ -711,18 +687,12 @@ describe('bundleToWebpackStats', () => {
       modules: [
         {
           chunks: ['e1c35b4'],
-          name: `.${path.sep}${path.join(
-            'src',
-            'component-a.js',
-          )}`,
+          name: `.${path.sep}${path.join('src', 'component-a.js')}`,
           size: 8,
         },
         {
           chunks: ['e1c35b4'],
-          name: `.${path.sep}${path.join(
-            'src',
-            'index.js'
-          )}`,
+          name: `.${path.sep}${path.join('src', 'index.js')}`,
           size: 80,
         },
         {
@@ -749,7 +719,7 @@ describe('bundleToWebpackStats', () => {
             'src',
             'components',
             'component-b',
-            'index.js',
+            'index.js'
           )}`,
           size: 8,
         },
@@ -759,7 +729,7 @@ describe('bundleToWebpackStats', () => {
             'src',
             'components',
             'component-c',
-            'index.js',
+            'index.js'
           )}`,
           size: 8,
         },
