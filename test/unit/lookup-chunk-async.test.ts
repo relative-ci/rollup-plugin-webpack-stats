@@ -116,7 +116,7 @@ describe('lookupChunkAsync', () => {
       ).toEqual(true);
     });
 
-    test.only('chunk is sync when at least one parent is sync', () => {
+    test('chunk is sync when at least one parent is sync', () => {
       /**
        * C ---sync---> A ---async---> ROOT
        * C ---sync---> B --- sync---/
