@@ -135,9 +135,7 @@ export const statsFixtures = {
         renderedExports: [],
       },
     },
-    imports: [
-      'assets/index-efab5678.js',
-    ],
+    imports: [],
     exports: [],
     dynamicImports: [],
   },
@@ -174,7 +172,9 @@ export const statsFixtures = {
         renderedExports: [],
       },
     },
-    imports: [],
+    imports: [
+      'assets/index-abcd1234.js',
+    ],
     exports: [],
     dynamicImports: [],
   },

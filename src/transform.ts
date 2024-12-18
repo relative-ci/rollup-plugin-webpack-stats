@@ -169,11 +169,15 @@ export const bundleToWebpackStats = (
   entries.forEach((entry) => {
     if (entry.type === 'chunk') {
       entry.imports.forEach((entryImport) => {
-        if (!chunksParents[entryImport]) {
-          chunksParents[entryImport] = [];
+        if (!chunksParents[entry.fileName]) {
+          chunksParents[entry.fileName] = [];
         }
 
-        chunksParents[entryImport].push(entry);
+        const parentChunk = bundle[entryImport];
+
+        console.log({ entryImport, parentChunk });
+
+        chunksParents[entry.fileName].push(parentChunk);
       });
     }
   });
