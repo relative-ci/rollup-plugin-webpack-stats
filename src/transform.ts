@@ -42,6 +42,50 @@ export interface WebpackStatsFiltered {
   modules: Array<WebpackStatsFilteredRootModule>;
 }
 
+export type ChunksParents = Record<string, Array<OutputChunk>>;
+
+/**
+ * Recursivily check if a chunk is async based on the chunks parents
+ */
+export const lookupChunkAsync = (chunk: OutputChunk, chunksParents: ChunksParents):boolean => {
+  if (chunk.isDynamicEntry) {
+    return true;
+  }
+
+  const chunkParents = chunksParents[chunk.fileName];
+
+  /**
+   * A sync chunk without parent chunks, is sync
+   */
+  if (!chunkParents) {
+    return false;
+  }
+
+  const syncChunksParents = chunkParents.filter((chunkParent) => {
+    return chunkParent.isDynamicEntry === false;
+  });
+
+  /**
+   * A sync chunk with all the parents async, is async
+   */
+  if (syncChunksParents.length === 0) {
+    return true;
+  }
+
+  /**
+   * Recursively lookup for sync loads on the 2nd level parents
+   * - if at least one parent is sync, the chunk is sync
+   * - if none of the parents are sync, the chunk is async
+   */
+  let isAsync = true;
+
+  for (let i = 0; i < syncChunksParents.length && isAsync; i++) {
+    isAsync = lookupChunkAsync(syncChunksParents[i], chunksParents);
+  }
+
+  return isAsync;
+}
+
 type AssetSource = OutputChunk | OutputAsset;
 type ChunkSource = OutputChunk;
 type ModuleSource = { fileName: string } & RenderedModule;
@@ -117,9 +161,24 @@ export const bundleToWebpackStats = (
   const chunks: Array<WebpackStatsFilteredChunk> = [];
   const moduleByFileName: Record<string, WebpackStatsFilteredModule> = {};
   const sources = new TransformSources();
+  const chunksParents: ChunksParents = {};
 
   const entries = Object.values(bundle);
 
+  // Collect metadata
+  entries.forEach((entry) => {
+    if (entry.type === 'chunk') {
+      entry.imports.forEach((entryImport) => {
+        if (!chunksParents[entryImport]) {
+          chunksParents[entryImport] = [];
+        }
+
+        chunksParents[entryImport].push(entry);
+      });
+    }
+  });
+
+  // Process data
   entries.forEach((entry) => {
     if (entry.type === 'chunk') {
       if (checkExcludeFilepath(entry.fileName, excludeAssets)) {
@@ -137,7 +196,7 @@ export const bundleToWebpackStats = (
       chunks.push({
         id: chunkId,
         entry: entry.isEntry,
-        initial: !entry.isDynamicEntry,
+        initial: !lookupChunkAsync(entry, chunksParents),
         files: [entry.fileName],
         names: [entry.name],
       });
