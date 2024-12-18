@@ -168,16 +168,16 @@ export const bundleToWebpackStats = (
   // Collect metadata
   entries.forEach((entry) => {
     if (entry.type === 'chunk') {
-      entry.imports.forEach((entryImport) => {
+      entry.imports?.forEach((entryImport) => {
         if (!chunksParents[entry.fileName]) {
           chunksParents[entry.fileName] = [];
         }
 
         const parentChunk = bundle[entryImport];
 
-        console.log({ entryImport, parentChunk });
-
-        chunksParents[entry.fileName].push(parentChunk);
+        if (parentChunk) {
+          chunksParents[entry.fileName].push(parentChunk);
+        }
       });
     }
   });
