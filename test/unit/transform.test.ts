@@ -13,11 +13,11 @@ describe('bundleToWebpackStats', () => {
           size: 11,
         },
         {
-          name: 'assets/main-abcd1234.js',
+          name: 'assets/vendors-abcd1234.js',
           size: 29,
         },
         {
-          name: 'assets/vendors-abcd1234.js',
+          name: 'assets/main-abcd1234.js',
           size: 29,
         },
         {
@@ -31,18 +31,18 @@ describe('bundleToWebpackStats', () => {
       ],
       chunks: [
         {
-          id: 'e1c35b4',
-          initial: true,
-          entry: true,
-          names: ['main'],
-          files: ['assets/main-abcd1234.js'],
-        },
-        {
           id: '95848fd',
           initial: true,
           entry: true,
           names: ['vendors'],
           files: ['assets/vendors-abcd1234.js'],
+        },
+        {
+          id: 'e1c35b4',
+          initial: true,
+          entry: true,
+          names: ['main'],
+          files: ['assets/main-abcd1234.js'],
         },
         {
           id: 'e7b195f',
@@ -61,16 +61,6 @@ describe('bundleToWebpackStats', () => {
       ],
       modules: [
         {
-          chunks: ['e1c35b4'],
-          name: `.${path.sep}${path.join('src', 'component-a.js')}`,
-          size: 8,
-        },
-        {
-          chunks: ['e1c35b4'],
-          name: `.${path.sep}${path.join('src', 'index.js')}`,
-          size: 80,
-        },
-        {
           chunks: ['95848fd'],
           name: `.${path.sep}${path.join(
             'node_modules',
@@ -86,6 +76,16 @@ describe('bundleToWebpackStats', () => {
             'package-b',
             'index.js'
           )}`,
+          size: 80,
+        },
+        {
+          chunks: ['e1c35b4'],
+          name: `.${path.sep}${path.join('src', 'component-a.js')}`,
+          size: 8,
+        },
+        {
+          chunks: ['e1c35b4'],
+          name: `.${path.sep}${path.join('src', 'index.js')}`,
           size: 80,
         },
         {
@@ -180,12 +180,12 @@ describe('bundleToWebpackStats', () => {
           type: 'asset',
         },
         {
-          name: 'assets/main-abcd1234.js',
+          name: 'assets/vendors-abcd1234.js',
           size: 29,
           type: 'chunk',
         },
         {
-          name: 'assets/vendors-abcd1234.js',
+          name: 'assets/main-abcd1234.js',
           size: 29,
           type: 'chunk',
         },
@@ -202,19 +202,19 @@ describe('bundleToWebpackStats', () => {
       ],
       chunks: [
         {
-          id: 'e1c35b4',
-          initial: true,
-          entry: true,
-          names: ['main'],
-          files: ['assets/main-abcd1234.js'],
-          type: 'chunk',
-        },
-        {
           id: '95848fd',
           initial: true,
           entry: true,
           names: ['vendors'],
           files: ['assets/vendors-abcd1234.js'],
+          type: 'chunk',
+        },
+        {
+          id: 'e1c35b4',
+          initial: true,
+          entry: true,
+          names: ['main'],
+          files: ['assets/main-abcd1234.js'],
           type: 'chunk',
         },
         {
@@ -236,18 +236,6 @@ describe('bundleToWebpackStats', () => {
       ],
       modules: [
         {
-          chunks: ['e1c35b4'],
-          name: `.${path.sep}${path.join('src', 'component-a.js')}`,
-          size: 8,
-          removedExportsLength: 0,
-        },
-        {
-          chunks: ['e1c35b4'],
-          name: `.${path.sep}${path.join('src', 'index.js')}`,
-          size: 80,
-          removedExportsLength: 0,
-        },
-        {
           chunks: ['95848fd'],
           name: `.${path.sep}${path.join(
             'node_modules',
@@ -264,6 +252,18 @@ describe('bundleToWebpackStats', () => {
             'package-b',
             'index.js'
           )}`,
+          size: 80,
+          removedExportsLength: 0,
+        },
+        {
+          chunks: ['e1c35b4'],
+          name: `.${path.sep}${path.join('src', 'component-a.js')}`,
+          size: 8,
+          removedExportsLength: 0,
+        },
+        {
+          chunks: ['e1c35b4'],
+          name: `.${path.sep}${path.join('src', 'index.js')}`,
           size: 80,
           removedExportsLength: 0,
         },
@@ -311,11 +311,11 @@ describe('bundleToWebpackStats', () => {
           size: 11,
         },
         {
-          name: 'assets/main-abcd1234.js',
+          name: 'assets/vendors-abcd1234.js',
           size: 29,
         },
         {
-          name: 'assets/vendors-abcd1234.js',
+          name: 'assets/main-abcd1234.js',
           size: 29,
         },
         {
@@ -329,18 +329,18 @@ describe('bundleToWebpackStats', () => {
       ],
       chunks: [
         {
-          id: 'e1c35b4',
-          initial: true,
-          entry: true,
-          names: ['main'],
-          files: ['assets/main-abcd1234.js'],
-        },
-        {
           id: '95848fd',
           initial: true,
           entry: true,
           names: ['vendors'],
           files: ['assets/vendors-abcd1234.js'],
+        },
+        {
+          id: 'e1c35b4',
+          initial: true,
+          entry: true,
+          names: ['main'],
+          files: ['assets/main-abcd1234.js'],
         },
         {
           id: 'e7b195f',
@@ -359,6 +359,36 @@ describe('bundleToWebpackStats', () => {
       ],
       modules: [
         {
+          chunks: ['95848fd'],
+          name: `.${path.sep}${path.join(
+            'node_modules',
+            'package-a',
+            'index.js'
+          )}`,
+          identifier: path.join(
+            ROOT_DIR,
+            'node_modules',
+            'package-a',
+            'index.js'
+          ),
+          size: 8,
+        },
+        {
+          chunks: ['95848fd'],
+          name: `.${path.sep}${path.join(
+            'node_modules',
+            'package-b',
+            'index.js'
+          )}`,
+          identifier: path.join(
+            ROOT_DIR,
+            'node_modules',
+            'package-b',
+            'index.js'
+          ),
+          size: 80,
+        },
+        {
           chunks: ['e1c35b4'],
           name: `.${path.sep}${path.join('src', 'component-a.js')}`,
           identifier: path.join(ROOT_DIR, 'src', 'component-a.js'),
@@ -368,36 +398,6 @@ describe('bundleToWebpackStats', () => {
           chunks: ['e1c35b4'],
           name: `.${path.sep}${path.join('src', 'index.js')}`,
           identifier: path.join(ROOT_DIR, 'src', 'index.js'),
-          size: 80,
-        },
-        {
-          chunks: ['95848fd'],
-          name: `.${path.sep}${path.join(
-            'node_modules',
-            'package-a',
-            'index.js'
-          )}`,
-          identifier: path.join(
-            ROOT_DIR,
-            'node_modules',
-            'package-a',
-            'index.js'
-          ),
-          size: 8,
-        },
-        {
-          chunks: ['95848fd'],
-          name: `.${path.sep}${path.join(
-            'node_modules',
-            'package-b',
-            'index.js'
-          )}`,
-          identifier: path.join(
-            ROOT_DIR,
-            'node_modules',
-            'package-b',
-            'index.js'
-          ),
           size: 80,
         },
         {
@@ -456,11 +456,11 @@ describe('bundleToWebpackStats', () => {
           size: 11,
         },
         {
-          name: 'assets/main-abcd1234.js',
+          name: 'assets/vendors-abcd1234.js',
           size: 29,
         },
         {
-          name: 'assets/vendors-abcd1234.js',
+          name: 'assets/main-abcd1234.js',
           size: 29,
         },
         {
@@ -474,18 +474,18 @@ describe('bundleToWebpackStats', () => {
       ],
       chunks: [
         {
-          id: 'e1c35b4',
-          initial: true,
-          entry: true,
-          names: ['main'],
-          files: ['assets/main-abcd1234.js'],
-        },
-        {
           id: '95848fd',
           initial: true,
           entry: true,
           names: ['vendors'],
           files: ['assets/vendors-abcd1234.js'],
+        },
+        {
+          id: 'e1c35b4',
+          initial: true,
+          entry: true,
+          names: ['main'],
+          files: ['assets/main-abcd1234.js'],
         },
         {
           id: 'e7b195f',
@@ -504,16 +504,6 @@ describe('bundleToWebpackStats', () => {
       ],
       modules: [
         {
-          chunks: ['e1c35b4'],
-          name: `.${path.sep}${path.join('src', 'component-a.js')}`,
-          size: 8,
-        },
-        {
-          chunks: ['e1c35b4'],
-          name: `.${path.sep}${path.join('src', 'index.js')}`,
-          size: 80,
-        },
-        {
           chunks: ['95848fd'],
           name: `.${path.sep}${path.join(
             'node_modules',
@@ -529,6 +519,16 @@ describe('bundleToWebpackStats', () => {
             'package-b',
             'index.js'
           )}`,
+          size: 80,
+        },
+        {
+          chunks: ['e1c35b4'],
+          name: `.${path.sep}${path.join('src', 'component-a.js')}`,
+          size: 8,
+        },
+        {
+          chunks: ['e1c35b4'],
+          name: `.${path.sep}${path.join('src', 'index.js')}`,
           size: 80,
         },
         {

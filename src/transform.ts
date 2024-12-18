@@ -41,6 +41,54 @@ export interface WebpackStatsFiltered {
   modules: Array<WebpackStatsFilteredRootModule>;
 }
 
+export type ChunksIssuers = Record<string, Array<OutputChunk>>;
+
+/**
+ * Recursivily check if a chunk is async based on the chunks issuers
+ */
+export const lookupChunkAsync = (chunk: OutputChunk, chunksIssuers: ChunksIssuers):boolean => {
+  if (chunk.isDynamicEntry) {
+    return true;
+  }
+
+  if (chunk.isEntry) {
+    return false;
+  }
+
+  const chunkIssuers = chunksIssuers[chunk.fileName];
+
+  /**
+   * A sync chunk without issuer chunks, is sync
+   */
+  if (!chunkIssuers) {
+    return false;
+  }
+
+  const syncChunksIssuers = chunkIssuers.filter((chunkIssuer) => {
+    return chunkIssuer.isDynamicEntry === false;
+  });
+
+  /**
+   * A sync chunk with all the chunk issuer async, is async
+   */
+  if (syncChunksIssuers.length === 0) {
+    return true;
+  }
+
+  /**
+   * Recursively lookup for sync loads on the 2nd level issuers
+   * - if at least one issuer is sync, the chunk is sync
+   * - if none of the issuers are sync, the chunk is async
+   */
+  let isAsync = true;
+
+  for (let i = 0; i < syncChunksIssuers.length && isAsync; i++) {
+    isAsync = lookupChunkAsync(syncChunksIssuers[i], chunksIssuers);
+  }
+
+  return isAsync;
+}
+
 type AssetSource = OutputChunk | OutputAsset;
 type ChunkSource = OutputChunk;
 type ModuleSource = { fileName: string } & RenderedModule;
@@ -108,9 +156,24 @@ export const bundleToWebpackStats = (
   const chunks: Array<WebpackStatsFilteredChunk> = [];
   const moduleByFileName: Record<string, WebpackStatsFilteredModule> = {};
   const sources = new TransformSources();
+  const chunksIssuers: ChunksIssuers = {};
 
   const entries = Object.values(bundle);
 
+  // Collect metadata
+  entries.forEach((entry) => {
+    if (entry.type === 'chunk') {
+      entry.imports?.forEach((chunkDependency) => {
+        if (!chunksIssuers[chunkDependency]) {
+          chunksIssuers[chunkDependency] = [];
+        }
+
+        chunksIssuers[chunkDependency].push(entry);
+      });
+    }
+  });
+
+  // Process data
   entries.forEach((entry) => {
     if (entry.type === 'chunk') {
       assets.push({
@@ -120,11 +183,12 @@ export const bundleToWebpackStats = (
       sources.push(entry.fileName, entry);
 
       const chunkId = getChunkId(entry);
+      const chunkAsync = lookupChunkAsync(entry, chunksIssuers);
 
       chunks.push({
         id: chunkId,
         entry: entry.isEntry,
-        initial: !entry.isDynamicEntry,
+        initial: !chunkAsync,
         files: [entry.fileName],
         names: [entry.name],
       });
