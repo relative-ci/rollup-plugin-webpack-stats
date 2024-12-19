@@ -45,42 +45,42 @@ export interface WebpackStatsFiltered {
 export type ChunksIssuers = Record<string, Array<OutputChunk>>;
 
 /**
- * Recursivily check if a chunk is async based on the chunks parents
+ * Recursivily check if a chunk is async based on the chunks issuers
  */
-export const lookupChunkAsync = (chunk: OutputChunk, chunksParents: ChunksIssuers):boolean => {
+export const lookupChunkAsync = (chunk: OutputChunk, chunksIssuers: ChunksIssuers):boolean => {
   if (chunk.isDynamicEntry) {
     return true;
   }
 
-  const chunkParents = chunksParents[chunk.fileName];
+  const chunkIssuers = chunksIssuers[chunk.fileName];
 
   /**
-   * A sync chunk without parent chunks, is sync
+   * A sync chunk without issuer chunks, is sync
    */
-  if (!chunkParents) {
+  if (!chunkIssuers) {
     return false;
   }
 
-  const syncChunksParents = chunkParents.filter((chunkParent) => {
-    return chunkParent.isDynamicEntry === false;
+  const syncChunksIssuers = chunkIssuers.filter((chunkIssuer) => {
+    return chunkIssuer.isDynamicEntry === false;
   });
 
   /**
-   * A sync chunk with all the parents async, is async
+   * A sync chunk with all the chunk issuer async, is async
    */
-  if (syncChunksParents.length === 0) {
+  if (syncChunksIssuers.length === 0) {
     return true;
   }
 
   /**
-   * Recursively lookup for sync loads on the 2nd level parents
-   * - if at least one parent is sync, the chunk is sync
-   * - if none of the parents are sync, the chunk is async
+   * Recursively lookup for sync loads on the 2nd level issuers
+   * - if at least one issuer is sync, the chunk is sync
+   * - if none of the issuers are sync, the chunk is async
    */
   let isAsync = true;
 
-  for (let i = 0; i < syncChunksParents.length && isAsync; i++) {
-    isAsync = lookupChunkAsync(syncChunksParents[i], chunksParents);
+  for (let i = 0; i < syncChunksIssuers.length && isAsync; i++) {
+    isAsync = lookupChunkAsync(syncChunksIssuers[i], chunksIssuers);
   }
 
   return isAsync;
