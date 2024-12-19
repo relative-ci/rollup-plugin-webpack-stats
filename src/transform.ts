@@ -42,12 +42,12 @@ export interface WebpackStatsFiltered {
   modules: Array<WebpackStatsFilteredRootModule>;
 }
 
-export type ChunksParents = Record<string, Array<OutputChunk>>;
+export type ChunksIssuers = Record<string, Array<OutputChunk>>;
 
 /**
  * Recursivily check if a chunk is async based on the chunks parents
  */
-export const lookupChunkAsync = (chunk: OutputChunk, chunksParents: ChunksParents):boolean => {
+export const lookupChunkAsync = (chunk: OutputChunk, chunksParents: ChunksIssuers):boolean => {
   if (chunk.isDynamicEntry) {
     return true;
   }
@@ -161,23 +161,19 @@ export const bundleToWebpackStats = (
   const chunks: Array<WebpackStatsFilteredChunk> = [];
   const moduleByFileName: Record<string, WebpackStatsFilteredModule> = {};
   const sources = new TransformSources();
-  const chunksParents: ChunksParents = {};
+  const chunksIssuers: ChunksIssuers = {};
 
   const entries = Object.values(bundle);
 
   // Collect metadata
   entries.forEach((entry) => {
     if (entry.type === 'chunk') {
-      entry.imports?.forEach((entryImport) => {
-        if (!chunksParents[entry.fileName]) {
-          chunksParents[entry.fileName] = [];
+      entry.imports?.forEach((chunkDependency) => {
+        if (!chunksIssuers[chunkDependency]) {
+          chunksIssuers[chunkDependency] = [];
         }
 
-        const parentChunk = bundle[entryImport];
-
-        if (parentChunk) {
-          chunksParents[entry.fileName].push(parentChunk);
-        }
+        chunksIssuers[chunkDependency].push(entry);
       });
     }
   });
@@ -200,7 +196,7 @@ export const bundleToWebpackStats = (
       chunks.push({
         id: chunkId,
         entry: entry.isEntry,
-        initial: !lookupChunkAsync(entry, chunksParents),
+        initial: !lookupChunkAsync(entry, chunksIssuers),
         files: [entry.fileName],
         names: [entry.name],
       });
