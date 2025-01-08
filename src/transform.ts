@@ -1,8 +1,7 @@
 import path from 'path';
 import type { OutputAsset, OutputBundle, OutputChunk, RenderedModule } from 'rollup';
 
-import type { ExcludeFilepathOption } from './utils';
-import { checkExcludeFilepath, getByteSize, getChunkId } from "./utils";
+import { getByteSize, getChunkId } from "./utils";
 
 // https://github.com/relative-ci/bundle-stats/blob/master/packages/plugin-webpack-filter/src/index.ts
 export type WebpackStatsFilteredAsset = {
@@ -93,14 +92,6 @@ export type BundleTransformOptions = {
    */
   moduleOriginalSize?: boolean;
   /**
-   * Exclude matching assets
-   */
-  excludeAssets?: ExcludeFilepathOption;
-  /**
-   * Exclude matching modules
-   */
-  excludeModules?: ExcludeFilepathOption;
-  /**
    * Callback function to access and mutate the resulting stats after the transformation
    */
   transform?: TransformCallback;
@@ -111,7 +102,7 @@ export const bundleToWebpackStats = (
   pluginOptions?: BundleTransformOptions
 ): WebpackStatsFiltered => {
   const options = { moduleOriginalSize: false, ...pluginOptions } satisfies BundleTransformOptions;
-  const { excludeAssets, excludeModules, moduleOriginalSize, transform = defaultTransform } = options;
+  const { moduleOriginalSize, transform = defaultTransform } = options;
 
   const assets: Array<WebpackStatsFilteredAsset> = [];
   const chunks: Array<WebpackStatsFilteredChunk> = [];
@@ -122,10 +113,6 @@ export const bundleToWebpackStats = (
 
   entries.forEach((entry) => {
     if (entry.type === 'chunk') {
-      if (checkExcludeFilepath(entry.fileName, excludeAssets)) {
-        return;
-      }
-
       assets.push({
         name: entry.fileName,
         size: getByteSize(entry.code),
@@ -144,10 +131,6 @@ export const bundleToWebpackStats = (
       sources.push(chunkId, entry);
 
       Object.entries(entry.modules).forEach(([modulePath, moduleInfo]) => {
-        if (checkExcludeFilepath(modulePath, excludeModules)) {
-          return;
-        }
-
         // Remove unexpected rollup null prefix
         const normalizedModulePath = modulePath.replace('\u0000', '');
 
@@ -177,10 +160,6 @@ export const bundleToWebpackStats = (
         }
       });
     } else if (entry.type === 'asset') {
-      if (checkExcludeFilepath(entry.fileName, excludeAssets)) {
-        return;
-      }
-
       assets.push({
         name: entry.fileName,
         size: getByteSize(entry.source.toString()),
