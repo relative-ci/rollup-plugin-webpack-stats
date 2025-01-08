@@ -38,39 +38,3 @@ export function getChunkId(chunk: OutputChunk): string {
 type ExcludeFilepathParam = string | RegExp | ((filepath: string) => boolean);
 
 export type ExcludeFilepathOption = ExcludeFilepathParam | Array<ExcludeFilepathParam>;
-
-/**
- * Check if filepath should be excluded based on a config
- */
-export function checkExcludeFilepath(
-  filepath: string,
-  option?: ExcludeFilepathOption,
-): boolean {
-  if (!option) {
-    return false;
-  }
-
-  if (Array.isArray(option)) {
-    let res = false;
-
-    for (let i = 0; i <= option.length - 1 && res === false; i++) {
-      res = checkExcludeFilepath(filepath, option[i]);
-    }
-
-    return res;
-  }
-
-  if (typeof option === 'function') {
-    return option(filepath);
-  }
-
-  if (typeof option === 'string') {
-    return Boolean(filepath.match(option));
-  }
-
-  if ('test' in option) {
-    return option.test(filepath);
-  }
-
-  return false;
-}
