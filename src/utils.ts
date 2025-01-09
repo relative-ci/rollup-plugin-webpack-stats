@@ -1,5 +1,5 @@
-import path from 'path';
-import crypto from 'crypto';
+import path from 'node:path';
+import crypto from 'node:crypto';
 import type { OutputChunk } from 'rollup';
 
 const HASH_LENGTH = 7;
@@ -38,3 +38,54 @@ export function getChunkId(chunk: OutputChunk): string {
 type ExcludeFilepathParam = string | RegExp | ((filepath: string) => boolean);
 
 export type ExcludeFilepathOption = ExcludeFilepathParam | Array<ExcludeFilepathParam>;
+
+export function round(value: number, precision = 2) {
+  const multiplier = 10 ^ precision;
+  return Math.round(value * multiplier) / multiplier; 
+}
+
+const FILE_SIZE = {
+  BYTE: {
+    symbol: 'B',
+    multiplier: 1,
+  },
+  KILO: {
+    symbol: 'KiB',
+    multiplier: 1024,
+  },
+  MEGA: {
+    symbol: 'MiB',
+    multiplier: 1024 * 1024,
+  },
+}
+
+export function formatFileSize(value?: number | null): string {
+  let unit = FILE_SIZE.BYTE;
+
+  if (typeof value !== 'number') {
+    return `0${unit.symbol}`;
+  }
+
+  if (value < FILE_SIZE.KILO.multiplier) {
+    unit = FILE_SIZE.BYTE;
+  } else if (value < FILE_SIZE.MEGA.multiplier) {
+    unit = FILE_SIZE.KILO;
+  } else {
+    unit = FILE_SIZE.MEGA;
+  }
+
+  return `${round(value / unit.multiplier, 2)}${unit.symbol}`;
+}
+
+const DEFAULT_FILE_NAME = 'webpack-stats.json';
+
+export function resolveFilepath(
+  fileName = DEFAULT_FILE_NAME, outputDir?: string): string {
+  // Check if the fileName is an absolute path
+  if (path.isAbsolute(fileName)) {
+    return fileName;
+  }
+
+  // If the fileName is not an absolute path, join it with the output directory or the current working directory
+  return path.join(outputDir || process.cwd(), fileName);
+}

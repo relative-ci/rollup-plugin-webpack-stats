@@ -3,8 +3,10 @@ import extractStats, { type StatsOptions } from 'rollup-plugin-stats/extract';
 
 import type { BundleTransformOptions } from './transform';
 import { bundleToWebpackStats } from './transform';
+import { type StatsWrite, statsWrite } from './write';
+import { formatFileSize, resolveFilepath } from './utils';
 
-const NAME = 'webpackStats';
+const PLUGIN_NAME = 'webpackStats';
 
 type WebpackStatsOptions = {
   /**
@@ -12,6 +14,11 @@ type WebpackStatsOptions = {
    * default: webpack-stats.json
    */
   fileName?: string;
+  /**
+   * Custom file writer
+   * @default - fs.write(FILENAME, JSON.stringify(STATS, null, 2));
+   */
+  write?: StatsWrite;
 } & Omit<StatsOptions, "source"> & BundleTransformOptions;
 
 type WebpackStatsOptionsOrBuilder =
@@ -21,19 +28,29 @@ type WebpackStatsOptionsOrBuilder =
 export const webpackStats = (
   options: WebpackStatsOptionsOrBuilder = {}
 ): Plugin => ({
-  name: NAME,
-  generateBundle(outputOptions, bundle) {
+  name: PLUGIN_NAME,
+  async generateBundle(outputOptions, bundle) {
     const resolvedOptions = typeof options === 'function' ? options(outputOptions) : options;
-    const { excludeAssets, excludeModules, source, ...transformOptions } = resolvedOptions;
+    const { 
+      fileName,
+      excludeAssets,
+      excludeModules,
+      write = statsWrite,
+      ...transformOptions
+    } = resolvedOptions;
 
     const rollupStats = extractStats(bundle, { excludeAssets, excludeModules });
+    const stats = bundleToWebpackStats(rollupStats, transformOptions);
+    const filepath = resolveFilepath(fileName, outputOptions.dir);
 
-    const result = bundleToWebpackStats(rollupStats, transformOptions);
+    try {
+      const res = await write(filepath, stats as unknown as Record<string, unknown>);
+      const outputSize = Buffer.byteLength(res.content, 'utf-8');
 
-    this.emitFile({
-      type: 'asset',
-      fileName: resolvedOptions.fileName || 'webpack-stats.json',
-      source: JSON.stringify(result),
-    });
+      this.info(`Stats saved to ${res.filepath} (${formatFileSize(outputSize)})`);
+    } catch (error: any) { // eslint-disable-line
+      // Log error, but do not throw to allow the compilation to continue
+      this.warn(error);
+    }
   },
 });
