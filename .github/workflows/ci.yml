@@ -14,19 +14,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4.2.2
 
-      - name: Resolve caching
-        id: cache
-        if: ${{ github.ref_name != 'update-dependencies' && !startsWith(github.ref_name, 'dependabot/') }}
-        run: echo "npm_cache=npm" >> $GITHUB_STATE
-
-      - name: Use Node.js
-        uses: actions/setup-node@v4.1.0
-        with:
-          node-version-file: '.nvmrc'
-          cache: ${{ env.npm_cache }}
-
-      - name: Install dependencies
-        run: npm ci
+      - name: Setup
+        uses: relative-ci/.github/actions/setup@main
 
       - name: Lint
         run: npm run lint
@@ -37,19 +26,8 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4.2.2
 
-      - name: Resolve caching
-        id: cache
-        if: ${{ github.ref_name != 'update-dependencies' && !startsWith(github.ref_name, 'dependabot/') }}
-        run: echo "npm_cache=npm" >> $GITHUB_STATE
-
-      - name: Use Node.js
-        uses: actions/setup-node@v4.1.0
-        with:
-          node-version-file: '.nvmrc'
-          cache: ${{ env.npm_cache }}
-
-      - name: Install dependencies
-        run: npm ci
+      - name: Setup
+        uses: relative-ci/.github/actions/setup@main
 
       - name: Test
         run: npm run test:unit
@@ -60,22 +38,11 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4.2.2
 
-      - name: Resolve caching
-        id: cache
-        if: ${{ github.ref_name != 'update-dependencies' && !startsWith(github.ref_name, 'dependabot/') }}
-        run: echo "npm_cache=npm" >> $GITHUB_STATE
-
-      - name: Use Node.js
-        uses: actions/setup-node@v4.1.0
-        with:
-          node-version-file: '.nvmrc'
-          cache: ${{ env.npm_cache }}
-
-      - name: Install dependencies
-        run: npm ci
+      - name: Setup
+        uses: relative-ci/.github/actions/setup@main
 
       - name: Build
-        run: yarn run build
+        run: npm run build
 
       - name: Upload build files
         uses: actions/upload-artifact@v4.4.3
@@ -155,21 +122,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4.2.2
 
-      # Cache packages when the branch is not update-dependencies or dependabot/*
-      - name: Resolve caching
-        id: cache
-        if: ${{ github.ref_name != 'update-dependencies' && !startsWith(github.ref_name, 'dependabot/') }}
-        run: echo "PACKAGE=npm" >> $GITHUB_OUTPUT
-
-      - name: Use Node.js
-        uses: actions/setup-node@v4.1.0
-        with:
-          node-version-file: '.nvmrc'
-          cache: ${{ steps.cache.outputs.PACKAGE }}
-          registry-url: 'https://registry.npmjs.org'
-
-      - name: Install dependencies
-        run: npm ci
+      - name: Setup
+        uses: relative-ci/.github/actions/setup@main
 
       - name: Download build
         uses: actions/download-artifact@v4
