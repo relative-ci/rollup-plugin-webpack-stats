@@ -57,10 +57,9 @@ export default defineConfig((env) => ({
 
 - `fileName` - JSON stats file inside rollup/vite output directory
 - `transform` - access and mutate the resulting stats after the conversion: `(stats: WebpackStatsFilterd, sources: TransformSources, bundle: OutputBundle) => WebpackStatsFilterd`
-- stats extraction options ([rollup-plugin-stats](https://github.com/relative-ci/rollup-plugin-stats#options))
+- rollup stats extraction options ([rollup-plugin-stats](https://github.com/relative-ci/rollup-plugin-stats#options))
     - `excludeAssets` - exclude matching assets: `string | RegExp | ((filepath: string) => boolean) | Array<string | RegExp | ((filepath: string) => boolean)>`
     - `excludeModules` - exclude matching modules: `string | RegExp | ((filepath: string) => boolean) | Array<string | RegExp | ((filepath: string) => boolean)>`
-    - `source` - output asset/chunk/module source (default: `false`)
 
 ### Examples
 

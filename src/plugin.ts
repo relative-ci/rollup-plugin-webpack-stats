@@ -12,7 +12,7 @@ type WebpackStatsOptions = {
    * default: webpack-stats.json
    */
   fileName?: string;
-} & StatsOptions & BundleTransformOptions;
+} & Omit<StatsOptions, "source"> & BundleTransformOptions;
 
 type WebpackStatsOptionsOrBuilder =
   | WebpackStatsOptions
@@ -26,7 +26,7 @@ export const webpackStats = (
     const resolvedOptions = typeof options === 'function' ? options(outputOptions) : options;
     const { excludeAssets, excludeModules, source, ...transformOptions } = resolvedOptions;
 
-    const rollupStats = extractStats(bundle, { excludeAssets, excludeModules, source });
+    const rollupStats = extractStats(bundle, { excludeAssets, excludeModules });
 
     const result = bundleToWebpackStats(rollupStats, transformOptions);
 
