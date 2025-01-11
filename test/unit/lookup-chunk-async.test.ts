@@ -29,8 +29,8 @@ describe('lookupChunkAsync', () => {
   describe('isDynamicEntry === true', () => {
     test('chunk is async', () => {
       /**
-       * A ---async---> PARENT?
-       */
+        * PARENT? ---async---> A
+      */
       expect(
         lookupChunkAsync(
           { ...COMMON_DATA, fileName: 'A', isDynamicEntry: true },
@@ -43,7 +43,7 @@ describe('lookupChunkAsync', () => {
   describe('isDynamicEntry === false', () => {
     test("chunk is sync if it is a static entry", () => {
       /**
-       * A ---sync---> ENTRY
+       * ROOT ---sync---> A
        */
       expect(
         lookupChunkAsync(
@@ -57,7 +57,9 @@ describe('lookupChunkAsync', () => {
 
     test("chunk is sync if it is a static and dynamic entry", () => {
       /**
-       * A ---sync---> ENTRY
+       * ROOT ---sync---> A
+       *
+       * @NOTE Under investigation for reasons why both flags can be true
        */
       expect(
         lookupChunkAsync(
@@ -71,8 +73,8 @@ describe('lookupChunkAsync', () => {
 
     test("chunk is sync if it doesn't have any issuers", () => {
       /**
-       * A ---sync---> NO_PARENT
-       */
+        * NO_PARENT ---sync---> A
+        */
       expect(
         lookupChunkAsync(
           { ...COMMON_DATA, fileName: 'A', isDynamicEntry: false },
@@ -83,8 +85,8 @@ describe('lookupChunkAsync', () => {
 
     test('chunk is async when all chunk issuers are async', () => {
       /**
-       * C <---sync--- A ---async---> ROOT
-       * C <---sync--- B ---async---/
+       * ROOT ----async---> A ---sync---> C
+       *      \---async---> B ---sync---> C
        */
       expect(
         lookupChunkAsync(
@@ -106,8 +108,8 @@ describe('lookupChunkAsync', () => {
         )
       ).toEqual(true);
       /**
-       * E <--sync--- C <---sync--- A ---async---> ROOT
-       * E <--sync--- D <---sync--- B ---async---/
+       * ROOT ---async---> A ---sync---> C ---sync---> E
+       *      \--async---> B ---sync---> D ---sync---> E
        */
       expect(
         lookupChunkAsync(
@@ -146,8 +148,8 @@ describe('lookupChunkAsync', () => {
 
     test('chunk is sync when at least one issuer is sync', () => {
       /**
-       * C <--sync--- A ---async---> ROOT
-       * C <--sync--- B --- sync---/
+       * ROOT ----async---> A ---sync---> C
+       *      \--- sync---> B ---sync---> C
        */
       expect(
         lookupChunkAsync(
@@ -169,8 +171,8 @@ describe('lookupChunkAsync', () => {
         )
       ).toEqual(false);
       /**
-       * E <---sync--- C <---sync--- A ---async---> ROOT
-       * E <---sync--- D <---sync--- B --- sync---/
+       * ROOT ----async---> A ---sync---> C ---sync---> E
+       *      \--- sync---> B ---sync---> D ---sync---> E
        */
       expect(
         lookupChunkAsync(
