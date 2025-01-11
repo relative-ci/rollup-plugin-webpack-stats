@@ -38,6 +38,7 @@
     "node": ">=18"
   },
   "scripts": {
+    "prebuild": "rimraf ./dist",
     "build": "rollup -c rollup.config.mjs",
     "lint": "exit 0",
     "test:unit": "vitest test/unit",
@@ -65,6 +66,7 @@
     "husky": "9.1.7",
     "memfs": "^4.15.1",
     "release-it": "18.1.1",
+    "rimraf": "6.0.1",
     "rollup": "4.30.1",
     "tslib": "2.8.1",
     "typescript": "5.7.3",
