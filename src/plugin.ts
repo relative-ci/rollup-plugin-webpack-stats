@@ -39,7 +39,12 @@ export const webpackStats = (
       ...transformOptions
     } = resolvedOptions;
 
-    const rollupStats = extractStats(bundle, { excludeAssets, excludeModules });
+    const rollupStats = extractStats(bundle, {
+      excludeAssets,
+      excludeModules,
+      // Extract stats source to compute size
+      source: true,
+    });
     const stats = bundleToWebpackStats(rollupStats, transformOptions);
     const filepath = resolveFilepath(fileName, outputOptions.dir);
 

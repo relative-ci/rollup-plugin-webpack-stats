@@ -18,7 +18,14 @@ describe('package test', () => {
 
     const actual = await fs.readFile(path.join(config.output.dir, 'webpack-stats.json'), 'utf8');
     const stats = JSON.parse(actual);
-    expect(stats.assets).toBeTruthy();
+    expect(stats).toMatchObject({
+      assets: [
+        {
+          name: 'index.js',
+          size: 73,
+        },
+      ],
+    })
   });
 
   test('should output bundle stats JSON file when options is a builder function', async () => {
@@ -28,6 +35,13 @@ describe('package test', () => {
 
     const actual = await fs.readFile(path.join(config.output.dir, 'stats-dist2.json'), 'utf8');
     const stats = JSON.parse(actual);
-    expect(stats.assets).toBeTruthy();
+    expect(stats).toMatchObject({
+      assets: [
+        {
+          name: 'index.js',
+          size: 73,
+        },
+      ],
+    })
   });
 });
