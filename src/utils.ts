@@ -1,13 +1,17 @@
 import path from 'node:path';
 import crypto from 'node:crypto';
-import type { OutputChunk } from 'rollup';
+import type { ChunkStats } from 'rollup-plugin-stats/extract';
 
 const HASH_LENGTH = 7;
 
 /**
  * Get content byte size
  */
-export function getByteSize(content: string | Buffer): number {
+export function getByteSize(content?: string | Uint8Array<ArrayBufferLike>): number {
+  if (!content) {
+    return 0;
+  }
+
   if (typeof content === 'string') {
     return Buffer.from(content).length;
   }
@@ -23,7 +27,7 @@ export function getHash(filepath: string): string {
   return digest.update(Buffer.from(filepath)).digest('hex').substr(0, HASH_LENGTH); 
 }
 
-export function getChunkId(chunk: OutputChunk): string {
+export function getChunkId(chunk: ChunkStats): string {
   let value = chunk.name;
 
   // Use entry module relative path
