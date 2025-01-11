@@ -1,5 +1,5 @@
 import path from 'path';
-import type { OutputAsset, OutputBundle, OutputChunk, RenderedModule } from 'rollup';
+import type { Stats, AssetStats, ChunkStats, ModuleStats } from 'rollup-plugin-stats/extract';
 
 import { getByteSize, getChunkId } from "./utils";
 
@@ -41,12 +41,12 @@ export interface WebpackStatsFiltered {
   modules: Array<WebpackStatsFilteredRootModule>;
 }
 
-export type ChunksIssuers = Record<string, Array<OutputChunk>>;
+export type ChunksIssuers = Record<string, Array<ChunkStats>>;
 
 /**
  * Recursivily check if a chunk is async based on the chunks issuers
  */
-export const lookupChunkAsync = (chunk: OutputChunk, chunksIssuers: ChunksIssuers):boolean => {
+export const lookupChunkAsync = (chunk: ChunkStats, chunksIssuers: ChunksIssuers):boolean => {
   if (chunk.isDynamicEntry) {
     return true;
   }
@@ -89,9 +89,9 @@ export const lookupChunkAsync = (chunk: OutputChunk, chunksIssuers: ChunksIssuer
   return isAsync;
 }
 
-type AssetSource = OutputChunk | OutputAsset;
-type ChunkSource = OutputChunk;
-type ModuleSource = { fileName: string } & RenderedModule;
+type AssetSource = ChunkStats | AssetStats;
+type ChunkSource = ChunkStats;
+type ModuleSource = { fileName: string } & ModuleStats;
 
 /**
  * Store transformed sources
@@ -129,7 +129,7 @@ class TransformSources {
   }
 }
 
-export type TransformCallback = (stats: WebpackStatsFiltered, sources: TransformSources, bundle: OutputBundle) => WebpackStatsFiltered; 
+export type TransformCallback = (stats: WebpackStatsFiltered, sources: TransformSources, bundle: Stats) => WebpackStatsFiltered; 
 
 const defaultTransform: TransformCallback = (stats) => stats;
 
@@ -146,7 +146,7 @@ export type BundleTransformOptions = {
 };
 
 export const bundleToWebpackStats = (
-  bundle: OutputBundle,
+  bundle: Stats,
   pluginOptions?: BundleTransformOptions
 ): WebpackStatsFiltered => {
   const options = { moduleOriginalSize: false, ...pluginOptions } satisfies BundleTransformOptions;
@@ -226,7 +226,7 @@ export const bundleToWebpackStats = (
     } else if (entry.type === 'asset') {
       assets.push({
         name: entry.fileName,
-        size: getByteSize(entry.source.toString()),
+        size: getByteSize(entry.source),
       });
       sources.push(entry.fileName, entry);
     } else {
