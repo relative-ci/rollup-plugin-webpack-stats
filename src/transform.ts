@@ -47,12 +47,12 @@ export type ChunksIssuers = Record<string, Array<ChunkStats>>;
  * Recursivily check if a chunk is async based on the chunks issuers
  */
 export const lookupChunkAsync = (chunk: ChunkStats, chunksIssuers: ChunksIssuers):boolean => {
-  if (chunk.isDynamicEntry) {
-    return true;
-  }
-
   if (chunk.isEntry) {
     return false;
+  }
+
+  if (chunk.isDynamicEntry) {
+    return true;
   }
 
   const chunkIssuers = chunksIssuers[chunk.fileName];
