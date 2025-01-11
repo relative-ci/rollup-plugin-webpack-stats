@@ -41,13 +41,27 @@ describe('lookupChunkAsync', () => {
   });
 
   describe('isDynamicEntry === false', () => {
-    test("chunk is sync if it is an entry", () => {
+    test("chunk is sync if it is a static entry", () => {
       /**
        * A ---sync---> ENTRY
        */
       expect(
         lookupChunkAsync(
           { ...COMMON_DATA, fileName: 'A', isDynamicEntry: false, isEntry: true },
+          {
+            A: ['B', 'C'],
+          }
+        )
+      ).toEqual(false);
+    });
+
+    test("chunk is sync if it is a static and dynamic entry", () => {
+      /**
+       * A ---sync---> ENTRY
+       */
+      expect(
+        lookupChunkAsync(
+          { ...COMMON_DATA, fileName: 'A', isDynamicEntry: true, isEntry: true },
           {
             A: ['B', 'C'],
           }

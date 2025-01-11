@@ -175,6 +175,7 @@ export const statsFixtures = {
         renderedExports: [],
       },
     },
+    imports: [],
     exports: [],
     dynamicImports: [],
   },
