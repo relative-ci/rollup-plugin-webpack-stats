@@ -1,22 +1,33 @@
-import { describe, test, expect } from 'vitest';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { beforeEach, describe, test, expect } from 'vitest';
 import { rollup } from 'rollup';
+import { vol } from 'memfs';
 
 import rollupConfig from './rollup.config';
 
 describe('package test', () => {
+  beforeEach(() => {
+    vol.reset();
+  });
+
   test('should output bundle stats JSON file when options is an object', async () => {
-    const bundle = await rollup(rollupConfig[0]);
-    const res = await bundle.generate(rollupConfig[0].output);
-    expect(res.output[1]).toMatchObject({
-      fileName: 'webpack-stats.json',
-    });
+    const config = rollupConfig[0];
+    const bundle = await rollup(config);
+    await bundle.generate(config.output);
+
+    const actual = await fs.readFile(path.join(config.output.dir, 'webpack-stats.json'), 'utf8');
+    const stats = JSON.parse(actual);
+    expect(stats.assets).toBeTruthy();
   });
 
   test('should output bundle stats JSON file when options is a builder function', async () => {
-    const bundle = await rollup(rollupConfig[1]);
-    const res = await bundle.generate(rollupConfig[1].output);
-    expect(res.output[1]).toMatchObject({
-      fileName: 'stats-dist2.json',
-    });
+    const config = rollupConfig[1];
+    const bundle = await rollup(config);
+    await bundle.generate(config.output);
+
+    const actual = await fs.readFile(path.join(config.output.dir, 'stats-dist2.json'), 'utf8');
+    const stats = JSON.parse(actual);
+    expect(stats.assets).toBeTruthy();
   });
 });
