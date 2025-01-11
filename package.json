@@ -42,7 +42,7 @@
     "build": "rollup -c rollup.config.mjs",
     "lint": "exit 0",
     "test:unit": "vitest test/unit",
-    "test:package": "vitest test/package",
+    "test:package": "cd test/package && vitest",
     "bump": "./scripts/bump.sh",
     "release": "./scripts/release.sh"
   },
