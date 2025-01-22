@@ -163,12 +163,17 @@ export const bundleToWebpackStats = (
   // Collect metadata
   entries.forEach((entry) => {
     if (entry.type === 'chunk') {
-      entry.imports?.forEach((chunkDependency) => {
-        if (!chunksIssuers[chunkDependency]) {
-          chunksIssuers[chunkDependency] = [];
+      entry.imports?.forEach((chunkImportFileName) => {
+        // Skip circular references
+        if (chunksIssuers[entry.fileName]?.find((chunkIssuer) => chunkIssuer.fileName === chunkImportFileName)) {
+          return;
         }
 
-        chunksIssuers[chunkDependency].push(entry);
+        if (!chunksIssuers[chunkImportFileName]) {
+          chunksIssuers[chunkImportFileName] = [];
+        }
+
+        chunksIssuers[chunkImportFileName].push(entry);
       });
     }
   });
