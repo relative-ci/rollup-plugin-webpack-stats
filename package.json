@@ -58,7 +58,7 @@
     "trailingComma": "es5"
   },
   "devDependencies": {
-    "@release-it/conventional-changelog": "10.0.0",
+    "@release-it/conventional-changelog": "10.0.1",
     "@rollup/plugin-typescript": "12.1.2",
     "@tsconfig/node18": "18.2.4",
     "@types/node": "22.13.14",
