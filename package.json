@@ -3,6 +3,13 @@
   "version": "2.0.6",
   "private": false,
   "license": "MIT",
+  "keywords": [
+    "vite",
+    "rollup",
+    "plugin",
+    "stats",
+    "bundle-stats"
+  ],
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
   "typings": "dist/index.d.ts",
