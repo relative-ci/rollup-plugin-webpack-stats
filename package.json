@@ -83,7 +83,7 @@
     "rollup-plugin-stats": "1.3.9"
   },
   "peerDependencies": {
-    "vite": "^5.0.0 || ^6.0.0",
+    "vite": "^5.0.0 || ^6.0.0 || ^7.0.0",
     "rollup": "^3.0.0 || ^4.0.0"
   },
   "peerDependenciesMeta": {
