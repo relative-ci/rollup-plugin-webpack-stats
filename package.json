@@ -69,7 +69,7 @@
     "@release-it/conventional-changelog": "10.0.1",
     "@rollup/plugin-typescript": "12.1.4",
     "@tsconfig/node18": "18.2.4",
-    "@types/node": "24.0.13",
+    "@types/node": "24.0.14",
     "dotenv": "17.0.1",
     "husky": "9.1.7",
     "memfs": "4.17.2",
