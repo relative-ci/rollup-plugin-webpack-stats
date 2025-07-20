@@ -208,5 +208,38 @@ describe('lookupChunkAsync', () => {
         )
       ).toEqual(false);
     });
+
+    test('chunk is sync and has circular reference', () => {
+      /**
+       * ROOT ----async---> A ---sync---> C
+       *      \--- sync---> B ---sync---> C
+       */
+      expect(
+        lookupChunkAsync(
+          { ...COMMON_DATA, fileName: 'C', isDynamicEntry: false },
+          {
+            A: [
+              {
+                ...COMMON_DATA,
+                fileName: 'C',
+                isDynamicEntry: false,
+              },
+            ],
+            C: [
+              {
+                ...COMMON_DATA,
+                fileName: 'A',
+                isDynamicEntry: false,
+              },
+              {
+                ...COMMON_DATA,
+                fileName: 'B',
+                isDynamicEntry: false,
+              },
+            ],
+          },
+        )
+      ).toEqual(false);
+    });
   });
 });
