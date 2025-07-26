@@ -33,8 +33,8 @@ describe('lookupChunkAsync', () => {
       */
       expect(
         lookupChunkAsync(
+          {},
           { ...COMMON_DATA, fileName: 'A', isDynamicEntry: true },
-          {}
         )
       ).toEqual(true);
     });
@@ -47,10 +47,10 @@ describe('lookupChunkAsync', () => {
        */
       expect(
         lookupChunkAsync(
-          { ...COMMON_DATA, fileName: 'A', isDynamicEntry: false, isEntry: true },
           {
             A: ['B', 'C'],
-          }
+          },
+          { ...COMMON_DATA, fileName: 'A', isDynamicEntry: false, isEntry: true },
         )
       ).toEqual(false);
     });
@@ -63,10 +63,10 @@ describe('lookupChunkAsync', () => {
        */
       expect(
         lookupChunkAsync(
-          { ...COMMON_DATA, fileName: 'A', isDynamicEntry: true, isEntry: true },
           {
             A: ['B', 'C'],
-          }
+          },
+          { ...COMMON_DATA, fileName: 'A', isDynamicEntry: true, isEntry: true },
         )
       ).toEqual(false);
     });
@@ -77,8 +77,8 @@ describe('lookupChunkAsync', () => {
         */
       expect(
         lookupChunkAsync(
+          {},
           { ...COMMON_DATA, fileName: 'A', isDynamicEntry: false },
-          {}
         )
       ).toEqual(false);
     });
@@ -90,7 +90,6 @@ describe('lookupChunkAsync', () => {
        */
       expect(
         lookupChunkAsync(
-          { ...COMMON_DATA, fileName: 'C', isDynamicEntry: false },
           {
             C: [
               {
@@ -104,7 +103,8 @@ describe('lookupChunkAsync', () => {
                 isDynamicEntry: true,
               },
             ],
-          }
+          },
+          { ...COMMON_DATA, fileName: 'C', isDynamicEntry: false },
         )
       ).toEqual(true);
       /**
@@ -113,7 +113,6 @@ describe('lookupChunkAsync', () => {
        */
       expect(
         lookupChunkAsync(
-          { ...COMMON_DATA, fileName: 'E', isDynamicEntry: false },
           {
             E: [
               {
@@ -141,7 +140,8 @@ describe('lookupChunkAsync', () => {
                 isDynamicEntry: true,
               },
             ],
-          }
+          },
+          { ...COMMON_DATA, fileName: 'E', isDynamicEntry: false },
         )
       ).toEqual(true);
     });
@@ -153,7 +153,6 @@ describe('lookupChunkAsync', () => {
        */
       expect(
         lookupChunkAsync(
-          { ...COMMON_DATA, fileName: 'C', isDynamicEntry: false },
           {
             C: [
               {
@@ -167,7 +166,8 @@ describe('lookupChunkAsync', () => {
                 isDynamicEntry: false,
               },
             ],
-          }
+          },
+          { ...COMMON_DATA, fileName: 'C', isDynamicEntry: false },
         )
       ).toEqual(false);
       /**
@@ -176,7 +176,6 @@ describe('lookupChunkAsync', () => {
        */
       expect(
         lookupChunkAsync(
-          { ...COMMON_DATA, fileName: 'E', isDynamicEntry: false },
           {
             E: [
               {
@@ -204,7 +203,41 @@ describe('lookupChunkAsync', () => {
                 isDynamicEntry: true,
               },
             ],
-          }
+          },
+          { ...COMMON_DATA, fileName: 'E', isDynamicEntry: false },
+        )
+      ).toEqual(false);
+    });
+
+    test('chunk is sync and has circular reference', () => {
+      /**
+       * ROOT ----async---> A ---sync---> C
+       *      \--- sync---> B ---sync---> C
+       */
+      expect(
+        lookupChunkAsync(
+          {
+            A: [
+              {
+                ...COMMON_DATA,
+                fileName: 'C',
+                isDynamicEntry: false,
+              },
+            ],
+            C: [
+              {
+                ...COMMON_DATA,
+                fileName: 'A',
+                isDynamicEntry: false,
+              },
+              {
+                ...COMMON_DATA,
+                fileName: 'B',
+                isDynamicEntry: false,
+              },
+            ],
+          },
+          { ...COMMON_DATA, fileName: 'C', isDynamicEntry: false },
         )
       ).toEqual(false);
     });

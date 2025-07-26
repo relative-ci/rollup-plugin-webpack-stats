@@ -46,7 +46,16 @@ export type ChunksIssuers = Record<string, Array<ChunkStats>>;
 /**
  * Recursivily check if a chunk is async based on the chunks issuers
  */
-export const lookupChunkAsync = (chunk: ChunkStats, chunksIssuers: ChunksIssuers):boolean => {
+export const lookupChunkAsync = (
+  chunksIssuers: ChunksIssuers,
+  chunk: ChunkStats,
+  processedChunks: Array<string> = [],
+):boolean => {
+  // When the chunks are having a circular dependency, return true to continue the recursive check
+  if (processedChunks.includes(chunk.fileName)) {
+    return true;
+  }
+
   if (chunk.isEntry) {
     return false;
   }
@@ -83,7 +92,7 @@ export const lookupChunkAsync = (chunk: ChunkStats, chunksIssuers: ChunksIssuers
   let isAsync = true;
 
   for (let i = 0; i < syncChunksIssuers.length && isAsync; i++) {
-    isAsync = lookupChunkAsync(syncChunksIssuers[i], chunksIssuers);
+    isAsync = lookupChunkAsync(chunksIssuers, syncChunksIssuers[i], [...processedChunks, chunk.fileName]);
   }
 
   return isAsync;
@@ -188,7 +197,7 @@ export const bundleToWebpackStats = (
       sources.push(entry.fileName, entry);
 
       const chunkId = getChunkId(entry);
-      const chunkAsync = lookupChunkAsync(entry, chunksIssuers);
+      const chunkAsync = lookupChunkAsync(chunksIssuers, entry);
 
       chunks.push({
         id: chunkId,
