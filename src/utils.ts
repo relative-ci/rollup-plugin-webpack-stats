@@ -13,7 +13,7 @@ export function getByteSize(content?: string | Uint8Array<ArrayBufferLike>): num
   }
 
   if (typeof content === 'string') {
-    return Buffer.from(content).length;
+    return Buffer.byteLength(content);
   }
 
   return content?.length || 0;
