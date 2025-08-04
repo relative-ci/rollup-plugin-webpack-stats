@@ -24,7 +24,7 @@ export function getByteSize(content?: string | Uint8Array<ArrayBufferLike>): num
  */
 export function getHash(filepath: string): string {
   const digest = crypto.createHash('sha256');
-  return digest.update(Buffer.from(filepath)).digest('hex').substr(0, HASH_LENGTH); 
+  return digest.update(filepath).digest('hex').substr(0, HASH_LENGTH); 
 }
 
 export function getChunkId(chunk: ChunkStats): string {
