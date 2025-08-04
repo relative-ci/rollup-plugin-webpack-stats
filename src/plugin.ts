@@ -49,7 +49,7 @@ export const webpackStats = (
 
     try {
       const res = await write(filepath, stats as unknown as Record<string, unknown>);
-      const outputSize = Buffer.byteLength(res.content, 'utf-8');
+      const outputSize = getByteSize(res.content);
 
       this.info(`Stats saved to ${res.filepath} (${formatFileSize(outputSize)})`);
     } catch (error: any) { // eslint-disable-line
