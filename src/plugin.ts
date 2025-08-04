@@ -18,7 +18,7 @@ type WebpackStatsOptions = {
    * @default - fs.write(FILENAME, JSON.stringify(STATS, null, 2));
    */
   write?: StatsWrite;
-} & Omit<StatsOptions, "source"> & BundleTransformOptions;
+} & Omit<StatsOptions, "source" | "map"> & BundleTransformOptions;
 
 type WebpackStatsOptionsOrBuilder =
   | WebpackStatsOptions
