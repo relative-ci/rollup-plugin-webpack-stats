@@ -3,7 +3,7 @@ import extractStats, { type StatsOptions } from 'rollup-plugin-stats/extract';
 
 import { type BundleTransformOptions, bundleToWebpackStats } from './transform';
 import { type StatsWrite, statsWrite } from './write';
-import { formatFileSize, resolveFilepath } from './utils';
+import { formatFileSize, getByteSize, resolveFilepath } from './utils';
 
 const PLUGIN_NAME = 'webpackStats';
 

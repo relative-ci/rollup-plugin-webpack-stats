@@ -47,7 +47,7 @@
   },
   "scripts": {
     "prebuild": "rimraf ./dist",
-    "build": "rollup -c rollup.config.mjs",
+    "build": "tsc && rollup -c rollup.config.mjs",
     "lint": "exit 0",
     "test:unit": "vitest test/unit",
     "test:package": "cd test/package && vitest",
