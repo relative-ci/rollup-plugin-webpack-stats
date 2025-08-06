@@ -87,7 +87,7 @@ jobs:
         run: npm install vitest
 
       - name: Download build files
-        uses: actions/download-artifact@v4.3.0
+        uses: actions/download-artifact@v5.0.0
         with:
           name: build-artifacts
 
@@ -128,7 +128,7 @@ jobs:
         uses: relative-ci/.github/actions/setup-node-npm@v1.1.1
 
       - name: Download build
-        uses: actions/download-artifact@v4.3.0
+        uses: actions/download-artifact@v5.0.0
         with:
           name: build-artifacts
 
