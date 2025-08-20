@@ -21,7 +21,7 @@
       "require": "./dist/index.cjs"
     },
     "./transform": {
-      "types": "./build/transform.d.ts",
+      "types": "./dist/transform.d.ts",
       "import": "./dist/transform.mjs",
       "require": "./dist/transform.cjs"
     }
