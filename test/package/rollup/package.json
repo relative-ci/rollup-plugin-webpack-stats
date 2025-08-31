@@ -15,7 +15,7 @@
     "@rollup/plugin-typescript": "^12.1.4",
     "cross-env": "^7.0.0",
     "rollup": "^4.9.1",
-    "rollup-plugin-webpack-stats": "*",
+    "rollup-plugin-webpack-stats": "file://../../../",
     "typescript": "^5.9.2"
   }
 }

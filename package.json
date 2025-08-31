@@ -11,19 +11,19 @@
     "stats",
     "bundle-stats"
   ],
-  "main": "dist/index.cjs",
-  "module": "dist/index.mjs",
-  "typings": "dist/index.d.ts",
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
+  "typings": "lib/types/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
+      "types": "./lib/types/index.d.ts",
+      "import": "./lib/esm/index.js",
+      "require": "./lib/cjs/index.js"
     },
     "./transform": {
-      "types": "./dist/transform.d.ts",
-      "import": "./dist/transform.mjs",
-      "require": "./dist/transform.cjs"
+      "types": "./lib/types/transform.d.ts",
+      "import": "./lib/esm/transform.js",
+      "require": "./lib/cjs/transform.js"
     }
   },
   "author": {
@@ -40,14 +40,15 @@
   },
   "homepage": "https://github.com/relative-ci/rollup-plugin-webpack-stats/blob/master/#readme",
   "files": [
-    "dist"
+    "lib"
   ],
   "engines": {
     "node": ">=18"
   },
   "scripts": {
-    "prebuild": "rimraf ./dist",
-    "build": "tsc && rollup -c rollup.config.mjs",
+    "build": "npm run clean && rollup -c && npm run build-type",
+    "build-type": "echo '{\"type\":\"commonjs\"}' > lib/cjs/package.json && echo '{\"type\":\"module\"}' > lib/esm/package.json",
+    "clean": "rimraf ./lib",
     "lint": "exit 0",
     "test:unit": "vitest test/unit",
     "test:package": "npm run test:package:rollup && npm run test:package:vite",
@@ -69,6 +70,8 @@
   },
   "devDependencies": {
     "@release-it/conventional-changelog": "10.0.1",
+    "@rollup/plugin-commonjs": "28.0.6",
+    "@rollup/plugin-node-resolve": "16.0.1",
     "@rollup/plugin-typescript": "12.1.4",
     "@tsconfig/node18": "18.2.4",
     "@types/node": "24.3.0",
@@ -78,6 +81,7 @@
     "release-it": "19.0.4",
     "rimraf": "6.0.1",
     "rollup": "4.46.4",
+    "rollup-plugin-node-externals": "8.1.0",
     "tslib": "2.8.1",
     "typescript": "5.9.2",
     "vitest": "3.2.4"
@@ -86,9 +90,9 @@
     "rollup-plugin-stats": "1.5.0"
   },
   "peerDependencies": {
-    "vite": "^5.0.0 || ^6.0.0 || ^7.0.0",
+    "rolldown": "^1.0.0-beta.0",
     "rollup": "^3.0.0 || ^4.0.0",
-    "rolldown": "^1.0.0-beta.0"
+    "vite": "^5.0.0 || ^6.0.0 || ^7.0.0"
   },
   "peerDependenciesMeta": {
     "vite": {
