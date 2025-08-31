@@ -6,7 +6,7 @@ import { vol } from 'memfs';
 
 import viteConfigs from './case-options.mjs';
 
-describe('vite options', () => {
+describe('package - vite options', () => {
   beforeEach(() => {
     vol.reset();
   });
@@ -15,7 +15,7 @@ describe('vite options', () => {
     const config = viteConfigs[0];
     await vite(config);
 
-    const actual = await fs.readFile(path.join(config.output.dir, 'webpack-stats.json'), 'utf8');
+    const actual = await fs.readFile(path.join(config.build.outDir, 'webpack-stats.json'), 'utf8');
     const stats = JSON.parse(actual);
     expect(stats).toMatchObject({
       assets: [

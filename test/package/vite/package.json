@@ -4,11 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build-commonjs": "vite build -c case-config.js",
+    "build-esm": "vite build -c case-config.mjs",
+    "build-ts": "vite build -c case-config.ts",
     "test": "vitest"
   },
   "keywords": [],
   "license": "ISC",
   "devDependencies": {
+    "cross-env": "^7.0.0",
     "rollup-plugin-webpack-stats": "*",
     "vite": "^7.0.0"
   }

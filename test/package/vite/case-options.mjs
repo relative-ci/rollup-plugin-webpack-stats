@@ -24,6 +24,7 @@ export default defineConfig([
     ...baseConfig,
     build: {
       ...baseConfig.build,
+      outDir: 'dist2',
     },
     plugins: [
       // A contrived demo to show that plugin options can access vite outputOptions
