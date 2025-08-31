@@ -1,36 +1,65 @@
+import path from 'node:path';
 import { defineConfig } from 'rollup';
-import typescript from '@rollup/plugin-typescript';
+import commonjsPlugin from '@rollup/plugin-commonjs';
+import nodeResolvePlugin from '@rollup/plugin-node-resolve';
+import typescriptPlugin from '@rollup/plugin-typescript';
+
+const CONTEXT = path.join(import.meta.dirname, './src');
 
 const INPUT = {
   'index': './src/index.ts',
   'transform': './src/transform.ts',
 };
 
-const OUTPUT_DIR = 'dist';
+const OUTPUT_DIR = 'lib';
 
 export default defineConfig([
   {
+    context: CONTEXT,
+    input: INPUT,
+    output: {
+      dir: OUTPUT_DIR,
+      format: 'cjs',
+      entryFileNames: 'cjs/[name].js',
+      sourcemap: true,
+      preserveModules: true,
+      preserveModulesRoot: CONTEXT,
+      interop: 'auto',
+    },
+    external: /node_modules/,
+    plugins: [
+      nodeResolvePlugin({
+        extensions: ['.js', '.cjs', '.json'],
+      }),
+      commonjsPlugin({
+        defaultIsModuleExports: 'auto',
+      }),
+      typescriptPlugin({
+        tsconfig: './tsconfig.cjs.json',
+      }),
+    ],
+  },
+  {
+    context: CONTEXT,
     input: INPUT,
     output: {
       dir: OUTPUT_DIR,
       format: 'esm',
-      entryFileNames: '[name].mjs',
-      chunkFileNames: 'chunks/[name].mjs',
+      entryFileNames: 'esm/[name].js',
       sourcemap: true,
+      preserveModules: true,
+      preserveModulesRoot: CONTEXT,
+      interop: 'auto',
     },
-    plugins: [typescript({ tsconfig: './tsconfig.json' })],
-    external: ['crypto', 'path'],
-  },
-  {
-    input: INPUT,
-    output: {
-      dir: OUTPUT_DIR,
-      format: 'commonjs',
-      entryFileNames: '[name].cjs',
-      chunkFileNames: 'chunks/[name].cjs',
-      sourcemap: true,
-    },
-    plugins: [typescript({ tsconfig: './tsconfig.json' })],
-    external: ['crypto', 'path'],
+    external: /node_modules/,
+    plugins: [
+      nodeResolvePlugin({
+        extensions: ['.js', '.mjs', '.cjs', '.json'],
+      }),
+      commonjsPlugin(),
+      typescriptPlugin({
+        tsconfig: './tsconfig.esm.json',
+      }),
+    ],
   },
 ]);
