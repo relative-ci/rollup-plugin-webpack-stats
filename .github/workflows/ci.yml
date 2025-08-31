@@ -51,7 +51,7 @@ jobs:
           retention-days: 1
           path: dist*/
 
-  test-package:
+  test-package-rollup:
     name: Test package on node ${{ matrix.node }} / ${{ matrix.os }} / rollup v${{ matrix.rollup }}
     needs:
       - build
@@ -99,16 +99,16 @@ jobs:
           npm install 
           npm install rollup@${{ matrix.rollup }} --force
           npx rollup -v
-        working-directory: test/package
+        working-directory: test/package/rollup
 
       - name: Test package
-        run: npm run test:package
+        run: npm run test:package:rollup
 
   tests:
     needs:
       - lint
       - test-unit
-      - test-package
+      - test-package-rollup
     runs-on: ubuntu-latest
     steps:
       - run: exit 0
