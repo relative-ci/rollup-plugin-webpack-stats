@@ -52,7 +52,7 @@ jobs:
           path: dist*/
 
   test-package-rollup:
-    name: Test package on node ${{ matrix.node }} / ${{ matrix.os }} / rollup v${{ matrix.rollup }}
+    name: "rollup v${{ matrix.rollup }} / node ${{ matrix.node }} / ${{ matrix.os }}"
     needs:
       - build
     runs-on: ubuntu-latest
@@ -102,13 +102,66 @@ jobs:
         working-directory: test/package/rollup
 
       - name: Test package
-        run: npm run test:package:rollup
+        run: npm run test
+        working-directory: test/package/rollup
+
+  test-package-vite:
+    name: "vite v${{ matrix.vite }} / node ${{ matrix.node }} / ${{ matrix.os }}"
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ["22", "20", "18"]
+        os: [ubuntu-latest, windows-latest]
+        vite: ["5", "6", "7"]
+        exclude:
+          - os: windows-latest
+            node: 20
+          - os: windows-latest
+            node: 18
+          - vite: 7
+            node: 18
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v5.0.0
+
+      - name: Setup node & npm
+        uses: relative-ci/.github/actions/setup-node-npm@v1.1.1
+        with:
+          version: ${{ matrix.node }}
+          cache: never
+          install: false
+
+      - name: Install vitest
+        run: npm install vitest
+
+      - name: Download build files
+        uses: actions/download-artifact@v5.0.0
+        with:
+          name: build-artifacts
+
+      - name: Setup local npm registry
+        run: ./scripts/setup-registry.sh
+
+      - name: Install test package dependencies
+        run: |
+          npm install 
+          npm install vite@${{ matrix.vite }} --force
+          npx vite -v
+        working-directory: test/package/vite
+
+      - name: Test package
+        run: npm run test
+        working-directory: test/package/vite
 
   tests:
     needs:
       - lint
       - test-unit
       - test-package-rollup
+      - test-package-vite
     runs-on: ubuntu-latest
     steps:
       - run: exit 0
