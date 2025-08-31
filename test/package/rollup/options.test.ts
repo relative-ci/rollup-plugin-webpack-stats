@@ -4,9 +4,9 @@ import { beforeEach, describe, test, expect } from 'vitest';
 import { rollup } from 'rollup';
 import { vol } from 'memfs';
 
-import rollupConfig from './rollup.config';
+import rollupConfig from './case-options.mjs';
 
-describe('package test', () => {
+describe('rollup options', () => {
   beforeEach(() => {
     vol.reset();
   });
