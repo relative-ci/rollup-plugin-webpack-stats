@@ -1,0 +1,15 @@
+{
+  "name": "rollup-plugin-webpack-stats-test-vite",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "vitest"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "devDependencies": {
+    "rollup-plugin-webpack-stats": "*",
+    "vite": "^7.0.0"
+  }
+}
