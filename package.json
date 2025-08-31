@@ -50,7 +50,9 @@
     "build": "tsc && rollup -c rollup.config.mjs",
     "lint": "exit 0",
     "test:unit": "vitest test/unit",
-    "test:package": "cd test/package && vitest",
+    "test:package": "npm run test:package:rollup && npm run test:package:vite",
+    "test:package:rollup": "cd test/package/rollup && vitest",
+    "test:package:vite": "cd test/package/vite && vitest",
     "bump": "./scripts/bump.sh",
     "release": "./scripts/release.sh"
   },
