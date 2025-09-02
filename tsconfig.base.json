@@ -3,7 +3,6 @@
   "compilerOptions": {
     /* dirs */
     "rootDir": "./src",
-    "declarationDir": "./lib/types",
     "types": ["node"],
     /* module config */
     "target": "es2020",
@@ -15,7 +14,6 @@
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "noFallthroughCasesInSwitch": true,
-    "declaration": true,
     "sourceMap": true,
     "noImplicitReturns": true,
     "noImplicitOverride": true,
