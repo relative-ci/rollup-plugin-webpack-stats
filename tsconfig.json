@@ -1,20 +1,25 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "node",
-    "allowJs": true,
-    "esModuleInterop": true,
+    /* dirs */
+    "rootDir": ".",
+    "types": ["node"],
+    /* module config */
+    "target": "esnext",
+    "lib": ["es2020", "es2022.error"],
+    "module": "nodenext",
+    "moduleResolution": "NodeNext",
     "resolveJsonModule": true,
-    "declaration": false,
+    "esModuleInterop": true,
+    /* behaviour options */
+    "allowJs": true,
     "noEmit": true,
     "skipLibCheck": true,
-    "types": ["node"],
-    "lib": ["es2020", "es2022.error"]
+    "strict": true
   },
   "ts-node": {
     "compilerOptions": {
       "module": "CommonJS"
     }
-  }
+  },
+  "exclude": ["node_modules", "lib", "dist"]
 }
