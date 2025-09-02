@@ -35,7 +35,7 @@ export default defineConfig([
         defaultIsModuleExports: 'auto',
       }),
       typescriptPlugin({
-        tsconfig: './tsconfig.cjs.json',
+        tsconfig: './tsconfig.lib-cjs.json',
       }),
     ],
   },
@@ -58,7 +58,7 @@ export default defineConfig([
       }),
       commonjsPlugin(),
       typescriptPlugin({
-        tsconfig: './tsconfig.esm.json',
+        tsconfig: './tsconfig.lib-esm.json',
       }),
     ],
   },
