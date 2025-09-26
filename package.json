@@ -72,7 +72,7 @@
     "@types/node": "24.5.2",
     "dotenv": "17.2.2",
     "husky": "9.1.7",
-    "memfs": "4.39.0",
+    "memfs": "4.46.1",
     "release-it": "19.0.5",
     "rimraf": "6.0.1",
     "rollup": "4.52.2",
