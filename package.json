@@ -70,7 +70,6 @@
     "@rollup/plugin-typescript": "12.1.4",
     "@tsconfig/node18": "18.2.4",
     "@types/node": "24.3.0",
-    "dotenv": "17.2.1",
     "husky": "9.1.7",
     "memfs": "4.36.3",
     "release-it": "19.0.4",
