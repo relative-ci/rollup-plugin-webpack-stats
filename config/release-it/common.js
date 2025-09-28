@@ -1,14 +1,10 @@
-require('dotenv').config();
-
-module.exports = {
+export default {
   git: {
     commit: true,
-    // eslint-disable-next-line no-template-curly-in-string
     commitMessage: ':package: release ${version}\n[ci skip]',
     push: true,
     requireUpstream: false,
     tag: true,
-    // eslint-disable-next-line no-template-curly-in-string
     tagName: 'v${version}'
   },
   npm: {
