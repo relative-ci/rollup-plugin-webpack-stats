@@ -173,3 +173,26 @@ export default defineConfig((env) => ({
 
 - [example-vite-github-action](https://github.com/relative-ci/example-vite-github-action)
 - [example-vite-cli-github-action](https://github.com/relative-ci/example-vite-cli-github-action)
+
+## Related projects
+
+### [bundle-stats](https://github.com/relative-ci/bundle-stats)
+
+Analyze bundle stats(bundle size, assets, modules, packages) and compare the results between different builds. Support for webpack, rspack, vite, rolldown and rollup.
+
+### [rollup-plugin-stats](https://github.com/relative-ci/rollup-webpack-stats)
+
+Output vite/rollup/rolldown stats.
+
+### :cyclone: [relative-ci.com](https://relative-ci.com?utm_medium=rollup-plugin-webpack-stats)
+
+#### Automated bundle analysis, reviews and monitoring - Quickly identify and fix bundle regressions before shipping to production.
+
+- :crystal_ball: In-depth bundle stats analysis for every build
+- :chart_with_upwards_trend: Monitor bundle stats changes and identify opportunities for optimizations
+- :bell: Quick feedback with [rule based automated review flow](https://relative-ci.com/documentation/setup/configure/integrations/github-commit-status-review?utm_medium=rollup-plugin-webpack-stats), [GitHub Pull Request comments](https://relative-ci.com/documentation/setup/configure/integrations/github-pull-request-comment?utm_medium=rollup-plugin-webpack-stats), [GitHub check reports](https://relative-ci.com/documentation/setup/configure/integrations/github-check-report?utm_medium=rollup-plugin-webpack-stats), or [Slack messages](https://relative-ci.com/documentation/setup/configure/integrations/slack-notification?utm_medium=rollup-plugin-webpack-stats)
+- :wrench: Support for **webpack**, **vite**, **rspack**, **rollup**, **rolldwon**
+- :hammer: Support for all major CI services(CircleCI, GitHub Actions, Gitlab CI, Jenkins, Travis CI)
+- :nut_and_bolt: Support for **npm**, **yarn** and **pnpm**; support for monorepos
+- :two_hearts: [**Always free** for **Open Source**](https://relative-ci.com/open-source)
+
