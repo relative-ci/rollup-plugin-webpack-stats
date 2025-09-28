@@ -1,10 +1,9 @@
-const config = require('./common');
+import commonConfig from './common';
 
-module.exports = {
-  ...config,
+export default {
+  ...commonConfig,
   git: {
-    ...config.git,
-    // eslint-disable-next-line no-template-curly-in-string
+    ...commonConfig.git,
     commitMessage: 'DROP - release ${version}'
   }
 };
