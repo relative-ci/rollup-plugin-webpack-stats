@@ -14,7 +14,8 @@ module.exports = {
   npm: {
     publish: false,
     ignoreVersion: true,
-    allowSameVersion: true
+    allowSameVersion: true,
+    skipChecks: true
   },
   github: {
     draft: false,
