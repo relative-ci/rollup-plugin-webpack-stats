@@ -1,9 +1,9 @@
-const config = require('./common');
+import commonConfig from './common';
 
-module.exports = {
-  ...config,
+export default {
+  ...commonConfig,
   git: {
-    ...config.git,
+    ...commonConfig.git,
     commit: false,
     push: false,
     tag: false,
@@ -11,7 +11,7 @@ module.exports = {
     requireUpstream: false
   },
   npm: {
-    ...config.npm,
+    ...commonConfig.npm,
     publish: true
   }
 };
