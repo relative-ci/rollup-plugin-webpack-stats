@@ -88,10 +88,13 @@
     "rolldown": "^1.0.0-beta.0"
   },
   "peerDependenciesMeta": {
-    "vite": {
+    "rolldown": {
       "optional": true
     },
     "rollup": {
+      "optional": true
+    },
+    "vite": {
       "optional": true
     }
   }
