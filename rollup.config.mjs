@@ -14,6 +14,7 @@ export default defineConfig([
     output: {
       dir: OUTPUT_DIR,
       format: 'esm',
+      exports: 'named',
       entryFileNames: '[name].mjs',
       chunkFileNames: 'chunks/[name].mjs',
       sourcemap: true,
@@ -26,6 +27,7 @@ export default defineConfig([
     output: {
       dir: OUTPUT_DIR,
       format: 'commonjs',
+      exports: 'named',
       entryFileNames: '[name].cjs',
       chunkFileNames: 'chunks/[name].cjs',
       sourcemap: true,
