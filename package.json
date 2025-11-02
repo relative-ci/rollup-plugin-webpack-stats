@@ -67,7 +67,7 @@
   },
   "devDependencies": {
     "@release-it/conventional-changelog": "10.0.1",
-    "@rollup/plugin-typescript": "12.1.4",
+    "@rollup/plugin-typescript": "12.3.0",
     "@tsconfig/node18": "18.2.4",
     "@types/node": "24.7.0",
     "husky": "9.1.7",
