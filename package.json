@@ -71,7 +71,7 @@
     "@tsconfig/node18": "18.2.4",
     "@types/node": "24.9.2",
     "husky": "9.1.7",
-    "memfs": "4.49.0",
+    "memfs": "4.50.0",
     "release-it": "19.0.5",
     "rimraf": "6.0.1",
     "rollup": "4.52.5",
