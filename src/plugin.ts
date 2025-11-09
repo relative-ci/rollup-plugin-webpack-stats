@@ -1,6 +1,6 @@
-import type { Plugin, OutputOptions } from 'rollup';
 import extractStats, { type StatsOptions } from 'rollup-plugin-stats/extract';
 
+import type { Plugin, OutputOptions } from './types';
 import { type BundleTransformOptions, bundleToWebpackStats } from './transform';
 import { type StatsWrite, statsWrite } from './write';
 import { formatFileSize, getByteSize, resolveFilepath } from './utils';
