@@ -1,6 +1,6 @@
 {
   "name": "rollup-plugin-webpack-stats",
-  "version": "2.1.8-beta.0",
+  "version": "2.1.8-beta.1",
   "private": false,
   "license": "MIT",
   "keywords": [
