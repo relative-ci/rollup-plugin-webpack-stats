@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6.0.0
+        uses: actions/checkout@v6.0.1
 
       - name: Setup node & npm
         uses: relative-ci/.github/actions/setup-node-npm@v1.1.5
@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v6.0.0
+        uses: actions/checkout@v6.0.1
 
       - name: Setup node & npm
         uses: relative-ci/.github/actions/setup-node-npm@v1.1.5
@@ -36,7 +36,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v6.0.0
+        uses: actions/checkout@v6.0.1
 
       - name: Setup node & npm
         uses: relative-ci/.github/actions/setup-node-npm@v1.1.5
@@ -76,7 +76,7 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v6.0.0
+        uses: actions/checkout@v6.0.1
 
       - name: Setup node & npm
         uses: relative-ci/.github/actions/setup-node-npm@v1.1.5
@@ -127,7 +127,7 @@ jobs:
             node: 18
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v6.0.0
+        uses: actions/checkout@v6.0.1
 
       - name: Setup node & npm
         uses: relative-ci/.github/actions/setup-node-npm@v1.1.5
@@ -177,7 +177,7 @@ jobs:
     permissions:
       id-token: write
     steps:
-      - uses: actions/checkout@v6.0.0
+      - uses: actions/checkout@v6.0.1
 
       - name: Setup node & npm
         uses: relative-ci/.github/actions/setup-node-npm@v1.1.5
