@@ -82,7 +82,7 @@
     "vitest": "4.0.18"
   },
   "dependencies": {
-    "rollup-plugin-stats": "1.5.4"
+    "rollup-plugin-stats": "1.5.5"
   },
   "peerDependencies": {
     "vite": "^5.0.0 || ^6.0.0 || ^7.0.0",
