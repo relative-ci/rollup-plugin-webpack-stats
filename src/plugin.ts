@@ -1,6 +1,6 @@
-import type { Plugin, OutputOptions } from 'rollup';
 import extractStats, { type StatsOptions } from 'rollup-plugin-stats/extract';
 
+import type { Plugin, OutputOptions } from './types';
 import { type BundleTransformOptions, bundleToWebpackStats } from './transform';
 import { type StatsWrite, statsWrite } from './write';
 import { formatFileSize, getByteSize, resolveFilepath } from './utils';
@@ -18,7 +18,8 @@ type WebpackStatsOptions = {
    * @default - fs.write(FILENAME, JSON.stringify(STATS, null, 2));
    */
   write?: StatsWrite;
-} & Omit<StatsOptions, "source" | "map"> & BundleTransformOptions;
+} & Omit<StatsOptions, 'source' | 'map'> &
+  BundleTransformOptions;
 
 type WebpackStatsOptionsOrBuilder =
   | WebpackStatsOptions
@@ -29,8 +30,9 @@ export const webpackStats = (
 ): Plugin => ({
   name: PLUGIN_NAME,
   async generateBundle(outputOptions, bundle) {
-    const resolvedOptions = typeof options === 'function' ? options(outputOptions) : options;
-    const { 
+    const resolvedOptions =
+      typeof options === 'function' ? options(outputOptions) : options;
+    const {
       fileName,
       excludeAssets,
       excludeModules,
@@ -48,11 +50,17 @@ export const webpackStats = (
     const filepath = resolveFilepath(fileName, outputOptions.dir);
 
     try {
-      const res = await write(filepath, stats as unknown as Record<string, unknown>);
+      const res = await write(
+        filepath,
+        stats as unknown as Record<string, unknown>
+      );
       const outputSize = getByteSize(res.content);
 
-      this.info(`Stats saved to ${res.filepath} (${formatFileSize(outputSize)})`);
-    } catch (error: any) { // eslint-disable-line
+      this.info(
+        `Stats saved to ${res.filepath} (${formatFileSize(outputSize)})`
+      );
+    } catch (error: any) {
+      // eslint-disable-line
       // Log error, but do not throw to allow the compilation to continue
       this.warn(error);
     }
