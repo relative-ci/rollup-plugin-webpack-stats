@@ -6,7 +6,10 @@
 [![ci](https://github.com/relative-ci/rollup-plugin-webpack-stats/actions/workflows/ci.yml/badge.svg)](https://github.com/relative-ci/rollup-plugin-webpack-stats/actions/workflows/ci.yml)
 [![Socket Badge](https://socket.dev/api/badge/npm/package/rollup-plugin-webpack-stats)](https://socket.dev/npm/package/rollup-plugin-webpack-stats)
 
-Generate rollup stats JSON file with a [bundle-stats](https://github.com/relative-ci/bundle-stats/tree/master/packages/cli) webpack [supported structure](https://github.com/relative-ci/bundle-stats/blob/master/packages/plugin-webpack-filter/src/index.ts).
+Rollup/Vite/Rolldown plugin to generate a stats JSON file with a [bundle-stats](https://github.com/relative-ci/bundle-stats/tree/master/packages/cli) [webpack-compatible structure](https://github.com/relative-ci/bundle-stats/blob/master/packages/plugin-webpack-filter/src/index.ts).
+
+> [!NOTE]
+> This plugin generates a webpack-compatible stats JSON file for programmatic usage, inspection, or integration with other compatible tools. To analyze your Rollup/Vite/Rolldown bundle, use [`rollup-plugin-bundle-stats`](https://github.com/relative-ci/bundle-stats/tree/master/packages/rollup-plugin#rollup-plugin-bundle-stats) instead.
 
 ## Install
 
@@ -197,4 +200,3 @@ Output vite/rollup/rolldown stats.
 - :two_hearts: [**Always free** for **Open Source**](https://relative-ci.com/open-source?utm_medium=rollup-plugin-webpack-stats)
 
 [:rocket: Get started](https://relative-ci.com?utm_medium=rollup-plugin-webpack-stats)
-
