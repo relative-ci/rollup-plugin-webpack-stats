@@ -14,20 +14,36 @@
     "stats",
     "bundle-stats"
   ],
-  "main": "dist/index.cjs",
-  "module": "dist/index.mjs",
-  "typings": "dist/index.d.ts",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "typings": "./dist/index.d.cts",
+  "files": [
+    "dist"
+  ],
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
     },
     "./transform": {
-      "types": "./dist/transform.d.ts",
-      "import": "./dist/transform.mjs",
-      "require": "./dist/transform.cjs"
+      "import": {
+        "types": "./dist/transform.d.mts",
+        "default": "./dist/transform.mjs"
+      },
+      "require": {
+        "types": "./dist/transform.d.cts",
+        "default": "./dist/transform.cjs"
+      }
     }
+  },
+  "engines": {
+    "node": ">=18"
   },
   "author": {
     "name": "Viorel Cojocaru",
@@ -42,15 +58,10 @@
     "url": "https://github.com/relative-ci/rollup-plugin-webpack-stats/issues"
   },
   "homepage": "https://github.com/relative-ci/rollup-plugin-webpack-stats/blob/master/#readme",
-  "files": [
-    "dist"
-  ],
-  "engines": {
-    "node": ">=18"
-  },
   "scripts": {
-    "prebuild": "rimraf ./dist",
-    "build": "tsc && rollup -c rollup.config.mjs",
+    "clean": "rimraf ./dist",
+    "build": "npm run clean && npm run type-check && tsdown",
+    "type-check": "tsc",
     "lint": "exit 0",
     "test:unit": "vitest test/unit",
     "test:package": "npm run test:package:rollup && npm run test:package:vite",
@@ -72,14 +83,13 @@
   },
   "devDependencies": {
     "@release-it/conventional-changelog": "10.0.5",
-    "@rollup/plugin-typescript": "12.3.0",
-    "@tsconfig/node18": "18.2.6",
     "@types/node": "25.2.3",
     "husky": "9.1.7",
     "memfs": "4.56.10",
     "release-it": "19.2.4",
     "rimraf": "6.1.2",
     "rollup": "4.57.1",
+    "tsdown": "0.20.3",
     "tslib": "2.8.1",
     "typescript": "5.9.3",
     "vite": "7.2.2",
