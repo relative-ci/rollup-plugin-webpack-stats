@@ -1,7 +1,7 @@
 {
   "name": "rollup-plugin-webpack-stats",
   "description": "Rollup/Vite/Rolldown plugin to generate a stats JSON file with a bundle-stats webpack-compatible structure",
-  "version": "2.1.11",
+  "version": "3.0.0-beta.0",
   "private": false,
   "license": "MIT",
   "keywords": [
