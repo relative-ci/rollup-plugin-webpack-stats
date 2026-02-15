@@ -209,3 +209,23 @@ Output vite/rollup/rolldown stats.
 - :two_hearts: [**Always free** for **Open Source**](https://relative-ci.com/open-source?utm_medium=rollup-plugin-webpack-stats)
 
 [:rocket: Get started](https://relative-ci.com?utm_medium=rollup-plugin-webpack-stats)
+
+## Development
+
+### Use the project node version
+
+```shell
+nvm use
+```
+
+### Install dependencies
+
+```shell
+npm install
+```
+
+### Prepare
+
+```shell
+npm run prepare
+```
