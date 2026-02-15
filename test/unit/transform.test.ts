@@ -442,8 +442,7 @@ describe('bundleToWebpackStats', () => {
     expect(
       bundleToWebpackStats(statsFixtures, {
         transform: (stats, _, bundle) => {
-          // Adding arbitary info to the stats object to prove that we have access to bundle
-          // @ts-expect-error
+          // @ts-expect-error Adding arbitary info to the stats object to prove that we have access to bundle
           stats.entryCount = Object.keys(bundle).length;
 
           return stats;
