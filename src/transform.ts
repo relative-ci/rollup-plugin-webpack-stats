@@ -1,7 +1,12 @@
 import path from 'path';
-import type { Stats, AssetStats, ChunkStats, ModuleStats } from 'rollup-plugin-stats/extract';
+import type {
+  Stats,
+  AssetStats,
+  ChunkStats,
+  ModuleStats,
+} from 'rollup-plugin-stats/extract';
 
-import { getByteSize, getChunkId } from "./utils";
+import { getByteSize, getChunkId } from './utils';
 
 // https://github.com/relative-ci/bundle-stats/blob/master/packages/plugin-webpack-filter/src/index.ts
 export type WebpackStatsFilteredAsset = {
@@ -28,8 +33,7 @@ export interface WebpackStatsFilteredConcatenatedModule {
   size?: number;
 }
 
-export interface WebpackStatsFilteredRootModule
-  extends WebpackStatsFilteredModule {
+export interface WebpackStatsFilteredRootModule extends WebpackStatsFilteredModule {
   modules?: Array<WebpackStatsFilteredConcatenatedModule>;
 }
 
@@ -49,8 +53,8 @@ export type ChunksIssuers = Record<string, Array<ChunkStats>>;
 export const lookupChunkAsync = (
   chunksIssuers: ChunksIssuers,
   chunk: ChunkStats,
-  processedChunks: Array<string> = [],
-):boolean => {
+  processedChunks: Array<string> = []
+): boolean => {
   // When the chunks are having a circular dependency, return true to continue the recursive check
   if (processedChunks.includes(chunk.fileName)) {
     return true;
@@ -92,11 +96,14 @@ export const lookupChunkAsync = (
   let isAsync = true;
 
   for (let i = 0; i < syncChunksIssuers.length && isAsync; i++) {
-    isAsync = lookupChunkAsync(chunksIssuers, syncChunksIssuers[i], [...processedChunks, chunk.fileName]);
+    isAsync = lookupChunkAsync(chunksIssuers, syncChunksIssuers[i], [
+      ...processedChunks,
+      chunk.fileName,
+    ]);
   }
 
   return isAsync;
-}
+};
 
 type AssetSource = ChunkStats | AssetStats;
 type ChunkSource = ChunkStats;
@@ -104,7 +111,7 @@ type ModuleSource = { fileName: string } & ModuleStats;
 
 /**
  * Store transformed sources
- */ 
+ */
 class TransformSources {
   constructor() {
     this.entries = {};
@@ -121,24 +128,28 @@ class TransformSources {
    */
   getByAsset = (asset: WebpackStatsFilteredAsset): AssetSource => {
     return this.entries[asset.name] as AssetSource;
-  }
+  };
 
   /**
    * Get chunk source
    */
   getByChunk = (chunk: WebpackStatsFilteredChunk): ChunkSource => {
     return this.entries[chunk.id] as ChunkSource;
-  }
+  };
 
   /**
    * Get module source
    */
   getByModule = (module: WebpackStatsFilteredModule): ModuleSource => {
     return this.entries[module.name] as ModuleSource;
-  }
+  };
 }
 
-export type TransformCallback = (stats: WebpackStatsFiltered, sources: TransformSources, bundle: Stats) => WebpackStatsFiltered; 
+export type TransformCallback = (
+  stats: WebpackStatsFiltered,
+  sources: TransformSources,
+  bundle: Stats
+) => WebpackStatsFiltered;
 
 const defaultTransform: TransformCallback = (stats) => stats;
 
@@ -158,7 +169,10 @@ export const bundleToWebpackStats = (
   bundle: Stats,
   pluginOptions?: BundleTransformOptions
 ): WebpackStatsFiltered => {
-  const options = { moduleOriginalSize: false, ...pluginOptions } satisfies BundleTransformOptions;
+  const options = {
+    moduleOriginalSize: false,
+    ...pluginOptions,
+  } satisfies BundleTransformOptions;
   const { moduleOriginalSize, transform = defaultTransform } = options;
 
   const assets: Array<WebpackStatsFilteredAsset> = [];
@@ -174,7 +188,11 @@ export const bundleToWebpackStats = (
     if (entry.type === 'chunk') {
       entry.imports?.forEach((chunkImportFileName) => {
         // Skip circular references
-        if (chunksIssuers[entry.fileName]?.find((chunkIssuer) => chunkIssuer.fileName === chunkImportFileName)) {
+        if (
+          chunksIssuers[entry.fileName]?.find(
+            (chunkIssuer) => chunkIssuer.fileName === chunkImportFileName
+          )
+        ) {
           return;
         }
 
@@ -234,7 +252,10 @@ export const bundleToWebpackStats = (
               : moduleInfo.renderedLength,
             chunks: [chunkId],
           };
-          sources.push(relativeModulePathWithPrefix, { fileName: modulePath, ...moduleInfo });
+          sources.push(relativeModulePathWithPrefix, {
+            fileName: modulePath,
+            ...moduleInfo,
+          });
         }
       });
     } else if (entry.type === 'asset') {
@@ -260,7 +281,10 @@ export const bundleToWebpackStats = (
   try {
     result = transform(stats, sources, bundle);
   } catch (error) {
-    console.error('Custom transform failed! Returning stats without any transforms.', error);
+    console.error(
+      'Custom transform failed! Returning stats without any transforms.',
+      error
+    );
     result = stats;
   }
 

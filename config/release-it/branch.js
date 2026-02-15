@@ -4,6 +4,6 @@ export default {
   ...commonConfig,
   git: {
     ...commonConfig.git,
-    commitMessage: 'DROP - release ${version}'
-  }
+    commitMessage: 'DROP - release ${version}',
+  },
 };

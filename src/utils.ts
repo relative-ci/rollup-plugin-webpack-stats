@@ -7,7 +7,9 @@ const HASH_LENGTH = 7;
 /**
  * Get content byte size
  */
-export function getByteSize(content?: string | Uint8Array<ArrayBufferLike>): number {
+export function getByteSize(
+  content?: string | Uint8Array<ArrayBufferLike>
+): number {
   if (!content) {
     return 0;
   }
@@ -24,7 +26,7 @@ export function getByteSize(content?: string | Uint8Array<ArrayBufferLike>): num
  */
 export function getHash(filepath: string): string {
   const digest = crypto.createHash('sha256');
-  return digest.update(filepath).digest('hex').substr(0, HASH_LENGTH); 
+  return digest.update(filepath).digest('hex').substr(0, HASH_LENGTH);
 }
 
 export function getChunkId(chunk: ChunkStats): string {
@@ -41,11 +43,13 @@ export function getChunkId(chunk: ChunkStats): string {
 
 type ExcludeFilepathParam = string | RegExp | ((filepath: string) => boolean);
 
-export type ExcludeFilepathOption = ExcludeFilepathParam | Array<ExcludeFilepathParam>;
+export type ExcludeFilepathOption =
+  | ExcludeFilepathParam
+  | Array<ExcludeFilepathParam>;
 
 export function round(value: number, precision = 2) {
   const multiplier = 10 ^ precision;
-  return Math.round(value * multiplier) / multiplier; 
+  return Math.round(value * multiplier) / multiplier;
 }
 
 const FILE_SIZE = {
@@ -61,7 +65,7 @@ const FILE_SIZE = {
     symbol: 'MiB',
     multiplier: 1024 * 1024,
   },
-}
+};
 
 export function formatFileSize(value?: number | null): string {
   let unit = FILE_SIZE.BYTE;
@@ -84,7 +88,9 @@ export function formatFileSize(value?: number | null): string {
 const DEFAULT_FILE_NAME = 'webpack-stats.json';
 
 export function resolveFilepath(
-  fileName = DEFAULT_FILE_NAME, outputDir?: string): string {
+  fileName = DEFAULT_FILE_NAME,
+  outputDir?: string
+): string {
   // Check if the fileName is an absolute path
   if (path.isAbsolute(fileName)) {
     return fileName;

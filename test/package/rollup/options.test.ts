@@ -16,7 +16,10 @@ describe('rollup options', () => {
     const bundle = await rollup(config);
     await bundle.generate(config.output);
 
-    const actual = await fs.readFile(path.join(config.output.dir, 'webpack-stats.json'), 'utf8');
+    const actual = await fs.readFile(
+      path.join(config.output.dir, 'webpack-stats.json'),
+      'utf8'
+    );
     const stats = JSON.parse(actual);
     expect(stats).toMatchObject({
       assets: [
@@ -25,7 +28,7 @@ describe('rollup options', () => {
           size: 73,
         },
       ],
-    })
+    });
   });
 
   test('should output bundle stats JSON file when options is a builder function', async () => {
@@ -33,7 +36,10 @@ describe('rollup options', () => {
     const bundle = await rollup(config);
     await bundle.generate(config.output);
 
-    const actual = await fs.readFile(path.join(config.output.dir, 'stats-dist2.json'), 'utf8');
+    const actual = await fs.readFile(
+      path.join(config.output.dir, 'stats-dist2.json'),
+      'utf8'
+    );
     const stats = JSON.parse(actual);
     expect(stats).toMatchObject({
       assets: [
@@ -42,6 +48,6 @@ describe('rollup options', () => {
           size: 73,
         },
       ],
-    })
+    });
   });
 });

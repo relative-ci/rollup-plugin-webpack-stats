@@ -29,19 +29,19 @@ describe('lookupChunkAsync', () => {
   describe('isDynamicEntry === true', () => {
     test('chunk is async', () => {
       /**
-        * PARENT? ---async---> A
-      */
+       * PARENT? ---async---> A
+       */
       expect(
         lookupChunkAsync(
           {},
-          { ...COMMON_DATA, fileName: 'A', isDynamicEntry: true },
+          { ...COMMON_DATA, fileName: 'A', isDynamicEntry: true }
         )
       ).toEqual(true);
     });
   });
 
   describe('isDynamicEntry === false', () => {
-    test("chunk is sync if it is a static entry", () => {
+    test('chunk is sync if it is a static entry', () => {
       /**
        * ROOT ---sync---> A
        */
@@ -50,12 +50,17 @@ describe('lookupChunkAsync', () => {
           {
             A: ['B', 'C'],
           },
-          { ...COMMON_DATA, fileName: 'A', isDynamicEntry: false, isEntry: true },
+          {
+            ...COMMON_DATA,
+            fileName: 'A',
+            isDynamicEntry: false,
+            isEntry: true,
+          }
         )
       ).toEqual(false);
     });
 
-    test("chunk is sync if it is a static and dynamic entry", () => {
+    test('chunk is sync if it is a static and dynamic entry', () => {
       /**
        * ROOT ---sync---> A
        *
@@ -66,19 +71,19 @@ describe('lookupChunkAsync', () => {
           {
             A: ['B', 'C'],
           },
-          { ...COMMON_DATA, fileName: 'A', isDynamicEntry: true, isEntry: true },
+          { ...COMMON_DATA, fileName: 'A', isDynamicEntry: true, isEntry: true }
         )
       ).toEqual(false);
     });
 
     test("chunk is sync if it doesn't have any issuers", () => {
       /**
-        * NO_PARENT ---sync---> A
-        */
+       * NO_PARENT ---sync---> A
+       */
       expect(
         lookupChunkAsync(
           {},
-          { ...COMMON_DATA, fileName: 'A', isDynamicEntry: false },
+          { ...COMMON_DATA, fileName: 'A', isDynamicEntry: false }
         )
       ).toEqual(false);
     });
@@ -104,7 +109,7 @@ describe('lookupChunkAsync', () => {
               },
             ],
           },
-          { ...COMMON_DATA, fileName: 'C', isDynamicEntry: false },
+          { ...COMMON_DATA, fileName: 'C', isDynamicEntry: false }
         )
       ).toEqual(true);
       /**
@@ -141,7 +146,7 @@ describe('lookupChunkAsync', () => {
               },
             ],
           },
-          { ...COMMON_DATA, fileName: 'E', isDynamicEntry: false },
+          { ...COMMON_DATA, fileName: 'E', isDynamicEntry: false }
         )
       ).toEqual(true);
     });
@@ -167,7 +172,7 @@ describe('lookupChunkAsync', () => {
               },
             ],
           },
-          { ...COMMON_DATA, fileName: 'C', isDynamicEntry: false },
+          { ...COMMON_DATA, fileName: 'C', isDynamicEntry: false }
         )
       ).toEqual(false);
       /**
@@ -204,7 +209,7 @@ describe('lookupChunkAsync', () => {
               },
             ],
           },
-          { ...COMMON_DATA, fileName: 'E', isDynamicEntry: false },
+          { ...COMMON_DATA, fileName: 'E', isDynamicEntry: false }
         )
       ).toEqual(false);
     });
@@ -237,7 +242,7 @@ describe('lookupChunkAsync', () => {
               },
             ],
           },
-          { ...COMMON_DATA, fileName: 'C', isDynamicEntry: false },
+          { ...COMMON_DATA, fileName: 'C', isDynamicEntry: false }
         )
       ).toEqual(false);
     });
