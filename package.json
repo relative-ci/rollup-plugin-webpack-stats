@@ -51,8 +51,8 @@
   "scripts": {
     "prebuild": "rimraf ./dist",
     "build": "tsc && rollup -c rollup.config.mjs",
-    "lint": "npx eslint",
-    "format": "npx prettier --write .",
+    "lint": "eslint",
+    "format": "prettier --write .",
     "test:unit": "vitest test/unit",
     "@tsconfig/node18": "18.2.6",
     "test:package": "npm run test:package:rollup && npm run test:package:vite",
