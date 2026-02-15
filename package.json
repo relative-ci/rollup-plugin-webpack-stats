@@ -52,7 +52,9 @@
     "prebuild": "rimraf ./dist",
     "build": "tsc && rollup -c rollup.config.mjs",
     "lint": "npx eslint",
+    "format": "npx prettier --write .",
     "test:unit": "vitest test/unit",
+    "@tsconfig/node18": "18.2.6",
     "test:package": "npm run test:package:rollup && npm run test:package:vite",
     "test:package:rollup": "cd test/package/rollup && vitest",
     "test:package:vite": "cd test/package/vite && vitest",
@@ -64,21 +66,16 @@
       "pre-commit": "npm run lint"
     }
   },
-  "prettier": {
-    "printWidth": 80,
-    "semi": true,
-    "singleQuote": true,
-    "trailingComma": "es5"
-  },
   "devDependencies": {
     "@release-it/conventional-changelog": "10.0.5",
     "@rollup/plugin-typescript": "12.3.0",
     "@tsconfig/node18": "18.2.6",
-    "@tsconfig/node18": "18.2.6",
     "@types/node": "25.2.3",
     "eslint": "9.39.2",
+    "eslint-config-prettier": "^10.1.8",
     "husky": "9.1.7",
     "memfs": "4.56.10",
+    "prettier": "3.8.1",
     "release-it": "19.2.4",
     "rimraf": "6.1.2",
     "rollup": "4.57.1",
