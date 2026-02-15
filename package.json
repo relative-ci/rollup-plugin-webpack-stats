@@ -59,12 +59,8 @@
     "test:package:rollup": "cd test/package/rollup && vitest",
     "test:package:vite": "cd test/package/vite && vitest",
     "bump": "./scripts/bump.sh",
-    "release": "./scripts/release.sh"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint"
-    }
+    "release": "./scripts/release.sh",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@release-it/conventional-changelog": "10.0.5",
