@@ -5,18 +5,18 @@ export default {
     push: true,
     requireUpstream: false,
     tag: true,
-    tagName: 'v${version}'
+    tagName: 'v${version}',
   },
   npm: {
     publish: false,
     ignoreVersion: true,
     allowSameVersion: true,
-    skipChecks: true
+    skipChecks: true,
   },
   github: {
     draft: false,
     release: false,
     preRelease: false,
-    tokenRef: 'GITHUB_TOKEN'
-  }
+    tokenRef: 'GITHUB_TOKEN',
+  },
 };

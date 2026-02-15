@@ -59,10 +59,12 @@ export const webpackStats = (
       this.info(
         `Stats saved to ${res.filepath} (${formatFileSize(outputSize)})`
       );
-    } catch (error: any) {
-      // eslint-disable-line
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error ? error.message : JSON.stringify(error);
+
       // Log error, but do not throw to allow the compilation to continue
-      this.warn(error);
+      this.warn(message);
     }
   },
 });

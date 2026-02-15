@@ -15,7 +15,10 @@ describe('package - vite options', () => {
     const config = viteConfigs[0];
     await vite(config);
 
-    const actual = await fs.readFile(path.join(config.build.outDir, 'webpack-stats.json'), 'utf8');
+    const actual = await fs.readFile(
+      path.join(config.build.outDir, 'webpack-stats.json'),
+      'utf8'
+    );
     const stats = JSON.parse(actual);
     expect(stats).toMatchObject({
       assets: [
@@ -24,14 +27,17 @@ describe('package - vite options', () => {
           size: 739,
         },
       ],
-    })
+    });
   });
 
   test('should output bundle stats JSON file when options is a builder function', async () => {
     const config = viteConfigs[1];
     await vite(config);
 
-    const actual = await fs.readFile(path.join(config.build.outDir, 'stats-dist2.json'), 'utf8');
+    const actual = await fs.readFile(
+      path.join(config.build.outDir, 'stats-dist2.json'),
+      'utf8'
+    );
     const stats = JSON.parse(actual);
     expect(stats).toMatchObject({
       assets: [
@@ -40,6 +46,6 @@ describe('package - vite options', () => {
           size: 739,
         },
       ],
-    })
+    });
   });
 });

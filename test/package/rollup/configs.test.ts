@@ -1,5 +1,5 @@
 import { promisify } from 'node:util';
-import { exec as execCallback} from 'node:child_process';
+import { exec as execCallback } from 'node:child_process';
 import { describe, expect, test } from 'vitest';
 
 const exec = promisify(execCallback);

@@ -63,12 +63,13 @@ export default defineConfig((env) => ({
 - `moduleOriginalSize` - extract module original size or rendered size (default: `false`)
 - `write` - format and write the stats to disk(default: `fs.write(filename, JSON.stringify(stats, null, 2))`)
 - rollup stats options ([rollup-plugin-stats](https://github.com/relative-ci/rollup-plugin-stats#options))
-    - `excludeAssets` - exclude matching assets: `string | RegExp | ((filepath: string) => boolean) | Array<string | RegExp | ((filepath: string) => boolean)>`
-    - `excludeModules` - exclude matching modules: `string | RegExp | ((filepath: string) => boolean) | Array<string | RegExp | ((filepath: string) => boolean)>`
+  - `excludeAssets` - exclude matching assets: `string | RegExp | ((filepath: string) => boolean) | Array<string | RegExp | ((filepath: string) => boolean)>`
+  - `excludeModules` - exclude matching modules: `string | RegExp | ((filepath: string) => boolean) | Array<string | RegExp | ((filepath: string) => boolean)>`
 
 ### Examples
 
 #### Output to a custom filename
+
 ```js
 // rollup.config.js
 import webpackStatsPlugin from 'rollup-plugin-webpack-stats';
@@ -84,6 +85,7 @@ module.exports = {
 ```
 
 #### Exclude `.map` files
+
 ```js
 // rollup.config.js
 import webpackStatsPlugin from 'rollup-plugin-webpack-stats';
@@ -99,6 +101,7 @@ export default {
 ```
 
 #### Vite.js - multiple stats files when using plugin-legacy
+
 ```js
 // for the the modern and legacy outputs
 import { defineConfig } from 'vite';
@@ -133,6 +136,7 @@ export default defineConfig((env) => ({
 ```
 
 #### Vite.js - update initial flag for chunks where the inital flag is incorrectly set to false
+
 ```js
 import { defineConfig } from 'vite';
 import webpackStatsPlugin from 'rollup-plugin-webpack-stats';
@@ -145,10 +149,15 @@ export default defineConfig((env) => ({
           webpackStatsPlugin({
             transform: (stats) => {
               // Find the target chunk entry
-              const mainChunkIndex = stats.chunks?.findIndex((chunk) => chunk.names?.includes("main"));
+              const mainChunkIndex = stats.chunks?.findIndex((chunk) =>
+                chunk.names?.includes('main')
+              );
 
               // When the tartget chunk is found, set the initial flag to true
-              if (typeof mainChunkIndex !== 'undefined' && stats?.chunks?.[mainChunkIndex]) {
+              if (
+                typeof mainChunkIndex !== 'undefined' &&
+                stats?.chunks?.[mainChunkIndex]
+              ) {
                 stats.chunks[mainChunkIndex] = {
                   ...stats.chunks[mainChunkIndex],
                   initial: true,
@@ -200,3 +209,23 @@ Output vite/rollup/rolldown stats.
 - :two_hearts: [**Always free** for **Open Source**](https://relative-ci.com/open-source?utm_medium=rollup-plugin-webpack-stats)
 
 [:rocket: Get started](https://relative-ci.com?utm_medium=rollup-plugin-webpack-stats)
+
+## Development
+
+### Use the project node version
+
+```shell
+nvm use
+```
+
+### Install dependencies
+
+```shell
+npm install
+```
+
+### Prepare
+
+```shell
+npm run prepare
+```

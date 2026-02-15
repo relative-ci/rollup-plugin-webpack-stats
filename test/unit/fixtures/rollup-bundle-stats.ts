@@ -34,24 +34,14 @@ export const statsFixtures = {
       path.join(ROOT_DIR, 'node_modules', 'package-b', 'index.js'),
     ],
     modules: {
-      [path.join(
-        ROOT_DIR,
-        'node_modules',
-        'package-a',
-        'index.js'
-      )]: {
+      [path.join(ROOT_DIR, 'node_modules', 'package-a', 'index.js')]: {
         code: '',
         originalLength: 10,
         renderedLength: 8,
         removedExports: [],
         renderedExports: [],
       },
-      [path.join(
-        ROOT_DIR,
-        'node_modules',
-        'package-b',
-        'index.js'
-      )]: {
+      [path.join(ROOT_DIR, 'node_modules', 'package-b', 'index.js')]: {
         code: '',
         originalLength: 100,
         renderedLength: 80,
@@ -85,7 +75,7 @@ export const statsFixtures = {
     modules: {
       [path.join(ROOT_DIR, 'src/component-a.js')]: {
         code: 'export default A = 1;',
-          originalLength: 10,
+        originalLength: 10,
         renderedLength: 8,
         removedExports: [],
         renderedExports: [],
@@ -117,17 +107,9 @@ export const statsFixtures = {
     implicitlyLoadedBefore: [],
     importedBindings: {},
     referencedFiles: [],
-    moduleIds: [
-      path.join(ROOT_DIR, 'src', 'components/component-b/index.js'),
-    ],
+    moduleIds: [path.join(ROOT_DIR, 'src', 'components/component-b/index.js')],
     modules: {
-      [path.join(
-        ROOT_DIR,
-        'src',
-        'components',
-        'component-b',
-        'index.js',
-      )]: {
+      [path.join(ROOT_DIR, 'src', 'components', 'component-b', 'index.js')]: {
         code: '',
         originalLength: 10,
         renderedLength: 8,
@@ -135,10 +117,7 @@ export const statsFixtures = {
         renderedExports: [],
       },
     },
-    imports: [
-      'assets/index-abcd1234.js',
-      'assets/index-efab5678.js',
-    ],
+    imports: ['assets/index-abcd1234.js', 'assets/index-efab5678.js'],
     exports: [],
     dynamicImports: [],
   },
@@ -157,17 +136,9 @@ export const statsFixtures = {
     implicitlyLoadedBefore: [],
     importedBindings: {},
     referencedFiles: [],
-    moduleIds: [
-      path.join(ROOT_DIR, 'src', 'components/component-c/index.js'),
-    ],
+    moduleIds: [path.join(ROOT_DIR, 'src', 'components/component-c/index.js')],
     modules: {
-      [path.join(
-        ROOT_DIR,
-        'src',
-        'components',
-        'component-c',
-        'index.js',
-      )]: {
+      [path.join(ROOT_DIR, 'src', 'components', 'component-c', 'index.js')]: {
         code: '',
         originalLength: 10,
         renderedLength: 8,

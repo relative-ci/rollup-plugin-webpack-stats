@@ -8,10 +8,10 @@ export default {
     push: false,
     tag: false,
     requireCleanWorkingDir: false,
-    requireUpstream: false
+    requireUpstream: false,
   },
   npm: {
     ...commonConfig.npm,
-    publish: true
-  }
+    publish: true,
+  },
 };

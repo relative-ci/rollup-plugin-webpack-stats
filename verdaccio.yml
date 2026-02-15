@@ -1,9 +1,9 @@
 storage: .verdaccio-storage
 packages:
-  'rollup-plugin-webpack-stats':
+  "rollup-plugin-webpack-stats":
     access: $all
     publish: $anonymous
-  '**':
+  "**":
     access: $all
     publish: $all
     proxy: npmjs
