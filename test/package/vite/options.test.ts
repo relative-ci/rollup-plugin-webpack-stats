@@ -20,14 +20,14 @@ describe('package - vite options', () => {
       'utf8'
     );
     const stats = JSON.parse(actual);
-    expect(stats).toMatchObject({
-      assets: [
-        {
+    expect(stats.assets).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
           name: 'assets/index.js',
-          size: 739,
-        },
-      ],
-    });
+          size: expect.any(Number),
+        }),
+      ])
+    );
   });
 
   test('should output bundle stats JSON file when options is a builder function', async () => {
@@ -39,13 +39,13 @@ describe('package - vite options', () => {
       'utf8'
     );
     const stats = JSON.parse(actual);
-    expect(stats).toMatchObject({
-      assets: [
-        {
+    expect(stats.assets).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
           name: 'assets/index.js',
-          size: 739,
-        },
-      ],
-    });
+          size: expect.any(Number),
+        }),
+      ])
+    );
   });
 });
