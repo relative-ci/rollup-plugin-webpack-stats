@@ -53,7 +53,30 @@ export type ChunksIssuers = Record<string, Array<ChunkStats>>;
 export const lookupChunkAsync = (
   chunksIssuers: ChunksIssuers,
   chunk: ChunkStats,
-  processedChunks: Array<string> = []
+  processedChunks: Array<string> = [],
+  cache: Map<string, boolean> = new Map()
+): boolean => {
+  const cached = cache.get(chunk.fileName);
+  if (cached !== undefined) {
+    return cached;
+  }
+
+  const result = lookupChunkAsyncUncached(
+    chunksIssuers,
+    chunk,
+    processedChunks,
+    cache
+  );
+
+  cache.set(chunk.fileName, result);
+  return result;
+};
+
+const lookupChunkAsyncUncached = (
+  chunksIssuers: ChunksIssuers,
+  chunk: ChunkStats,
+  processedChunks: Array<string>,
+  cache: Map<string, boolean>
 ): boolean => {
   // When the chunks are having a circular dependency, return true to continue the recursive check
   if (processedChunks.includes(chunk.fileName)) {
@@ -93,16 +116,11 @@ export const lookupChunkAsync = (
    * - if at least one issuer is sync, the chunk is sync
    * - if none of the issuers are sync, the chunk is async
    */
-  let isAsync = true;
+  const nextProcessed = [...processedChunks, chunk.fileName];
 
-  for (let i = 0; i < syncChunksIssuers.length && isAsync; i++) {
-    isAsync = lookupChunkAsync(chunksIssuers, syncChunksIssuers[i], [
-      ...processedChunks,
-      chunk.fileName,
-    ]);
-  }
-
-  return isAsync;
+  return syncChunksIssuers.every((issuer) =>
+    lookupChunkAsync(chunksIssuers, issuer, nextProcessed, cache)
+  );
 };
 
 type AssetSource = ChunkStats | AssetStats;
