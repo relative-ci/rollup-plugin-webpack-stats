@@ -93,7 +93,7 @@
     "vitest": "4.1.5"
   },
   "dependencies": {
-    "rollup-plugin-stats": "2.1.1"
+    "rollup-plugin-stats": "2.1.2"
   },
   "peerDependencies": {
     "rolldown": "^1.0.0-beta.0",
