@@ -6,6 +6,10 @@
 [![ci](https://github.com/relative-ci/rollup-plugin-webpack-stats/actions/workflows/ci.yml/badge.svg)](https://github.com/relative-ci/rollup-plugin-webpack-stats/actions/workflows/ci.yml)
 [![Socket Badge](https://socket.dev/api/badge/npm/package/rollup-plugin-webpack-stats)](https://socket.dev/npm/package/rollup-plugin-webpack-stats)
 
+[![Vite compatibility](https://registry.vite.dev/api/badges?package=rollup-plugin-webpack-stats&tool=vite)](https://npmx.dev/package/rollup-plugin-webpack-stats)
+[![Rolldown compatibility](https://registry.vite.dev/api/badges?package=rollup-plugin-webpack-stats&tool=rolldown)](https://npmx.dev/package/rollup-plugin-webpack-stats)
+[![Rollup compatibility](https://registry.vite.dev/api/badges?package=rollup-plugin-webpack-stats&tool=rollup)](https://npmx.dev/package/rollup-plugin-webpack-stats)
+
 Rollup/Vite/Rolldown plugin to generate a stats JSON file with a [bundle-stats](https://github.com/relative-ci/bundle-stats/tree/master/packages/cli) [webpack-compatible structure](https://github.com/relative-ci/bundle-stats/blob/master/packages/plugin-webpack-filter/src/index.ts).
 
 > [!NOTE]
