@@ -5,12 +5,16 @@ updates:
     schedule:
       interval: "daily"
       time: "02:00"
+    cooldown:
+      default-days: 1
     target-branch: "update-dependencies"
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "daily"
       time: "02:00"
+    cooldown:
+      default-days: 1
     target-branch: "update-dependencies"
     open-pull-requests-limit: 10
     groups:
