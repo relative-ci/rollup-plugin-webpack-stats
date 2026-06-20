@@ -74,10 +74,12 @@
     "prepare": "husky"
   },
   "devDependencies": {
+    "@eslint/js": "10.0.1",
     "@release-it/conventional-changelog": "11.0.1",
     "@types/node": "26.0.0",
     "eslint": "10.5.0",
     "eslint-config-prettier": "10.1.8",
+    "globals": "^17.6.0",
     "husky": "9.1.7",
     "lint-staged": "17.0.7",
     "memfs": "4.57.3",
