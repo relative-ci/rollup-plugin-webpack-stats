@@ -59,10 +59,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: ["24", "22"]
+        node: ["26", "24", "22"]
         os: [ubuntu-latest, windows-latest]
         rollup: ["3", "4"]
         exclude:
+          - os: windows-latest
+            node: 24
           - os: windows-latest
             node: 22
 
@@ -107,10 +109,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: ["24", "22"]
+        node: ["26", "24", "22"]
         os: [ubuntu-latest, windows-latest]
         vite: ["5", "6", "7", "8"]
         exclude:
+          - os: windows-latest
+            node: 24
           - os: windows-latest
             node: 22
     steps:
