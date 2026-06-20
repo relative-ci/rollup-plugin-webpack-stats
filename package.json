@@ -79,7 +79,7 @@
     "eslint": "9.39.2",
     "eslint-config-prettier": "10.1.8",
     "husky": "9.1.7",
-    "lint-staged": "17.0.5",
+    "lint-staged": "17.0.7",
     "memfs": "4.57.3",
     "prettier": "3.8.3",
     "release-it": "20.0.1",
