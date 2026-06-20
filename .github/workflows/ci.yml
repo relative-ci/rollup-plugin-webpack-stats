@@ -59,20 +59,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: ["24", "22", "20", "18"]
+        node: ["24", "22"]
         os: [ubuntu-latest, windows-latest]
         rollup: ["3", "4"]
         exclude:
           - os: windows-latest
             node: 22
-          - os: windows-latest
-            node: 20
-          - os: windows-latest
-            node: 18
-          - rollup: 3
-            node: 20
-          - rollup: 3
-            node: 18
 
     steps:
       - name: Checkout repo
@@ -115,18 +107,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: ["22", "20", "18"]
+        node: ["24", "22"]
         os: [ubuntu-latest, windows-latest]
         vite: ["5", "6", "7", "8"]
         exclude:
           - os: windows-latest
-            node: 20
-          - os: windows-latest
-            node: 18
-          - vite: 7
-            node: 18
-          - vite: 8
-            node: 18
+            node: 22
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6.0.2
