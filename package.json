@@ -75,7 +75,7 @@
   },
   "devDependencies": {
     "@release-it/conventional-changelog": "11.0.1",
-    "@types/node": "25.9.1",
+    "@types/node": "26.0.0",
     "eslint": "9.39.2",
     "eslint-config-prettier": "10.1.8",
     "husky": "9.1.7",
