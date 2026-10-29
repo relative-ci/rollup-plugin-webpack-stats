@@ -1,6 +1,6 @@
 #!/bin/bash
 
-npm install -g verdaccio
+npm install -g verdaccio@v6
 npx verdaccio --config ./verdaccio.yml &
 
 sleep 10
